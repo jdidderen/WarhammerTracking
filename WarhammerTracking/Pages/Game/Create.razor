@@ -1,4 +1,5 @@
 @page "/game/add"
+@page "/game/add/{player1}/{player2}/{date}"
 @using System.Collections.ObjectModel
 @using System.Runtime.InteropServices.ComTypes
 @using Microsoft.AspNetCore.Components
@@ -129,6 +130,12 @@
 </form>
 
 @code {
+    [Parameter]
+    public string player1 { get; set; }
+    [Parameter]
+    public string player2 { get; set; }
+    [Parameter]
+    public string date { get; set; }
     ApplicationUser[] Users;
     Faction[] Factions;
     string User1Id;
@@ -144,7 +151,17 @@
     {
         Users = await UserDataAccessProvider.ListUser();
         Factions = await FactionDataAccessProvider.ListFaction();
-        game.Date = DateTime.Now;
+        if (!String.IsNullOrEmpty(player1) && !String.IsNullOrEmpty(player2) && !String.IsNullOrEmpty(date))
+        {
+            
+            User1Id = player1;
+            User2Id = player2;
+            game.Date = DateTime.ParseExact(date, "dd-MM-yyyy",null);
+        }
+        else
+        {
+            game.Date = DateTime.Now;
+        }
     }
 
     private async void AddGame()

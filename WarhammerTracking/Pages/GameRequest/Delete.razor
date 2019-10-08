@@ -1,0 +1,36 @@
+@page "/gamerequest/delete/{id:int}"
+@using Microsoft.AspNetCore.Components
+@using WarhammerTracking.Data
+@using WarhammerTracking.Data.Game
+@using WarhammerTracking.GameRequest
+@attribute [Authorize(Roles = "User,Admin")]
+@inject GameRequestDataAccessProvider GameRequestDataAccessProvider
+@inject UserDataAccessProvider UserDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<h1>Game Request - Delete</h1>
+
+<div class="shadow-lg rounded form-box">
+<div class="row">
+    <div class="col-md-12">
+        <label for="Date">Date</label>
+        <span>@GameRequest.Date.ToString("dd/MM/yyyy")</span>
+        <label for="Player">Player</label>
+        <span>@GameRequest.Player.UserName</span>
+        <label for="Expired">Expired</label>
+        <input id="Expired" type="checkbox" @bind-value="@GameRequest.Expired" readonly="1"/>
+    </div>
+</div>
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    GameRequest GameRequest;
+
+    protected override async Task OnInitializedAsync()
+    {
+        GameRequest = await GameRequestDataAccessProvider.GetRequestGame(id);
+    }
+
+}

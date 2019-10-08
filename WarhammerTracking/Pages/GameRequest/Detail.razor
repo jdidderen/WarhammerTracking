@@ -1,0 +1,51 @@
+@page "/gamerequest/detail/{id:int}"
+@using Microsoft.AspNetCore.Components
+@using WarhammerTracking.Data
+@using WarhammerTracking.Data.Game
+@using WarhammerTracking.GameRequest
+@attribute [Authorize(Roles = "User,Admin")]
+@inject GameRequestDataAccessProvider GameRequestDataAccessProvider
+@inject UserDataAccessProvider UserDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<h1>Game Request - Detail</h1>
+
+<div class="shadow-lg rounded form-box">
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group form-inline">
+            <label for="Date">Date</label>
+            <span>@GameRequest.Date.ToString("dd/MM/yyyy")</span>
+        </div>        
+        <div class="form-group form-inline">
+            <label for="Player">Player</label>
+            <span>@GameRequest.Player.UserName</span>
+        </div>        
+        <div class="form-group form-inline">
+            <label for="Expired">Expired</label>
+            <input id="Expired" type="checkbox" @bind="@GameRequest.Expired" disabled/>
+        </div>
+        <input type="button" value="Create Game" @onclick="CreateGame" class="btn btn-primary"/>
+    </div>
+</div>
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    GameRequest GameRequest;
+
+    protected override async Task OnInitializedAsync()
+    {
+        GameRequest = await GameRequestDataAccessProvider.GetRequestGame(id);
+    }
+
+    private async void CreateGame()
+    {
+        ApplicationUser CurrentUser = await UserDataAccessProvider.GetCurrentUser();
+        GameRequest.Expired = true;
+        await GameRequestDataAccessProvider.UpdateGameRequest(GameRequest);
+        NavigationManager.NavigateTo("game/add/"+GameRequest.Player.Id+"/"+CurrentUser.Id+"/"+GameRequest.Date.ToString("dd-MM-yyyy"));
+    }
+
+}

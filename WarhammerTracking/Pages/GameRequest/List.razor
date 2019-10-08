@@ -1,0 +1,52 @@
+@page "/gamerequest"
+@using WarhammerTracking.Data
+@using WarhammerTracking.Data.Game
+@using WarhammerTracking.GameRequest
+@attribute [Authorize(Roles = "User,Admin")]
+@inject GameRequestDataAccessProvider GameRequestDataAccessProvider
+
+<h1>Game Requests</h1>
+    <div class="shadow-lg rounded form-box">
+    <div class="row">
+<div class="col-md-12">
+    <a href="/gamerequest/add" class="btn btn-primary">Add</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Player</th>
+            <th>Expired</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var gameRequest in _gameRequests)
+        {
+            <tr>
+                <td>@gameRequest.id</td>
+                <td>@gameRequest.Date.ToString("dd/MM/yyyy")</td>
+                <td>@gameRequest.Player.UserName</td>
+                <td><input type="checkbox" @bind="@gameRequest.Expired" disabled/></td>
+                <td>
+                    <a href="/gamerequest/detail/@gameRequest.id" class="btn btn-primary">Detail</a>
+                    <a href="/gamerequest/edit/@gameRequest.id" class="btn btn-primary">Edit</a>
+                    <a href="/gamerequest/delete/@gameRequest.id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+</div>
+</div>
+}
+
+@code {
+    GameRequest[] _gameRequests;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _gameRequests = await GameRequestDataAccessProvider.ListGameRequests();
+    }
+
+}

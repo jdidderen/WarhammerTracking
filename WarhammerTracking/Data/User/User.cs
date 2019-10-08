@@ -11,6 +11,7 @@ namespace WarhammerTracking.Data
         public ICollection<Game.Game> Player1Games { get; set; }
         public ICollection<Game.Game> Player2Games { get; set; }
         public ICollection<Game.GameLine> GameLines { get; set; }
+        public ICollection<GameRequest.GameRequest> GameRequests { get; set; }
         
         [NotMapped]
         public string Password { get; set; }

@@ -13,6 +13,7 @@ namespace WarhammerTracking.Data
         public virtual DbSet<Army.Army> Armies { get; set; }
         public virtual DbSet<Army.Faction> Factions { get; set; }
         public virtual DbSet<Game.Game> Games { get; set; }
+        public virtual DbSet<GameRequest.GameRequest> GameRequests { get; set; }
         public virtual DbSet<Game.GameLine> GameLines { get; set; }
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -38,6 +39,9 @@ namespace WarhammerTracking.Data
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.GameLines)
                 .WithOne(g => g.Player);
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.GameRequests)
+                .WithOne(gr => gr.Player);
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "User", NormalizedName = "USER", Id = Guid.NewGuid().ToString(), ConcurrencyStamp = Guid.NewGuid().ToString() });
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN", Id = Guid.NewGuid().ToString(), ConcurrencyStamp = Guid.NewGuid().ToString() });
         }

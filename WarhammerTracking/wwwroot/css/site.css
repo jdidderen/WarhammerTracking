@@ -41,7 +41,11 @@ app {
 
 .main {
     flex: 1;
-    background-image: url("../images/wallpaper.jpg");
+    background: url("../images/wallpaper.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .main .top-row {

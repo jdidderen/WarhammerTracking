@@ -1,0 +1,65 @@
+@page "/gamerequest/edit/{id:int}"
+@using System.Collections.ObjectModel
+@using System.Runtime.InteropServices.ComTypes
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Routing
+@using WarhammerTracking.Data
+@using WarhammerTracking.Data.Army
+@using WarhammerTracking.Data.Game
+@using WarhammerTracking.GameRequest
+@attribute [Authorize(Roles = "User,Admin")]
+@inject GameRequestDataAccessProvider GameRequestDataAccessProvider
+@inject UserDataAccessProvider UserDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<h1>Game Request - Update</h1>
+
+<div class="shadow-lg rounded form-box">
+<div class="row">
+    <div class="col-md-12">
+    <EditForm Model="GameRequest" OnSubmit=@FormSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group form-inline">
+            <label for="Date">Date</label>
+            <InputDate id="Date" @bind-Value="GameRequest.Date" />
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+    </EditForm>
+    </div>
+</div>
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    GameRequest GameRequest;
+
+    protected override async Task OnInitializedAsync()
+    {
+        GameRequest = await GameRequestDataAccessProvider.GetRequestGame(id);
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("gamerequest");
+    }
+
+    private async void FormSubmit(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+            Console.WriteLine("Success");
+            await GameRequestDataAccessProvider.UpdateGameRequest(GameRequest);
+            NavigationManager.NavigateTo("gamerequest");
+        }
+        else
+        {
+            Console.WriteLine("Fail");
+        }
+    }
+
+}

@@ -53,6 +53,7 @@ namespace WarhammerTracking
             services.AddScoped<ArmyDataAccessProvider>();
             services.AddScoped<FactionDataAccessProvider>();
             services.AddScoped<GameDataAccessProvider>();
+            services.AddScoped<GameRequestDataAccessProvider>();
             services.AddScoped<UserDataAccessProvider>();
         }
 
