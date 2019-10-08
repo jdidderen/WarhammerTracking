@@ -1,0 +1,217 @@
+@page "/game/detail/{id:int}"
+@using System.Collections.ObjectModel
+@using System.Runtime.InteropServices.ComTypes
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Routing
+@using WarhammerTracking.Data
+@using WarhammerTracking.Data.Army
+@using WarhammerTracking.Data.Game
+@attribute [Authorize(Roles = "User,Admin")]
+@inject GameDataAccessProvider GameDataAccessProvider
+@inject UserDataAccessProvider UserDataAccessProvider
+@inject FactionDataAccessProvider FactionDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<h1>Games - Detail</h1>
+
+<div class="shadow-lg rounded form-box">
+<div class="row">
+        <div class="col-md-12">
+            <div class="form-group form-inline">
+                <label for="Date">Date</label>
+                <span>@game.Date.ToString("dd/MM/yyyy")</span>
+                <label style="margin-left: 30px;">Score</label>
+                <span>@game.Score</span>
+            </div>
+        </div>
+</div>
+<div class="row">
+        <div class="col-md-12">
+            <div class="form-group form-inline">
+                <label for="TableNumber">Table Number</label>
+                <span>@game.TableNumber</span>
+                <label style="margin-left: 30px;" for="ScenarioNumber">Scenario Number</label>
+                <span>@game.ScenarioNumber</span>
+                <label style="margin-left: 30px;" for="Location">Location</label>
+                <span>@game.Location</span>
+            </div>
+        </div>
+</div>
+<div class="row">
+        <div class="col-md-6">
+            <h2>Player 1</h2>
+            <div class="form-group form-inline">
+                        <label for="user1">Player 1</label>
+                        <span>@game.Player1.UserName</span>
+            </div>
+            <div class="form-group form-inline">
+                        <label for="FactionPlayer1">Faction</label>
+                        <span>@game.FactionPlayer1.name</span>
+            </div>
+            <div class="form-group form-inline">
+                <label for="CpPlayer1">CP</label>
+                <span>@game.CpPlayer1</span>
+            </div>
+            <div class="form-group">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Maelstrom</th>
+                            <th>Eternal</th>
+                            <th>KP</th>
+                            <th>Others</th>
+                            <th>Total</th>
+                            <th>CP Used</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (game.GameLines != null)
+                        {
+                            @foreach (var line1 in game.GameLines)
+                            {
+                                if (line1.Player.Id == game.Player1Id)
+                                {
+                                    <tr>
+                                        <td class="text-center">@line1.Maelstrom</td>
+                                        <td class="text-center">@line1.Eternal</td>
+                                        <td class="text-center">@line1.KP</td>
+                                        <td class="text-center">@line1.Others</td>
+                                        <td class="text-center">@line1.Total</td>
+                                        <td class="text-center">@line1.CpUsed</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                            <tr>
+                                <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalEternalPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalKPPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalOthersPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.CpLeftPlayer1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2>Player 2</h2>
+            <div class="form-group form-inline">
+                        <label for="User2">Player 2</label>
+                        <span>@game.Player2.UserName</span>
+            </div>
+            <div class="form-group form-inline">
+                        <label for="FactionPlayer2">Faction</label>
+                        <span>@game.FactionPlayer2.name</span>
+            </div>
+            <div class="form-group form-inline">
+                <label for="CpPlayer2">CP</label>
+                <span>@game.CpPlayer2</span>
+            </div>
+             <div class="form-group">
+                     <table class="table">
+                         <thead>
+                         <tr>
+                             <th>Maelstrom</th>
+                             <th>Eternal</th>
+                             <th>KP</th>
+                             <th>Others</th>
+                             <th>Total</th>
+                             <th>CP Used</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         @if (game.GameLines != null)
+                         {
+                             @foreach (var line2 in game.GameLines)
+                             {
+                                 if (line2.Player.Id == game.Player2Id)
+                                 {
+                                     <tr>
+                                         <td class="text-center">@line2.Maelstrom</td>
+                                         <td class="text-center">@line2.Eternal</td>
+                                         <td class="text-center">@line2.KP</td>
+                                         <td class="text-center">@line2.Others</td>
+                                         <td class="text-center">@line2.Total</td>
+                                         <td class="text-center">@line2.CpUsed</td>
+                                     </tr>
+                                 }
+                             }
+                         }
+                            <tr>
+                                <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.TotalEternalPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.TotalKPPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.TotalOthersPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.TotalPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.CpLeftPlayer2</td>
+                            </tr>
+                         </tbody>
+                     </table>
+             </div>
+        </div>
+        <div class="col-md-12">
+            <div class="btn-group" style="margin-bottom: 10px;" role="group">
+                <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">Note</button>
+                <button type="button" class="btn btn-dark" @onclick="ChangeList1View">Player 1 - List</button>
+                <button type="button" class="btn btn-dark" @onclick="ChangeList2View">Player 2 - List</button>
+            </div>
+            @if (showNote)
+            {
+                <div class="form-group">
+                    <textarea id="Note" @bind="@game.Note" readonly="1" class="form-control"></textarea>
+                </div>
+            }
+            @if (showList1)
+            {
+                <div class="form-group">
+                    <textarea id="List1" @bind="@game.ListPlayer1" readonly="1" class="form-control"></textarea>
+                </div>
+            }
+            @if (showList2)
+            {
+                <div class="form-group">
+                    <textarea id="List2" @bind="@game.ListPlayer2" readonly="1" class="form-control"></textarea>
+                </div>
+            }
+        </div>
+</div>
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    Game game;
+    bool showNote = true;
+    bool showList1 = false;
+    bool showList2 = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        game = await GameDataAccessProvider.GetGame(id);
+    }
+
+    void ChangeNoteView()
+    {
+        showNote = true;
+        showList1 = false;
+        showList2 = false;
+    }
+
+    void ChangeList1View()
+    {
+        showNote = false;
+        showList1 = true;
+        showList2 = false;
+    }
+    
+    void ChangeList2View()
+    {
+        showNote = false;
+        showList1 = false;
+        showList2 = true;
+    }
+}

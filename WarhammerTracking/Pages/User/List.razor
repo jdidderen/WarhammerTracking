@@ -1,0 +1,49 @@
+@page "/user"
+@using WarhammerTracking.Data
+@attribute [Authorize(Roles = "Admin")]
+@inject UserDataAccessProvider UserDataAccessProvider
+
+<h1>Users</h1>
+
+@if (Users == null)
+{
+    <p><em>No records...</em></p>
+}
+else
+{
+    <div class="shadow-lg rounded form-box">
+    <a href="/user/add" class="btn btn-primary">Add</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>UserName</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Users)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>
+                    <a href="/user/edit/@user.Id" class="btn btn-primary">Edit</a>
+                    <a href="/user/delete/@user.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+}
+
+@code {
+    ApplicationUser[] Users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await UserDataAccessProvider.ListUser();
+    }
+
+}

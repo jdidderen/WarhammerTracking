@@ -1,0 +1,293 @@
+@page "/game/edit/{id:int}"
+@using System.Collections.ObjectModel
+@using System.Runtime.InteropServices.ComTypes
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Routing
+@using WarhammerTracking.Data
+@using WarhammerTracking.Data.Army
+@using WarhammerTracking.Data.Game
+@attribute [Authorize(Roles = "User,Admin")]
+@inject GameDataAccessProvider GameDataAccessProvider
+@inject UserDataAccessProvider UserDataAccessProvider
+@inject FactionDataAccessProvider FactionDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<form>
+<h1>Games - Update</h1>
+<div class="shadow-lg rounded form-box">
+<div class="row">
+        <div class="col-md-12">
+            <div class="form-group form-inline">
+                <label for="Date">Date</label>
+                <input id="Date" type="date" class="form-control" @bind-value="@game.Date"/>
+                <label style="margin-left: 30px;">Score</label>
+                <span>@game.Score</span>
+            </div>
+        </div>
+</div>
+<div class="row">
+        <div class="col-md-12">
+            <div class="form-group form-inline">
+                <label for="TableNumber">Table Number</label>
+                <input id="TableNumber" type="text" class="form-control" @bind-value="@game.TableNumber"/>
+                <label style="margin-left: 30px;" for="ScenarioNumber">Scenario Number</label>
+                <input id="ScenarioNumber" type="text" class="form-control" @bind-value="@game.ScenarioNumber"/>
+                <label style="margin-left: 30px;" for="Location">Location</label>
+                <input id="Location" type="text" class="form-control" @bind-value="@game.Location"/>
+            </div>
+        </div>
+</div>
+<div class="row">
+        <div class="col-md-6">
+            <h2>Player 1</h2>
+            <div class="form-group form-inline">
+                        <label for="user1">Player 1</label>
+                        <select id="user1" @bind="User1Id">
+                        <option></option>
+                        @foreach (var user in Users)
+                        {
+                        <option value=@user.Id>@user.UserName.ToString()</option>
+                        }
+                        </select>
+            </div>
+            <div class="form-group form-inline">
+                        <label for="FactionPlayer1">Faction</label>
+                        <select id="FactionPlayer1" @bind="FactionPlayer1">
+                        <option></option>
+                        @foreach (var faction in Factions)
+                        {
+                        <option value=@faction.id>@faction.name.ToString()</option>
+                        }
+                        </select>
+            </div>
+            <div class="form-group form-inline">
+                <label for="CpPlayer1">CP</label>
+                <input id="CpPlayer1" type="number" class="form-control" @bind-value="@game.CpPlayer1" style="width: 100px;"/>
+            </div>
+            <div class="form-group">
+                     <input type="button" value="Add Line" @onclick="@(() => AddLine(User1Id))" class="btn btn-primary"/>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Maelstrom</th>
+                            <th>Eternal</th>
+                            <th>KP</th>
+                            <th>Others</th>
+                            <th>Total</th>
+                            <th>CP Used</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (game.GameLines != null)
+                        {
+                            @foreach (var line1 in game.GameLines)
+                            {
+                                if (line1.Player.Id == User1Id)
+                                {
+                                    <tr>
+                                        <td><input type="number" class="form-control" @bind-value="@line1.Maelstrom"/></td>
+                                        <td><input type="number" class="form-control" @bind-value="@line1.Eternal"/></td>
+                                        <td><input type="number" class="form-control" @bind-value="@line1.KP"/></td>
+                                        <td><input type="number" class="form-control" @bind-value="@line1.Others"/></td>
+                                        <td>@line1.Total</td>
+                                        <td><input type="number" class="form-control" @bind-value="@line1.CpUsed"/></td>
+                                    </tr>
+                                }
+                            }
+                        }
+                            <tr>
+                                <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalEternalPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalKPPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalOthersPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.CpLeftPlayer1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2>Player 2</h2>
+            <div class="form-group form-inline">
+                        <label for="User2">Player 2</label>
+                        <select id="User2" @bind="User2Id">
+                        <option></option>
+                        @foreach (var user in Users)
+                        {
+                        <option value=@user.Id>@user.UserName.ToString()</option>
+                        }
+                        </select>
+            </div>
+            <div class="form-group form-inline">
+                        <label for="FactionPlayer2">Faction</label>
+                        <select id="FactionPlayer2" @bind="FactionPlayer2">
+                        <option></option>
+                        @foreach (var faction in Factions)
+                        {
+                        <option value=@faction.id>@faction.name.ToString()</option>
+                        }
+                        </select>
+            </div>
+            <div class="form-group form-inline">
+                <label for="CpPlayer2">CP</label>
+                <input id="CpPlayer2" type="number" class="form-control" @bind-value="@game.CpPlayer2" style="width: 100px;"/>
+            </div>
+             <div class="form-group">
+                     <input type="button" value="Add Line" @onclick="@(() => AddLine(User2Id))" class="btn btn-primary"/>
+                     <table class="table">
+                         <thead>
+                         <tr>
+                             <th>Maelstrom</th>
+                             <th>Eternal</th>
+                             <th>KP</th>
+                             <th>Others</th>
+                             <th>Total</th>
+                             <th>CP Used</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         @if (game.GameLines != null)
+                         {
+                             @foreach (var line2 in game.GameLines)
+                             {
+                                 if (line2.Player.Id == User2Id)
+                                 {
+                                     <tr>
+                                         <td><input type="number" class="form-control" @bind-value="@line2.Maelstrom"/></td>
+                                         <td><input type="number" class="form-control" @bind-value="@line2.Eternal"/></td>
+                                         <td><input type="number" class="form-control" @bind-value="@line2.KP"/></td>
+                                         <td><input type="number" class="form-control" @bind-value="@line2.Others"/></td>
+                                         <td>@line2.Total</td>
+                                         <td><input type="number" class="form-control" @bind-value="@line2.CpUsed"/></td>
+                                     </tr>
+                                 }
+                             }
+                         }
+                            <tr>
+                                <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.TotalEternalPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.TotalKPPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.TotalOthersPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.TotalPlayer2</td>
+                                <td class="text-center font-weight-bold">@game.CpLeftPlayer2</td>
+                            </tr>
+                         </tbody>
+                     </table>
+             </div>
+        </div>
+        <div class="col-md-12">
+            <div class="btn-group" style="margin-bottom: 10px;" role="group">
+                <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">Note</button>
+                <button type="button" class="btn btn-dark" @onclick="ChangeList1View">Player 1 - List</button>
+                <button type="button" class="btn btn-dark" @onclick="ChangeList2View">Player 2 - List</button>
+            </div>
+            @if (showNote)
+            {
+                <div class="form-group">
+                    <textarea id="Note" @bind="@game.Note" class="form-control"></textarea>
+                </div>
+            }
+            @if (showList1)
+            {
+                <div class="form-group">
+                    <textarea id="List1" @bind="@game.ListPlayer1" class="form-control"></textarea>
+                </div>
+            }
+            @if (showList2)
+            {
+                <div class="form-group">
+                    <textarea id="List2" @bind="@game.ListPlayer2" class="form-control"></textarea>
+                </div>
+            }
+        </div>
+</div>
+<div class="row">
+        <div class="form-group">
+            <input type="button" value="Save" @onclick="SaveGame" class="btn btn-primary"/>
+            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        </div>
+</div>
+</div>
+</form>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    
+    ApplicationUser[] Users;
+    Faction[] Factions;
+    string User1Id;
+    string User2Id;
+    int FactionPlayer1;
+    int FactionPlayer2;
+    Game game;
+    bool showNote = true;
+    bool showList1 = false;
+    bool showList2 = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await UserDataAccessProvider.ListUser();
+        Factions = await FactionDataAccessProvider.ListFaction();
+        game = await GameDataAccessProvider.GetGame(id);
+        User1Id = game.Player1Id;
+        User2Id = game.Player2Id;
+        FactionPlayer1 = game.FactionPlayer1Id;
+        FactionPlayer2 = game.FactionPlayer2Id;
+    }
+
+    private async void AddLine(string UserId)
+    {
+        game.GameLines.Add(new GameLine() {PlayerId = UserId,Player= await UserDataAccessProvider.GetUser(UserId),Game = game,GameId = game.id});
+    }
+
+    private async void SaveGame()
+    {
+        Faction Faction1 = await FactionDataAccessProvider.GetFaction(FactionPlayer1);
+        Faction Faction2 = await FactionDataAccessProvider.GetFaction(FactionPlayer2);
+        ApplicationUser User1 = await UserDataAccessProvider.GetUser(User1Id);
+        ApplicationUser User2 = await UserDataAccessProvider.GetUser(User2Id);
+//        if (User1 != null && User2 != null)
+        if (Faction1 != null && Faction2 != null && User1 != null && User2 != null)
+        {
+            game.Player1 = User1;
+            game.Player2 = User2;
+            game.FactionPlayer1 = Faction1;
+            game.FactionPlayer2 = Faction2;
+            await GameDataAccessProvider.UpdateGame(game);
+            NavigationManager.NavigateTo("game");
+        }
+        await GameDataAccessProvider.UpdateGame(game);
+        NavigationManager.NavigateTo("game");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("game");
+    }
+    
+    void ChangeNoteView()
+    {
+        showNote = true;
+        showList1 = false;
+        showList2 = false;
+    }
+
+    void ChangeList1View()
+    {
+        showNote = false;
+        showList1 = true;
+        showList2 = false;
+    }
+    
+    void ChangeList2View()
+    {
+        showNote = false;
+        showList1 = false;
+        showList2 = true;
+    }
+
+}

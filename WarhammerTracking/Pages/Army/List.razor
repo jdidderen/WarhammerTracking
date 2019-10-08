@@ -1,0 +1,49 @@
+@page "/army"
+@using WarhammerTracking.Data.Army
+@attribute [Authorize(Roles = "User,Admin")]
+@inject ArmyDataAccessProvider ArmyDataAccessProvider
+
+<h1>Armies</h1>
+
+@if (Armies == null)
+{
+    <p><em>No records...</em></p>
+}
+else
+{
+    <div class="shadow-lg rounded form-box">
+    <a href="/army/add" class="btn btn-primary">Add</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var army in Armies)
+        {
+            <tr>
+                <td>@army.id</td>
+                <td>@army.name</td>
+                <td>
+                    <a href="/army/edit/@army.id" class="btn btn-primary">Edit</a>
+                    <a href="/army/delete/@army.id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+}
+
+@code {
+    Army[] Armies;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Armies = await ArmyDataAccessProvider.ListArmy();
+    }
+
+}

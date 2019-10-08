@@ -1,0 +1,41 @@
+@page "/army/add"
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Mvc.Routing
+@using WarhammerTracking.Data.Army
+@attribute [Authorize(Roles = "User,Admin")]
+@inject ArmyDataAccessProvider ArmyDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<h1>Armies - Add</h1>
+<div class="shadow-lg rounded form-box">
+<div class="row">
+    <form>
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input for="Name" class="form-control" @bind-value="@army.name"/>
+        </div>
+        <div class="form-group">
+            <input type="button" value="Add" @onclick="AddArmy" class="btn btn-primary"/>
+            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        </div>
+    </form>
+</div>
+</div>
+
+@code {
+
+    Army army = new Army();
+
+    private void AddArmy()
+    {
+        ArmyDataAccessProvider.AddArmy(army);
+        NavigationManager.NavigateTo("army");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("army");
+    }
+
+}

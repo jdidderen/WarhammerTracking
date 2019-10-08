@@ -1,0 +1,279 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+using WarhammerTracking.Data.Army;
+
+namespace WarhammerTracking.Data.Game
+{
+    public class Game
+    {
+        public Game()
+        {
+            GameLines = new HashSet<GameLine>();
+        }
+        [Key]
+        public int id { get; set; }
+        [Required]
+        public DateTime Date { get; set; }
+        public string Note { get; set; }
+        public string ListPlayer1 { get; set; }
+        public string ListPlayer2 { get; set; }
+        public string TableNumber { get; set; }
+        public string ScenarioNumber { get; set; }
+        public string Location { get; set; }
+        [Required]
+        public string Player1Id { get; set; }
+        [Required]
+        public string Player2Id { get; set; }
+        [Required]
+        [ForeignKey("Player1Id")]
+        public ApplicationUser Player1 { get; set; }
+        [Required]
+        [ForeignKey("Player2Id")]
+        public ApplicationUser Player2 { get; set; }
+        [Required]
+        public int FactionPlayer1Id { get; set; }
+        [Required]
+        [ForeignKey("FactionPlayer1Id")]
+        public Faction FactionPlayer1 { get; set; }
+        [Required]
+        public int FactionPlayer2Id { get; set; }
+        [Required]
+        [ForeignKey("FactionPlayer2Id")]
+        public Faction FactionPlayer2 { get; set; }
+        public ICollection<GameLine> GameLines { get; set; }
+        public int CpPlayer1 { get; set; }
+        public int CpPlayer2 { get; set; }
+        [NotMapped]
+        public int CpLeftPlayer1
+        {
+            get
+            {
+                int CpLeft = CpPlayer1;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player1)
+                    {
+                        CpLeft -= line.CpUsed;
+                    }
+                }
+
+                return CpLeft;
+            }
+        }
+        [NotMapped]
+        public int CpLeftPlayer2
+        {
+            get
+            {
+                int CpLeft = CpPlayer2;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player2)
+                    {
+                        CpLeft -= line.CpUsed;
+                    }
+                }
+
+                return CpLeft;
+            }
+        }
+        [NotMapped]
+        public int TotalPlayer1
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player1)
+                    {
+                        Total += line.Total;
+                    }
+                }
+
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalPlayer2
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player2)
+                    {
+                        Total += line.Total;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalMaelstromPlayer1
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player1)
+                    {
+                        Total += line.Maelstrom;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalMaelstromPlayer2
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player2)
+                    {
+                        Total += line.Maelstrom;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalEternalPlayer1
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player1)
+                    {
+                        Total += line.Eternal;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalEternalPlayer2
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player2)
+                    {
+                        Total += line.Eternal;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalKPPlayer1
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player1)
+                    {
+                        Total += line.KP;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalKPPlayer2
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player2)
+                    {
+                        Total += line.KP;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalOthersPlayer1
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player1)
+                    {
+                        Total += line.Others;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public int TotalOthersPlayer2
+        {
+            get
+            {
+                int Total = 0;
+                foreach (var line in GameLines)
+                {
+                    if (line.Player == Player2)
+                    {
+                        Total += line.Others;
+                    }
+                }
+                return Total;
+            }
+        }
+        [NotMapped]
+        public string Score
+        {
+            get
+            {
+                string score = "";
+                if (TotalPlayer1 >= TotalPlayer2)
+                {
+                    if (TotalPlayer1 - TotalPlayer2 < 20)
+                    {
+                        score = (20 - (TotalPlayer1 - TotalPlayer2)).ToString()
+                        + '-' + (TotalPlayer1 - TotalPlayer2).ToString();
+                    }
+                    else
+                    {
+                        score = "20 - 0";
+                    }
+                }
+                else
+                {
+                    if (TotalPlayer2 - TotalPlayer1 < 20)
+                    {
+                        score = (TotalPlayer2 - TotalPlayer1).ToString()
+                                + '-' + (20 - (TotalPlayer2 - TotalPlayer1)).ToString();
+                    }
+                    else
+                    {
+                        score = "0 - 20";
+                    }
+                }
+                return score;
+            }
+        }
+    }
+}

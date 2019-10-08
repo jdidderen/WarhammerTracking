@@ -1,0 +1,53 @@
+@page "/army/edit/{id:int}"
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Mvc.Routing
+@using WarhammerTracking.Data.Army
+@attribute [Authorize(Roles = "User,Admin")]
+@inject ArmyDataAccessProvider ArmyDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<h1>Armies - Update</h1>
+
+
+<div class="shadow-lg rounded form-box">
+<div class="row">
+    <form>
+        <div class="form-group">
+            <label for="Id">Id</label>
+            <input for="Id" readonly="1" class="form-control" @bind-value="@army.id"/>
+        </div>
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input for="Name" class="form-control" @bind-value="@army.name"/>
+        </div>
+        <div class="form-group">
+            <input type="button" value="Save" @onclick="UpdateArmy" class="btn btn-primary"/>
+            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        </div>
+    </form>
+</div>
+</div>
+@code {
+    [Parameter]
+    public int id { get; set; }
+    
+    Army army;
+
+    protected override async Task OnInitializedAsync()
+    {
+        army = await ArmyDataAccessProvider.GetArmy(id);
+    }
+
+    private void UpdateArmy()
+    {
+        ArmyDataAccessProvider.UpdateArmy(army);
+        NavigationManager.NavigateTo("army");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("army");
+    }
+
+}

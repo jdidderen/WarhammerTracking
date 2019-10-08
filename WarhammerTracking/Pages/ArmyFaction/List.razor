@@ -1,0 +1,51 @@
+@page "/faction"
+@using WarhammerTracking.Data.Army
+@attribute [Authorize(Roles = "User,Admin")]
+@inject FactionDataAccessProvider FactionDataAccessProvider
+
+<h1>Factions</h1>
+
+@if (factions == null)
+{
+    <p><em>No records...</em></p>
+}
+else
+{
+    <div class="shadow-lg rounded form-box">
+    <a href="/faction/add" class="btn btn-primary">Add</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Army</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var faction in factions)
+        {
+            <tr>
+                <td>@faction.id</td>
+                <td>@faction.name</td>
+                <td>@faction.army.name</td>
+                <td>
+                    <a href="/faction/edit/@faction.id" class="btn btn-primary">Edit</a>
+                    <a href="/faction/delete/@faction.id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+}
+
+@code {
+    Faction[] factions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        factions = await FactionDataAccessProvider.ListFaction();
+    }
+
+}

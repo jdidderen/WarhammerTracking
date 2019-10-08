@@ -1,0 +1,56 @@
+@page "/faction/delete/{id:int}"
+@using System.Runtime.InteropServices.ComTypes
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Mvc.Routing
+@using WarhammerTracking.Data.Army
+@attribute [Authorize(Roles = "User,Admin")]
+@inject ArmyDataAccessProvider ArmyDataAccessProvider
+@inject FactionDataAccessProvider FactionDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<h1>Armies - Delete</h1>
+<div class="alert alert-danger" role="alert">
+Are you sure you want to delete this faction ?
+</div>
+<div class="shadow-lg rounded form-box">
+<div class="row">
+    <form>
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input for="Name" readonly="1" class="form-control" @bind-value="@faction.name"/>
+        </div>
+        <div class="form-group">
+            <label for="Army">Army</label>
+            <input for="Army" readonly="1" class="form-control" @bind-value="@faction.army.name"/>
+        </div>
+        <div class="form-group">
+            <input type="button" value="Delete" @onclick="DeleteFaction" class="btn btn-primary"/>
+            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        </div>
+    </form>
+</div>
+</div>
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    Faction faction;
+
+    protected override async Task OnInitializedAsync()
+    {
+        faction = await FactionDataAccessProvider.GetFaction(id);
+    }
+    
+    private async void DeleteFaction()
+    {
+        await FactionDataAccessProvider.DeleteFaction(id);
+        NavigationManager.NavigateTo("faction");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("faction");
+    }
+
+}

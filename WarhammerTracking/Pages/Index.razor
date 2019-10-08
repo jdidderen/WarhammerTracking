@@ -1,0 +1,120 @@
+﻿@page "/"
+@using WarhammerTracking.Data.Game
+@inject GameDataAccessProvider GameDataAccessProvider
+
+    <AuthorizeView Roles="User,Admin">
+    <div class="btn-group" style="margin-bottom: 10px;" role="group">
+      <button type="button" class="btn btn-dark" @onclick="ChangeNextView">Next games</button>
+      <button type="button" class="btn btn-dark" @onclick="ChangeLastView">Last games</button>
+    </div>
+    @if (showLast)
+{
+    <h1>Last 5 Games</h1>
+    <div class="shadow-lg rounded form-box">
+    <div class="row">
+        <div class="col-md-12">
+           
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Player 1</th>
+                <th>Player 1 / Faction</th>
+                <th>Player 2</th>
+                <th>Player 2 / Faction</th>
+                <th>Score</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var game in LastGames)
+            {
+                <tr>
+                    <td>@game.id</td>
+                    <td>@game.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@game.Player1.UserName</td>
+                    <td>@game.FactionPlayer1.name</td>
+                    <td>@game.Player2.UserName</td>
+                    <td>@game.FactionPlayer2.name</td>
+                    <td>@game.Score</td>
+                    <td>
+                        <a href="/game/detail/@game.id" class="btn btn-primary">Detail</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        </div>
+        </div>
+</div>
+}
+    @if (showNext)
+{
+    <h1>Next 5 Games</h1>
+    <div class="shadow-lg rounded form-box">
+    <div class="row">
+        <div class="col-md-12">
+           
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Player 1</th>
+                <th>Player 1 / Faction</th>
+                <th>Player 2</th>
+                <th>Player 2 / Faction</th>
+                <th>Score</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var game in NextGames)
+            {
+                <tr>
+                    <td>@game.id</td>
+                    <td>@game.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@game.Player1.UserName</td>
+                    <td>@game.FactionPlayer1.name</td>
+                    <td>@game.Player2.UserName</td>
+                    <td>@game.FactionPlayer2.name</td>
+                    <td>@game.Score</td>
+                    <td>
+                        <a href="/game/detail/@game.id" class="btn btn-primary">Detail</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        </div>
+        </div>
+    </div>
+}
+    
+    </AuthorizeView>
+
+@code {
+    Data.Game.Game[] LastGames;
+    Data.Game.Game[] NextGames;
+    bool showLast = false;
+    bool showNext = true;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        LastGames = await GameDataAccessProvider.LastFiveGames();
+        NextGames = await GameDataAccessProvider.NextFiveGames();
+    }
+
+    void ChangeLastView()
+    {
+        showLast = true;
+        showNext = false;
+    }
+
+    void ChangeNextView()
+    {
+        showLast = false;
+        showNext = true;
+    }
+}

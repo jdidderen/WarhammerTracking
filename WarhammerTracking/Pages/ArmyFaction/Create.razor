@@ -1,0 +1,65 @@
+@page "/faction/add"
+@using System.Runtime.InteropServices.ComTypes
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Mvc.Routing
+@using WarhammerTracking.Data.Army
+@attribute [Authorize(Roles = "User,Admin")]
+@inject ArmyDataAccessProvider ArmyDataAccessProvider
+@inject FactionDataAccessProvider FactionDataAccessProvider
+@inject NavigationManager NavigationManager
+
+<h1>Armies - Add</h1>
+<div class="shadow-lg rounded form-box">
+<div class="row">
+    <form>
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input for="Name" class="form-control" @bind-value="@faction.name"/>
+        </div>
+        <div class="form-group">
+            <label for="Army">Army</label>
+            <select for="Army" id="army" @bind="ArmyId">
+                <option></option>
+                @foreach (var army in armies)
+                {
+                    <option value=@army.id>@army.name.ToString()</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="button" value="Add" @onclick="AddFaction" class="btn btn-primary"/>
+            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        </div>
+    </form>
+</div>
+</div>
+@code {
+
+    private Army[] armies;
+    int ArmyId;
+    Faction faction = new Faction();
+
+    protected override async Task OnInitializedAsync()
+    {
+        armies = await ArmyDataAccessProvider.ListArmy();
+    }
+    
+    private async void AddFaction()
+    {
+        Army SelectedArmy = await ArmyDataAccessProvider.GetArmy(ArmyId);
+        if (SelectedArmy != null)
+        {
+            faction.army = SelectedArmy;
+            await FactionDataAccessProvider.AddFaction(faction);
+            NavigationManager.NavigateTo("faction");
+        }
+        Console.WriteLine(ArmyId);
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("faction");
+    }
+
+}

@@ -1,0 +1,431 @@
+@font-face {
+  font-family: "warhammer40k";
+  src: url('./warhammer40k.eot');
+  src:
+    url('./warhammer40k.eot?#iefix') format('embedded-opentype'),
+    url('./warhammer40k.woff2') format('woff2'),
+    url('./warhammer40k.woff') format('woff'),
+    url('./warhammer40k.ttf') format('truetype'),
+    url('./warhammer40k.svg#warhammer40k') format('svg');
+}
+
+.wh40k {
+  font-family: warhammer40k !important;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  font-weight: normal;
+  font-size: 30px;
+  margin-right:15px;
+}
+
+.wh40k-sword-01::before {
+  content: "\ea01";
+}
+
+.wh40k-sword-02::before {
+  content: "\ea02";
+}
+
+.wh40k-sword-03::before {
+  content: "\ea03";
+}
+
+.wh40k-sword-04::before {
+  content: "\ea04";
+}
+
+.wh40k-HQ::before {
+  content: "\ea05";
+}
+
+.wh40k-dedicated-transport::before {
+  content: "\ea06";
+}
+
+.wh40k-elites::before {
+  content: "\ea07";
+}
+
+.wh40k-fast-attack::before {
+  content: "\ea08";
+}
+
+.wh40k-flyer::before {
+  content: "\ea09";
+}
+
+.wh40k-fortification::before {
+  content: "\ea0a";
+}
+
+.wh40k-heavy-support::before {
+  content: "\ea0b";
+}
+
+.wh40k-lord-of-war::before {
+  content: "\ea0c";
+}
+
+.wh40k-troops::before {
+  content: "\ea0d";
+}
+
+.wh40k-bloodmaws::before {
+  content: "\ea0e";
+}
+
+.wh40k-air-caste::before {
+  content: "\ea0f";
+}
+
+.wh40k-autaal::before {
+  content: "\ea10";
+}
+
+.wh40k-borkan::before {
+  content: "\ea11";
+}
+
+.wh40k-dalyth::before {
+  content: "\ea12";
+}
+
+.wh40k-dyanoi::before {
+  content: "\ea13";
+}
+
+.wh40k-earth-caste::before {
+  content: "\ea14";
+}
+
+.wh40k-elsyeir::before {
+  content: "\ea15";
+}
+
+.wh40k-ethereal-caste::before {
+  content: "\ea16";
+}
+
+.wh40k-falshia::before {
+  content: "\ea17";
+}
+
+.wh40k-farsight-enclave::before {
+  content: "\ea18";
+}
+
+.wh40k-fesaan-sept::before {
+  content: "\ea19";
+}
+
+.wh40k-fire-caste::before {
+  content: "\ea1a";
+}
+
+.wh40k-firios::before {
+  content: "\ea1b";
+}
+
+.wh40k-kelshan::before {
+  content: "\ea1c";
+}
+
+.wh40k-kortal-sept::before {
+  content: "\ea1d";
+}
+
+.wh40k-ksimyen::before {
+  content: "\ea1e";
+}
+
+.wh40k-mugulath-bay::before {
+  content: "\ea1f";
+}
+
+.wh40k-ndras::before {
+  content: "\ea20";
+}
+
+.wh40k-sacea::before {
+  content: "\ea21";
+}
+
+.wh40k-tashvar::before {
+  content: "\ea22";
+}
+
+.wh40k-tau::before {
+  content: "\ea23";
+}
+
+.wh40k-taun::before {
+  content: "\ea24";
+}
+
+.wh40k-tolku::before {
+  content: "\ea25";
+}
+
+.wh40k-vashya::before {
+  content: "\ea26";
+}
+
+.wh40k-viorla::before {
+  content: "\ea27";
+}
+
+.wh40k-water-caste::before {
+  content: "\ea28";
+}
+
+.wh40k-yovai-sept::before {
+  content: "\ea29";
+}
+
+.wh40k-adeptus-arbites::before {
+  content: "\ea2a";
+}
+
+.wh40k-adeptus-astartes::before {
+  content: "\ea2b";
+}
+
+.wh40k-adeptus-astronomica::before {
+  content: "\ea2c";
+}
+
+.wh40k-adeptus-custodes::before {
+  content: "\ea2d";
+}
+
+.wh40k-adeptus-mechanicus::before {
+  content: "\ea2e";
+}
+
+.wh40k-adeptus-ministorum::before {
+  content: "\ea2f";
+}
+
+.wh40k-adeptus-terra::before {
+  content: "\ea30";
+}
+
+.wh40k-administratum::before {
+  content: "\ea31";
+}
+
+.wh40k-alpha-legion::before {
+  content: "\ea32";
+}
+
+.wh40k-angels-of-redemption::before {
+  content: "\ea33";
+}
+
+.wh40k-angels-of-retributio::before {
+  content: "\ea34";
+}
+
+.wh40k-angels-of-vengance::before {
+  content: "\ea35";
+}
+
+.wh40k-angels-of-vigilance::before {
+  content: "\ea36";
+}
+
+.wh40k-apothecarium-01::before {
+  content: "\ea37";
+}
+
+.wh40k-apothecarium-02::before {
+  content: "\ea38";
+}
+
+.wh40k-assassinorum::before {
+  content: "\ea39";
+}
+
+.wh40k-astra-militarum::before {
+  content: "\ea3a";
+}
+
+.wh40k-black-legion::before {
+  content: "\ea3b";
+}
+
+.wh40k-blood-angels::before {
+  content: "\ea3c";
+}
+
+.wh40k-bolter-mkv::before {
+  content: "\ea3d";
+}
+
+.wh40k-bolter-mkv-02::before {
+  content: "\ea3e";
+}
+
+.wh40k-chaos-star-01::before {
+  content: "\ea3f";
+}
+
+.wh40k-consecrators::before {
+  content: "\ea40";
+}
+
+.wh40k-crux-terminatus-01::before {
+  content: "\ea41";
+}
+
+.wh40k-dark-angels::before {
+  content: "\ea42";
+}
+
+.wh40k-death-guard::before {
+  content: "\ea43";
+}
+
+.wh40k-disciples-of-caliban::before {
+  content: "\ea44";
+}
+
+.wh40k-emperors-children::before {
+  content: "\ea45";
+}
+
+.wh40k-guardians-of-the-covenant::before {
+  content: "\ea46";
+}
+
+.wh40k-imperial-aquila::before {
+  content: "\ea47";
+}
+
+.wh40k-imperial-aquila-02::before {
+  content: "\ea48";
+}
+
+.wh40k-imperial-fists::before {
+  content: "\ea49";
+}
+
+.wh40k-imperial-navy::before {
+  content: "\ea4a";
+}
+
+.wh40k-inqusition-01::before {
+  content: "\ea4b";
+}
+
+.wh40k-inqusition-02::before {
+  content: "\ea4c";
+}
+
+.wh40k-iron-hands::before {
+  content: "\ea4d";
+}
+
+.wh40k-iron-warrioes::before {
+  content: "\ea4e";
+}
+
+.wh40k-khorne-symbol-01::before {
+  content: "\ea4f";
+}
+
+.wh40k-knight-lords::before {
+  content: "\ea50";
+}
+
+.wh40k-librarian-codicier::before {
+  content: "\ea51";
+}
+
+.wh40k-librarian-epistolary::before {
+  content: "\ea52";
+}
+
+.wh40k-librarian-lexicanum::before {
+  content: "\ea53";
+}
+
+.wh40k-librarius-01::before {
+  content: "\ea54";
+}
+
+.wh40k-librarius-02::before {
+  content: "\ea55";
+}
+
+.wh40k-navis-nobilite::before {
+  content: "\ea56";
+}
+
+.wh40k-nurgle-icon-01::before {
+  content: "\ea57";
+}
+
+.wh40k-raven-guard::before {
+  content: "\ea58";
+}
+
+.wh40k-rogue-trader::before {
+  content: "\ea59";
+}
+
+.wh40k-salamanders::before {
+  content: "\ea5a";
+}
+
+.wh40k-sisters-of-battle::before {
+  content: "\ea5b";
+}
+
+.wh40k-skull-01::before {
+  content: "\ea5c";
+}
+
+.wh40k-skull-laurals::before {
+  content: "\ea5d";
+}
+
+.wh40k-slaanesh-icon-01::before {
+  content: "\ea5e";
+}
+
+.wh40k-space-wolfs::before {
+  content: "\ea5f";
+}
+
+.wh40k-the-fallen::before {
+  content: "\ea60";
+}
+
+.wh40k-thousand-sons::before {
+  content: "\ea61";
+}
+
+.wh40k-tzeentch-icon-01::before {
+  content: "\ea62";
+}
+
+.wh40k-ultramarines::before {
+  content: "\ea63";
+}
+
+.wh40k-white-scars::before {
+  content: "\ea64";
+}
+
+.wh40k-word-bearers::before {
+  content: "\ea65";
+}
+
+.wh40k-world-eaters::before {
+  content: "\ea66";
+}
