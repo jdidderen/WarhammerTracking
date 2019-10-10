@@ -9,16 +9,30 @@
 @inject NavigationManager NavigationManager
 
 <h1>Game Request - Delete</h1>
-
+<div class="alert alert-danger" role="alert">
+Are you sure you want to delete this game request ?
+</div>
 <div class="shadow-lg rounded form-box">
 <div class="row">
     <div class="col-md-12">
-        <label for="Date">Date</label>
-        <span>@GameRequest.Date.ToString("dd/MM/yyyy")</span>
-        <label for="Player">Player</label>
-        <span>@GameRequest.Player.UserName</span>
-        <label for="Expired">Expired</label>
-        <input id="Expired" type="checkbox" @bind-value="@GameRequest.Expired" readonly="1"/>
+    <EditForm Model="GameRequest" OnSubmit=@FormSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group form-inline">
+            <label for="Date">Date</label>
+            <span>@GameRequest.Date.ToString("dd/MM/yyyy")</span>
+        </div>
+        <div class="form-group form-inline">
+            <label for="Player">Player</label>
+            <InputText id="Player" class="form-control" @bind-Value="GameRequest.Player.UserName" disabled/>
+        </div>        
+        <div class="form-group form-inline">
+            <label for="Expired">Expired</label>
+            <InputCheckbox id="Expired" class="form-control" @bind-Value="GameRequest.Expired" disabled/>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+    </EditForm>
     </div>
 </div>
 </div>
@@ -33,4 +47,22 @@
         GameRequest = await GameRequestDataAccessProvider.GetRequestGame(id);
     }
 
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("gamerequest");
+    }    
+    
+    private async void FormSubmit(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+            Console.WriteLine("Success");
+            await GameRequestDataAccessProvider.DeleteGameRequest(id);
+            NavigationManager.NavigateTo("gamerequest");
+        }
+        else
+        {
+            Console.WriteLine("Fail");
+        }
+    }
 }

@@ -15,20 +15,20 @@ Are you sure you want to delete this faction ?
 </div>
 <div class="shadow-lg rounded form-box">
 <div class="row">
-    <form>
-        <div class="form-group">
+    <EditForm Model="faction" OnSubmit=@FormSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group form-inline">
             <label for="Name">Name</label>
-            <input for="Name" readonly="1" class="form-control" @bind-value="@faction.name"/>
+            <InputText id="Name" @bind-Value="faction.name" disabled/>
         </div>
-        <div class="form-group">
+        <div class="form-group form-inline">
             <label for="Army">Army</label>
-            <input for="Army" readonly="1" class="form-control" @bind-value="@faction.army.name"/>
+            <InputText id="Army" @bind-Value="faction.army.name" disabled/>
         </div>
-        <div class="form-group">
-            <input type="button" value="Delete" @onclick="DeleteFaction" class="btn btn-primary"/>
-            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
-        </div>
-    </form>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+    </EditForm>
 </div>
 </div>
 @code {
@@ -41,16 +41,23 @@ Are you sure you want to delete this faction ?
     {
         faction = await FactionDataAccessProvider.GetFaction(id);
     }
-    
-    private async void DeleteFaction()
-    {
-        await FactionDataAccessProvider.DeleteFaction(id);
-        NavigationManager.NavigateTo("faction");
-    }
 
     private void Cancel()
     {
         NavigationManager.NavigateTo("faction");
+    }
+    
+    private async void FormSubmit(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+            await FactionDataAccessProvider.DeleteFaction(id);
+            NavigationManager.NavigateTo("faction");
+        }
+        else
+        {
+            Console.WriteLine("Fail");
+        }
     }
 
 }

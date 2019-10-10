@@ -14,161 +14,223 @@
 Are you sure you want to delete this game ?
 </div>
 <div class="shadow-lg rounded form-box">
-        <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group form-inline">
-                        <label for="Date">Date</label>
-                        <span>@game.Date.ToString("dd/MM/yyyy")</span>
-                        <label style="margin-left: 30px;">Score</label>
-                        <span>@game.Score</span>
-                    </div>
-                </div>
+<EditForm Model="game" OnSubmit=@FormSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="col-md-12">
+            <div class="form-group form-inline">
+                <label for="Date">Date</label>
+                <span>@game.Date.ToString("dd/MM/yyyy")</span>
+            </div>
         </div>
         <div class="row">
-                <div class="col-md-6">
-                    <h2>Player 1</h2>
-                    <div class="form-group form-inline">
-                                <label for="user1">Player 1</label>
-                                <span>@game.Player1.UserName</span>
-                    </div>
-                    <div class="form-group form-inline">
-                                <label for="FactionPlayer1">Faction</label>
-                                <span>@game.FactionPlayer1.name</span>
-                    </div>
-                    <div class="form-group form-inline">
-                        <label for="CpPlayer1">CP</label>
-                        <span>@game.CpPlayer1</span>
-                    </div>
-                    <div class="form-group">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Maelstrom</th>
-                                    <th>Eternal</th>
-                                    <th>KP</th>
-                                    <th>Others</th>
-                                    <th>Total</th>
-                                    <th>CP Used</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @if (game.GameLines != null)
+            <div class="col-md-12">
+                <div class="form-group form-inline">
+                    <label for="TableNumber">Table Number</label>
+                    <InputText id="TableNumber" class="form-control" @bind-Value="game.TableNumber" disabled/>
+                    <label style="margin-left: 30px;" for="ScenarioNumber">Scenario Number</label>
+                    <InputText id="ScenarioNumber" class="form-control" @bind-Value="game.ScenarioNumber" disabled/>
+                    <label style="margin-left: 30px;" for="Location">Location</label>
+                    <InputText id="Location" class="form-control" @bind-Value="game.Location" disabled/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+            <h2>Player 1</h2>
+                <div class="form-group form-inline">
+                        <label for="User1">Player 1</label>
+                        <InputText for="User1" id="User1" @bind-Value="game.Player1.UserName" disabled/>
+            </div>
+                <div class="form-group form-inline">
+                        <label for="FactionPlayer1">Faction</label>
+                        <InputText for="FactionPlayer1" id="FactionPlayer1" @bind-Value="game.FactionPlayer1.name" disabled/>
+            </div>
+                <div class="form-group form-inline">
+                <label for="CpPlayer1">CP</label>
+                <InputNumber for="CpPlayer1" class="form-control" @bind-Value="game.CpPlayer1" disabled/>
+            </div>
+                <div class="form-group">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Maelstrom</th>
+                            <th>Eternal</th>
+                            <th>KP</th>
+                            <th>Others</th>
+                            <th>Total</th>
+                            <th>CP Used</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (game.GameLines != null)
+                        {
+                            @foreach (var line1 in game.GameLines)
+                            {
+                                if (line1.Player.Id == game.Player1.Id)
                                 {
-                                    @foreach (var line1 in game.GameLines)
+                                    <tr>
+                                        <td><InputNumber class="form-control" @bind-Value="@line1.Maelstrom" disabled/></td>
+                                        <td><InputNumber class="form-control" @bind-Value="@line1.Eternal" disabled/></td>
+                                        <td><InputNumber class="form-control" @bind-Value="@line1.KP" disabled/></td>
+                                        <td><InputNumber class="form-control" @bind-Value="@line1.Others" disabled/></td>
+                                        <td>@line1.Total</td>
+                                        <td><InputNumber class="form-control" @bind-Value="@line1.CpUsed" disabled/></td>
+                                    </tr>
+                                }
+                            }
+                        }
+                            <tr>
+                                <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalEternalPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalKPPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalOthersPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.TotalPlayer1</td>
+                                <td class="text-center font-weight-bold">@game.CpLeftPlayer1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+            </div>
+            <div class="col-md-6">
+            <h2>Player 2</h2>
+            <div class="form-group form-inline">
+                        <label for="User2">Player 2</label>
+                        <InputText for="User2" id="User2" @bind-Value="game.Player2.UserName" disabled/>
+            </div>
+            <div class="form-group form-inline">
+                        <label for="FactionPlayer2">Faction</label>
+                        <InputText for="FactionPlayer2" id="FactionPlayer2" @bind-Value="game.FactionPlayer2.name" disabled/>                        
+            </div>
+            <div class="form-group form-inline">
+                <label for="CpPlayer2">CP</label>
+                <InputNumber for="CpPlayer2" class="form-control" @bind-Value="game.CpPlayer2" disabled/>
+            </div>
+            <div class="form-group">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Maelstrom</th>
+                                        <th>Eternal</th>
+                                        <th>KP</th>
+                                        <th>Others</th>
+                                        <th>Total</th>
+                                        <th>CP Used</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @if (game.GameLines != null)
                                     {
-                                        if (line1.Player.Id == game.Player1Id)
+                                        @foreach (var line2 in game.GameLines)
                                         {
-                                            <tr>
-                                                <td class="text-center">@line1.Maelstrom</td>
-                                                <td class="text-center">@line1.Eternal</td>
-                                                <td class="text-center">@line1.KP</td>
-                                                <td class="text-center">@line1.Others</td>
-                                                <td class="text-center">@line1.Total</td>
-                                                <td class="text-center">@line1.CpUsed</td>
-                                            </tr>
+                                            if (line2.Player.Id == game.Player2.Id)
+                                            {
+                                                <tr>
+                                                    <td><InputNumber class="form-control" @bind-Value="@line2.Maelstrom" disabled/></td>
+                                                    <td><InputNumber class="form-control" @bind-Value="@line2.Eternal" disabled/></td>
+                                                    <td><InputNumber class="form-control" @bind-Value="@line2.KP" disabled/></td>
+                                                    <td><InputNumber class="form-control" @bind-Value="@line2.Others" disabled/></td>
+                                                    <td>@line2.Total</td>
+                                                    <td><InputNumber class="form-control" @bind-Value="@line2.CpUsed" disabled/></td>
+                                                </tr>
+                                            }
                                         }
                                     }
-                                }
-                                    <tr>
-                                        <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer1</td>
-                                        <td class="text-center font-weight-bold">@game.TotalEternalPlayer1</td>
-                                        <td class="text-center font-weight-bold">@game.TotalKPPlayer1</td>
-                                        <td class="text-center font-weight-bold">@game.TotalOthersPlayer1</td>
-                                        <td class="text-center font-weight-bold">@game.TotalPlayer1</td>
-                                        <td class="text-center font-weight-bold">@game.CpLeftPlayer1</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                    </div>
+                                        <tr>
+                                            <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer2</td>
+                                            <td class="text-center font-weight-bold">@game.TotalEternalPlayer2</td>
+                                            <td class="text-center font-weight-bold">@game.TotalKPPlayer2</td>
+                                            <td class="text-center font-weight-bold">@game.TotalOthersPlayer2</td>
+                                            <td class="text-center font-weight-bold">@game.TotalPlayer2</td>
+                                            <td class="text-center font-weight-bold">@game.CpLeftPlayer2</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+        </div>        
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group" style="margin-bottom: 10px;" role="group">
+                    <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">Note</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeList1View">Player 1 - List</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeList2View">Player 2 - List</button>
                 </div>
-                <div class="col-md-6">
-                    <h2>Player 2</h2>
-                    <div class="form-group form-inline">
-                                <label for="User2">Player 2</label>
-                                <span>@game.Player2.UserName</span>
-                    </div>
-                    <div class="form-group form-inline">
-                                <label for="FactionPlayer2">Faction</label>
-                                <span>@game.FactionPlayer2.name</span>
-                    </div>
-                    <div class="form-group form-inline">
-                        <label for="CpPlayer2">CP</label>
-                        <span>@game.CpPlayer2</span>
-                    </div>
-                     <div class="form-group">
-                             <table class="table">
-                                 <thead>
-                                 <tr>
-                                     <th>Maelstrom</th>
-                                     <th>Eternal</th>
-                                     <th>KP</th>
-                                     <th>Others</th>
-                                     <th>Total</th>
-                                     <th>CP Used</th>
-                                 </tr>
-                                 </thead>
-                                 <tbody>
-                                 @if (game.GameLines != null)
-                                 {
-                                     @foreach (var line2 in game.GameLines)
-                                     {
-                                         if (line2.Player.Id == game.Player2Id)
-                                         {
-                                             <tr>
-                                                 <td class="text-center">@line2.Maelstrom</td>
-                                                 <td class="text-center">@line2.Eternal</td>
-                                                 <td class="text-center">@line2.KP</td>
-                                                 <td class="text-center">@line2.Others</td>
-                                                 <td class="text-center">@line2.Total</td>
-                                                 <td class="text-center">@line2.CpUsed</td>
-                                             </tr>
-                                         }
-                                     }
-                                 }
-                                    <tr>
-                                        <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer2</td>
-                                        <td class="text-center font-weight-bold">@game.TotalEternalPlayer2</td>
-                                        <td class="text-center font-weight-bold">@game.TotalKPPlayer2</td>
-                                        <td class="text-center font-weight-bold">@game.TotalOthersPlayer2</td>
-                                        <td class="text-center font-weight-bold">@game.TotalPlayer2</td>
-                                        <td class="text-center font-weight-bold">@game.CpLeftPlayer2</td>
-                                    </tr>
-                                 </tbody>
-                             </table>
-                     </div>
-                </div>
-                <div class="col-md-12">
+                @if (showNote)
+                {
                     <div class="form-group">
-                        <label for="Note">Note</label>
-                        <span>@game.Note</span>
+                        <InputTextArea id="Note" @bind-Value="game.Note" class="form-control" disabled></InputTextArea>
                     </div>
-                </div>
+                }
+                @if (showList1)
+                {
+                    <div class="form-group">
+                        <InputTextArea id="List1" @bind-Value="game.ListPlayer1" class="form-control" disabled></InputTextArea>
+                    </div>
+                }
+                @if (showList2)
+                {
+                    <div class="form-group">
+                        <InputTextArea id="List2" @bind-Value="game.ListPlayer2" class="form-control" disabled></InputTextArea>
+                    </div>
+                }
+            </div>
         </div>
-        <div class="form-group">
-            <input type="button" value="Delete" @onclick="DeleteFaction" class="btn btn-primary"/>
-            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
-        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+    </EditForm>
 </div>
 @code {
     [Parameter]
     public int id { get; set; }
 
     Game game;
-
+    bool showNote = true;
+    bool showList1 = false;
+    bool showList2 = false;
+    
     protected override async Task OnInitializedAsync()
     {
         game = await GameDataAccessProvider.GetGame(id);
-    }
-    
-    private async void DeleteFaction()
-    {
-        await GameDataAccessProvider.DeleteGame(id);
-        NavigationManager.NavigateTo("game");
     }
 
     private void Cancel()
     {
         NavigationManager.NavigateTo("game");
+    }
+    
+    private async void FormSubmit(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+            await GameDataAccessProvider.DeleteGame(id);
+            NavigationManager.NavigateTo("game");
+        }
+        else
+        {
+            Console.WriteLine("Fail");
+        }
+    }
+    
+    void ChangeNoteView()
+    {
+        showNote = true;
+        showList1 = false;
+        showList2 = false;
+    }
+
+    void ChangeList1View()
+    {
+        showNote = false;
+        showList1 = true;
+        showList2 = false;
+    }
+    
+    void ChangeList2View()
+    {
+        showNote = false;
+        showList1 = false;
+        showList2 = true;
     }
 
 }

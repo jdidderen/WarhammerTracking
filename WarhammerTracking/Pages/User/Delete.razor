@@ -15,24 +15,20 @@ Are you sure you want to delete this user ?
 
 <div class="shadow-lg rounded form-box">
 <div class="row">
-    <form>
-        <div class="form-group">
-            <label for="Id">Id</label>
-            <input for="Id" readonly="1" class="form-control" @bind-value="@user.Id"/>
+    <EditForm Model="user" OnSubmit=@FormSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group form-inline">
+            <label for="username">UserName</label>
+            <InputText id="username" @bind-Value="user.UserName" disabled/>
         </div>
-        <div class="form-group">
-            <label for="Name">Name</label>
-            <input for="Name" readonly="1" class="form-control" @bind-value="@user.UserName"/>
+        <div class="form-group form-inline">
+            <label for="email">Email</label>
+            <InputText id="email" @bind-Value="user.Email" disabled/>
         </div>
-        <div class="form-group">
-            <label for="Email">Email</label>
-            <input for="Email" readonly="1" class="form-control" @bind-value="@user.Email"/>
-        </div>
-        <div class="form-group">
-            <input type="button" value="Delete" @onclick="DeleteUser" class="btn btn-primary"/>
-            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
-        </div>
-    </form>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+    </EditForm>
 </div>
 </div>
 @code {
@@ -55,6 +51,20 @@ Are you sure you want to delete this user ?
     private void Cancel()
     {
         NavigationManager.NavigateTo("user");
+    }
+    
+    private async void FormSubmit(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+            Console.WriteLine("Success");
+            await UserDataAccessProvider.DeleteUser(id);
+            NavigationManager.NavigateTo("user");
+        }
+        else
+        {
+            Console.WriteLine("Fail");
+        }
     }
 
 }

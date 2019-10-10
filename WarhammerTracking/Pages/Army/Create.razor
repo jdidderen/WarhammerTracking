@@ -10,16 +10,16 @@
 <h1>Armies - Add</h1>
 <div class="shadow-lg rounded form-box">
 <div class="row">
-    <form>
-        <div class="form-group">
+    <EditForm Model="army" OnSubmit=@FormSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group form-inline">
             <label for="Name">Name</label>
-            <input for="Name" class="form-control" @bind-value="@army.name"/>
+            <InputText id="Name" @bind-Value="@army.name" />
         </div>
-        <div class="form-group">
-            <input type="button" value="Add" @onclick="AddArmy" class="btn btn-primary"/>
-            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
-        </div>
-    </form>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+    </EditForm>
 </div>
 </div>
 
@@ -27,15 +27,23 @@
 
     Army army = new Army();
 
-    private void AddArmy()
-    {
-        ArmyDataAccessProvider.AddArmy(army);
-        NavigationManager.NavigateTo("army");
-    }
-
     private void Cancel()
     {
         NavigationManager.NavigateTo("army");
+    }
+    
+    private async void FormSubmit(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+            Console.WriteLine("Success");
+            await ArmyDataAccessProvider.AddArmy(army);
+            NavigationManager.NavigateTo("army");
+        }
+        else
+        {
+            Console.WriteLine("Fail");
+        }
     }
 
 }

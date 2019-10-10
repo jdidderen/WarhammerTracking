@@ -1,8 +1,5 @@
 @page "/faction/edit/{id:int}"
-@using System.Runtime.InteropServices.ComTypes
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Http.Extensions
-@using Microsoft.AspNetCore.Mvc.Routing
 @using WarhammerTracking.Data.Army
 @attribute [Authorize(Roles = "User,Admin")]
 @inject ArmyDataAccessProvider ArmyDataAccessProvider
@@ -12,26 +9,26 @@
 <h1>Armies - Update</h1>
 <div class="shadow-lg rounded form-box">
 <div class="row">
-    <form>
-        <div class="form-group">
+    <EditForm Model="faction" OnSubmit=@FormSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group form-inline">
             <label for="Name">Name</label>
-            <input for="Name" class="form-control" @bind-value="@faction.name"/>
+            <InputText id="Name" @bind-Value="faction.name" />
         </div>
-        <div class="form-group">
+        <div class="form-group form-inline">
             <label for="Army">Army</label>
-            <select for="Army" id="army" @bind="ArmyId">
-                <option></option>
+            <InputSelect id="Army" @bind-Value="ArmyId" >
+                <option value=""></option>
                 @foreach (var army in armies)
                 {
-                    <option value=@army.id>@army.name.ToString()</option>
+                    <option value=@army.id.ToString()>@army.name.ToString()</option>
                 }
-            </select>
+            </InputSelect>
         </div>
-        <div class="form-group">
-            <input type="button" value="Update" @onclick="UpdateFaction" class="btn btn-primary"/>
-            <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
-        </div>
-    </form>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+    </EditForm>
 </div>
 </div>
 @code {
@@ -39,30 +36,38 @@
     public int id { get; set; }
     
     Army[] armies;
-    int ArmyId;
+    string ArmyId;
     Faction faction;
 
     protected override async Task OnInitializedAsync()
     {
         armies = await ArmyDataAccessProvider.ListArmy();
         faction = await FactionDataAccessProvider.GetFaction(id);
-        ArmyId = faction.ArmyId;
+        ArmyId = faction.ArmyId.ToString();
     }
     
-    private async void UpdateFaction()
-    {
-        Army SelectedArmy = await ArmyDataAccessProvider.GetArmy(ArmyId);
-        if (SelectedArmy != null)
-        {
-            faction.army = SelectedArmy;
-            await FactionDataAccessProvider.UpdateFaction(faction);
-            NavigationManager.NavigateTo("faction");
-        }
-    }
-
     private void Cancel()
     {
         NavigationManager.NavigateTo("faction");
+    }
+    
+    private async void FormSubmit(EditContext editContext)
+    {
+        Army SelectedArmy = await ArmyDataAccessProvider.GetArmy(Int32.Parse(ArmyId));
+        if (SelectedArmy != null)
+        {
+            faction.army = SelectedArmy;
+        }
+        if (editContext.Validate())
+        {
+            await FactionDataAccessProvider.UpdateFaction(faction);
+            NavigationManager.NavigateTo("faction");
+            Console.WriteLine(ArmyId);
+        }
+        else
+        {
+            Console.WriteLine("Fail");
+        }
     }
 
 }
