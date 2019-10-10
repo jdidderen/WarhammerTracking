@@ -13,30 +13,22 @@ else
 {
     <div class="shadow-lg rounded form-box">
     <a href="/faction/add" class="btn btn-primary">Add</a>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Army</th>
+    <DataGrid Items="factions" PageSize="5">
+        <Column>
+            <DataGridColumn Items="@factions" ColumnName="name" DisplayColumnName="Name"></DataGridColumn> 
+            <DataGridColumn Items="@factions" ColumnName="ArmyName" DisplayColumnName="Army"></DataGridColumn> 
             <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var faction in factions)
-        {
-            <tr>
-                <td>@faction.id</td>
-                <td>@faction.name</td>
-                <td>@faction.army.name</td>
-                <td>
-                    <a href="/faction/edit/@faction.id" class="btn btn-primary">Edit</a>
-                    <a href="/faction/delete/@faction.id" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+        </Column>
+        <GridRow >
+            <td>@context.name</td>
+            <td>@context.ArmyName</td>
+            <td>
+                <a href="/faction/edit/@context.id" class="btn btn-primary">Edit</a>
+                <a href="/faction/delete/@context.id" class="btn btn-danger">Delete</a>
+            </td>
+        </GridRow>
+
+    </DataGrid>
 </div>
 }
 

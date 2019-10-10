@@ -194,6 +194,11 @@
     <_ContentIncludedByDefault Remove="wwwroot\css\wh40k-icon-master\src\svgs\Xenos\TauEmpire\viorla.svg" />
     <_ContentIncludedByDefault Remove="wwwroot\css\wh40k-icon-master\src\svgs\Xenos\TauEmpire\water-caste.svg" />
     <_ContentIncludedByDefault Remove="wwwroot\css\wh40k-icon-master\src\svgs\Xenos\TauEmpire\yovai-sept.svg" />
+    <_ContentIncludedByDefault Remove="Components\DataGrid.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\DataGrid.cshtml" />
   </ItemGroup>
 
 </Project>

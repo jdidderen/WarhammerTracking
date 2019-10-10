@@ -10,53 +10,39 @@
       <button type="button" class="btn btn-dark" @onclick="ChangeAllView">All games</button>
       <button type="button" class="btn btn-dark" @onclick="ChangeMyView">My games</button>
     </div>
-@if (games == null)
-{
-    <p><em>No records...</em></p>
-}
-else
-{
     <div class="shadow-lg rounded form-box">
     <div class="row">
 <div class="col-md-12">
     <a href="/game/add" class="btn btn-primary">Add</a>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Date</th>
-            <th>Player 1</th>
-            <th>Player 1 / Faction</th>
-            <th>Player 2</th>
-            <th>Player 2 / Faction</th>
-            <th>Score</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var game in games)
-        {
-            <tr>
-                <td>@game.id</td>
-                <td>@game.Date.ToString("dd/MM/yyyy")</td>
-                <td>@game.Player1.UserName</td>
-                <td>@game.FactionPlayer1.name</td>
-                <td>@game.Player2.UserName</td>
-                <td>@game.FactionPlayer2.name</td>
-                <td>@game.Score</td>
+        <DataGrid Items="games" PageSize="5">
+            <Column>
+                <DataGridColumn Items="@games" ColumnName="Date" DisplayColumnName="Date"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player1Name" DisplayColumnName="Player 1"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player1ArmyName" DisplayColumnName="Player 1 / Army"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player2Name" DisplayColumnName="Player 2"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player2ArmyName" DisplayColumnName="Player 2 / Army"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Score" DisplayColumnName="Score"></DataGridColumn> 
+                <th>Actions</th>
+            </Column>
+            <GridRow >
+                <td>@context.Date</td>
+                <td>@context.ArmyName</td>
+                <td>@context.Player1Name</td>
+                <td>@context.Player1ArmyName</td>
+                <td>@context.Player2Name</td>
+                <td>@context.Player2ArmyName</td>
+                <td>@context.Score</td>
                 <td>
-                    <a href="/game/detail/@game.id" class="btn btn-primary">Detail</a>
-                    <a href="/game/edit/@game.id" class="btn btn-primary">Edit</a>
-                    <a href="/game/delete/@game.id" class="btn btn-danger">Delete</a>
+                    <a href="/game/detail/@context.id" class="btn btn-primary">Detail</a>
+                    <a href="/game/edit/@context.id" class="btn btn-primary">Edit</a>
+                    <a href="/game/delete/@context.id" class="btn btn-danger">Delete</a>
                 </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+            </GridRow>
+    
+        </DataGrid>
     </div>
 </div>
 </div>
-}
 
 @code {
     Game[] games;

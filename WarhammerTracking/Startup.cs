@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WarhammerTracking.Areas.Identity;
+using WarhammerTracking.Components;
 using WarhammerTracking.Data;
 using WarhammerTracking.Data.Army;
 using WarhammerTracking.Data.Game;
@@ -55,6 +56,7 @@ namespace WarhammerTracking
             services.AddScoped<GameDataAccessProvider>();
             services.AddScoped<GameRequestDataAccessProvider>();
             services.AddScoped<UserDataAccessProvider>();
+            services.AddScoped<AppState, AppState>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
