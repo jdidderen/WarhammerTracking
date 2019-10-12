@@ -22,8 +22,6 @@ namespace WarhammerTracking.Data.Game
             return Task.FromResult(_context.Games
                 .Include(g => g.Player1)
                 .Include(g => g.Player2)
-                .Include(g => g.FactionPlayer1)
-                .Include(g => g.FactionPlayer2)
                 .Include(g => g.GameLines)
                 .ThenInclude(l => l.Player)
                 .First(f => f.id == id));
@@ -34,28 +32,12 @@ namespace WarhammerTracking.Data.Game
             return Task.FromResult(_context.Games
                 .Include(g => g.Player1)
                 .Include(g => g.Player2)
-                .Include(g => g.FactionPlayer1)
-                .Include(g => g.FactionPlayer2)
                 .Include(g => g.GameLines)
                 .ThenInclude(l => l.Player)
                 .OrderByDescending(g => g.Date)
                 .ToArray());
         }
 
-        public Task<Game[]> ListMyGame(ApplicationUser user)
-        {
-            return Task.FromResult(_context.Games
-                .Include(g => g.Player1)
-                .Include(g => g.Player2)
-                .Include(g => g.FactionPlayer1)
-                .Include(g => g.FactionPlayer2)
-                .Include(g => g.GameLines)
-                .ThenInclude(l => l.Player)
-                .OrderByDescending(g => g.Date)
-                .Where(g  => g.Player1 == user || g.Player2 == user)
-                .ToArray());
-        }
-        
         public Task<bool> AddGame(Game game)
         {
             try
@@ -106,8 +88,6 @@ namespace WarhammerTracking.Data.Game
             return Task.FromResult(_context.Games
                 .Include(g => g.Player1)
                 .Include(g => g.Player2)
-                .Include(g => g.FactionPlayer1)
-                .Include(g => g.FactionPlayer2)
                 .Include(g => g.GameLines)
                 .ThenInclude(l => l.Player)
                 .OrderByDescending(g => g.Date)
@@ -121,8 +101,6 @@ namespace WarhammerTracking.Data.Game
             return Task.FromResult(_context.Games
                 .Include(g => g.Player1)
                 .Include(g => g.Player2)
-                .Include(g => g.FactionPlayer1)
-                .Include(g => g.FactionPlayer2)
                 .Include(g => g.GameLines)
                 .ThenInclude(l => l.Player)
                 .OrderByDescending(g => g.Date)

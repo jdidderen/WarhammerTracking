@@ -52,7 +52,6 @@ namespace WarhammerTracking
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddScoped<ArmyDataAccessProvider>();
-            services.AddScoped<FactionDataAccessProvider>();
             services.AddScoped<GameDataAccessProvider>();
             services.AddScoped<GameRequestDataAccessProvider>();
             services.AddScoped<UserDataAccessProvider>();
@@ -60,7 +59,7 @@ namespace WarhammerTracking
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,UserManager<ApplicationUser> userManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,UserManager<ApplicationUser> userManager,IServiceProvider serviceProvider)
         {
             UpdateDatabase(app);
             if (env.IsDevelopment())
@@ -88,7 +87,6 @@ namespace WarhammerTracking
 
             app.UseAuthentication();
             app.UseAuthorization();
-            UserDataInitializer.SeedData(userManager);
 
             app.UseEndpoints(endpoints =>
             {
@@ -96,7 +94,8 @@ namespace WarhammerTracking
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-            
+            CreateUserRoles(serviceProvider).Wait();
+            UserDataInitializer.SeedData(userManager);
         }
         
         
@@ -111,6 +110,31 @@ namespace WarhammerTracking
                     context.Database.Migrate();
                 }
             }
+        }
+        
+        private static async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            IdentityResult roleResult;
+            //Adding Admin Role
+            var AdminRoleCheck = await RoleManager.RoleExistsAsync("Admin");
+            if (!AdminRoleCheck)
+            {
+                //create the roles and seed them to the database
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+            var UserRoleCheck = await RoleManager.RoleExistsAsync("User");
+            if (!UserRoleCheck)
+            {
+                //create the roles and seed them to the database
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("User"));
+            }
+            //Assign Admin role to the main User here we have given our newly registered 
+            //login id for Admin management
+            ApplicationUser user = await UserManager.FindByEmailAsync("didderen.jeremy@jdi.me");
+            await UserManager.AddToRoleAsync(user, "Admin");
         }
     }
 }

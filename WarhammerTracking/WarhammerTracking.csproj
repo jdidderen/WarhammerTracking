@@ -195,6 +195,10 @@
     <_ContentIncludedByDefault Remove="wwwroot\css\wh40k-icon-master\src\svgs\Xenos\TauEmpire\water-caste.svg" />
     <_ContentIncludedByDefault Remove="wwwroot\css\wh40k-icon-master\src\svgs\Xenos\TauEmpire\yovai-sept.svg" />
     <_ContentIncludedByDefault Remove="Components\DataGrid.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\ArmyFaction\Create.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ArmyFaction\Delete.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ArmyFaction\List.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ArmyFaction\Update.razor" />
   </ItemGroup>
 
   <ItemGroup>

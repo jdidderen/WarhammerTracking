@@ -9,22 +9,18 @@ namespace WarhammerTracking.Data.Game
     {
         [Key]
         public int id { get; set; }
-        public int GameId { get; set; }
         [Required]
-        [ForeignKey("GameId")]
         public Game Game { get; set; }
-        public string PlayerId { get; set; }
         [Required]
-        [ForeignKey("PlayerId")]
         public ApplicationUser Player { get; set; }
         public int Maelstrom { get; set; }
         public int Eternal { get; set; }
         public int KP { get; set; }
         public int Others { get; set; }
-
+        public int CpUsed { get; set; }
         [NotMapped]
         public int Total => Maelstrom + Eternal + KP + Others;
 
-        public int CpUsed { get; set; }
+
     }
 }

@@ -4,16 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
-using WarhammerTracking.Data.Army;
 
 namespace WarhammerTracking.Data.Game
 {
     public class Game
     {
-        public Game()
-        {
-            GameLines = new HashSet<GameLine>();
-        }
         [Key]
         public int id { get; set; }
         [Required]
@@ -25,25 +20,43 @@ namespace WarhammerTracking.Data.Game
         public string ScenarioNumber { get; set; }
         public string Location { get; set; }
         [Required]
-        public string Player1Id { get; set; }
-        [Required]
-        public string Player2Id { get; set; }
-        [Required]
-        [ForeignKey("Player1Id")]
         public ApplicationUser Player1 { get; set; }
+        [NotMapped]
+        public string Player1Name
+        {
+            get
+            {
+                if (Player1 != null)
+                {
+                    return Player1.UserName;
+                }
+
+                return "";
+            }
+        }
         [Required]
-        [ForeignKey("Player2Id")]
         public ApplicationUser Player2 { get; set; }
+        [NotMapped]
+        public string Player2Name => Player1 != null ? Player2.UserName : "";
         [Required]
-        public int FactionPlayer1Id { get; set; }
+        public Army.Army ArmyPlayer1 { get; set; }
+        [NotMapped]
+        public string ArmyPlayer1Name => ArmyPlayer1 != null ? ArmyPlayer1.name : "";
         [Required]
-        [ForeignKey("FactionPlayer1Id")]
-        public Faction FactionPlayer1 { get; set; }
-        [Required]
-        public int FactionPlayer2Id { get; set; }
-        [Required]
-        [ForeignKey("FactionPlayer2Id")]
-        public Faction FactionPlayer2 { get; set; }
+        public Army.Army ArmyPlayer2 { get; set; }
+        [NotMapped]
+        public string ArmyPlayer2Name
+        {
+            get
+            {
+                if (ArmyPlayer2 != null)
+                {
+                    return ArmyPlayer2.name;
+                }
+
+                return "";
+            }
+        }
         public ICollection<GameLine> GameLines { get; set; }
         public int CpPlayer1 { get; set; }
         public int CpPlayer2 { get; set; }
@@ -243,33 +256,62 @@ namespace WarhammerTracking.Data.Game
             }
         }
         [NotMapped]
-        public string Score
+        public int ScorePlayer1
         {
             get
             {
-                string score = "";
+                int score;
                 if (TotalPlayer1 >= TotalPlayer2)
                 {
                     if (TotalPlayer1 - TotalPlayer2 < 20)
                     {
-                        score = (20 - (TotalPlayer1 - TotalPlayer2)).ToString()
-                        + '-' + (TotalPlayer1 - TotalPlayer2).ToString();
+                        score = 20 - (TotalPlayer1 - TotalPlayer2);
                     }
                     else
                     {
-                        score = "20 - 0";
+                        score = 20;
                     }
                 }
                 else
                 {
                     if (TotalPlayer2 - TotalPlayer1 < 20)
                     {
-                        score = (TotalPlayer2 - TotalPlayer1).ToString()
-                                + '-' + (20 - (TotalPlayer2 - TotalPlayer1)).ToString();
+                        score = TotalPlayer2 - TotalPlayer1;
                     }
                     else
                     {
-                        score = "0 - 20";
+                        score = 0;
+                    }
+                }
+                return score;
+            }
+        }
+        [NotMapped]
+        public int ScorePlayer2
+        {
+            get
+            {
+                int score;
+                if (TotalPlayer1 >= TotalPlayer2)
+                {
+                    if (TotalPlayer1 - TotalPlayer2 < 20)
+                    {
+                        score = TotalPlayer1 - TotalPlayer2;
+                    }
+                    else
+                    {
+                        score = 0;
+                    }
+                }
+                else
+                {
+                    if (TotalPlayer2 - TotalPlayer1 < 20)
+                    {
+                        score = TotalPlayer2 - TotalPlayer1;
+                    }
+                    else
+                    {
+                        score = 20;
                     }
                 }
                 return score;

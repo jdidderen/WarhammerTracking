@@ -11,11 +11,11 @@ namespace WarhammerTracking.GameRequest
         public int id { get; set; }
         [Required]
         public DateTime Date { get; set; }
-        public string PlayerId { get; set; }
         [Required]
-        [ForeignKey("PlayerId")]
         public ApplicationUser Player { get; set; }
         public bool Expired { get; set; }
-        
+
+        [NotMapped]
+        public string PlayerUserName => Player != null ? Player.UserName : "";
     }
 }

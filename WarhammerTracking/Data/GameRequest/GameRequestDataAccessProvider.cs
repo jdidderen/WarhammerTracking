@@ -24,7 +24,7 @@ namespace WarhammerTracking.Data.Game
                 .First(f => f.id == id));
         }
 
-        public Task<GameRequest.GameRequest[]> ListGameRequests()
+        public Task<GameRequest.GameRequest[]> ListGameRequests(ApplicationUser user)
         {
             return Task.FromResult(_context.GameRequests
                 .Include(gr => gr.Player)
@@ -32,15 +32,6 @@ namespace WarhammerTracking.Data.Game
                 .ToArray());
         }
 
-        public Task<GameRequest.GameRequest[]> ListMyGameRequests(ApplicationUser user)
-        {
-            return Task.FromResult(_context.GameRequests
-                .Include(gr => gr.Player)
-                .OrderByDescending(gr => gr.Date)
-                .Where(gr  => gr.Player == user)
-                .ToArray());
-        }
-        
         public Task<bool> AddGameRequest(GameRequest.GameRequest gameRequest)
         {
             try
