@@ -1,0 +1,21 @@
+@inject AppState AppState
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components
+@typeparam TItem
+
+<input type="button" class="btn btn-dark" @onclick="@(() => CallParent(Expression))" value="@Name" />
+
+@code { 
+    [CascadingParameter]
+    public DataGrid<TItem> DataGrid { get; set; }  
+    [Parameter]
+    public Expression<System.Func<TItem,bool>> Expression { get; set; }
+    [Parameter]
+    public string Name { get; set; }
+
+    private void CallParent(Expression<System.Func<TItem,bool>> Expression)
+    {
+        DataGrid.SetFilters(Expression);
+    }
+
+}

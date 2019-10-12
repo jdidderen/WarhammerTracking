@@ -1,20 +1,31 @@
 @page "/gamerequest"
+@using System.Linq.Expressions
 @using WarhammerTracking.Data
 @using WarhammerTracking.Data.Game
 @using WarhammerTracking.GameRequest
 @attribute [Authorize(Roles = "User,Admin")]
 @inject GameRequestDataAccessProvider GameRequestDataAccessProvider
+@inject UserDataAccessProvider UserDataAccessProvider
+@inject AppState AppState
 
 <h1>Game Requests</h1>
-    <div class="shadow-lg rounded form-box">
-    <div class="row">
+<div class="shadow-lg rounded form-box">
 <div class="col-md-12">
-    <a href="/gamerequest/add" class="btn btn-primary">Add</a>
+    <div class="row" style="margin-bottom: 10px;">
+        <a href="/gamerequest/add" class="btn btn-primary">Add</a>
+    </div>
+    <div class="row">
     <DataGrid Items="_gameRequests" PageSize="5">
+        <Filters>
+            <DataGridFilter Name="Reset" Expression="@ResetFilter"></DataGridFilter>
+            <DataGridFilter Name="Requests from others" Expression="@AllFilter"></DataGridFilter>
+            <DataGridFilter Name="My requests" Expression="@MyFilter"></DataGridFilter>
+            <DataGridFilter Name="Expired requests" Expression="@ExpiredFilter"></DataGridFilter>
+        </Filters>
         <Column>
-            <DataGridColumn Items="@_gameRequests" ColumnName="Date" DisplayColumnName="Date"></DataGridColumn> 
-            <DataGridColumn Items="@_gameRequests" ColumnName="PlayerUserName" DisplayColumnName="Player"></DataGridColumn> 
-            <DataGridColumn Items="@_gameRequests" ColumnName="Expired" DisplayColumnName="Expired"></DataGridColumn> 
+            <DataGridColumn Items="@_gameRequests" ColumnName="Date" DisplayColumnName="Date" Size="20"></DataGridColumn> 
+            <DataGridColumn Items="@_gameRequests" ColumnName="PlayerUserName" DisplayColumnName="Player" Size="20"></DataGridColumn> 
+            <DataGridColumn Items="@_gameRequests" ColumnName="Expired" DisplayColumnName="Expired" Size="5"></DataGridColumn> 
             <th>Actions</th>
         </Column>
         <GridRow >
@@ -28,17 +39,66 @@
             </td>
         </GridRow>
     </DataGrid>
-    </div>
+</div>
 </div>
 </div>
 }
 
 @code {
     GameRequest[] _gameRequests;
+    ApplicationUser user;
+
+    private Expression<Func<GameRequest,bool>> AllFilter
+    {
+        get
+        {
+            var param = Expression.Parameter(typeof(GameRequest), "gr");
+            return Expression.Lambda<Func<GameRequest,bool>>(Expression.And(Expression.NotEqual(
+                Expression.Property(param, "Player"),
+                Expression.Constant(user)),Expression.IsFalse(Expression.Property(param,"Expired")))
+                ,param);
+            
+        }
+    }
+
+    private Expression<Func<GameRequest,bool>> MyFilter
+    {
+        get
+        {
+            var param = Expression.Parameter(typeof(GameRequest), "gr");
+            return Expression.Lambda<Func<GameRequest,bool>>(Expression.And(Expression.Equal(
+                Expression.Property(param, "Player"),
+                Expression.Constant(user)),Expression.IsFalse(Expression.Property(param,"Expired")))
+                ,param);
+            
+        }
+    }
+    
+    private Expression<Func<GameRequest,bool>> ExpiredFilter
+    {
+        get
+        {
+            var param = Expression.Parameter(typeof(GameRequest), "gr");
+            return Expression.Lambda<Func<GameRequest,bool>>(Expression.IsTrue(Expression.Property(param,"Expired"))
+                ,param);
+            
+        }
+    }
+    
+    private Expression<Func<GameRequest,bool>> ResetFilter
+    {
+        get
+        {
+            var param = Expression.Parameter(typeof(GameRequest), "gr");
+            return Expression.Lambda<Func<GameRequest,bool>>(Expression.Constant(true), param);
+        }
+        
+    }
     
     protected override async Task OnInitializedAsync()
     {
-        _gameRequests = await GameRequestDataAccessProvider.ListGameRequests();
+        user = await UserDataAccessProvider.GetCurrentUser();
+        _gameRequests = await GameRequestDataAccessProvider.ListGameRequests(user);
     }
 
 }

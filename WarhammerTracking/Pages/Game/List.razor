@@ -1,4 +1,5 @@
 @page "/game"
+@using System.Linq.Expressions
 @using WarhammerTracking.Data
 @using WarhammerTracking.Data.Game
 @attribute [Authorize(Roles = "User,Admin")]
@@ -6,32 +7,36 @@
 @inject UserDataAccessProvider UserDataAccessProvider
 
 <h1>Games</h1>
-    <div class="btn-group" style="margin-bottom: 10px;" role="group">
-      <button type="button" class="btn btn-dark" @onclick="ChangeAllView">All games</button>
-      <button type="button" class="btn btn-dark" @onclick="ChangeMyView">My games</button>
-    </div>
     <div class="shadow-lg rounded form-box">
     <div class="row">
 <div class="col-md-12">
-    <a href="/game/add" class="btn btn-primary">Add</a>
+    <div class="row" style="margin-bottom: 10px;">
+        <a href="/game/add" class="btn btn-primary">Add</a>
+    </div>
+    <div class="row">
         <DataGrid Items="games" PageSize="5">
+        <Filters>
+            <DataGridFilter Name="Reset" Expression="@ResetFilter"></DataGridFilter>
+            <DataGridFilter Name="My requests" Expression="@MyFilter"></DataGridFilter>
+        </Filters>
             <Column>
-                <DataGridColumn Items="@games" ColumnName="Date" DisplayColumnName="Date"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player1Name" DisplayColumnName="Player 1"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player1ArmyName" DisplayColumnName="Player 1 / Army"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player2Name" DisplayColumnName="Player 2"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player2ArmyName" DisplayColumnName="Player 2 / Army"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Score" DisplayColumnName="Score"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Date" DisplayColumnName="Date" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player1Name" DisplayColumnName="Player 1" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="ArmyPlayer1Name" DisplayColumnName="Player 1 / Army" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player2Name" DisplayColumnName="Player 2" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="ArmyPlayer2Name" DisplayColumnName="Player 2 / Army" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player 1 / Score" DisplayColumnName="Player 1 / Score" Size="5"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player 2 / Score" DisplayColumnName="Player 2 / Score" Size="5"></DataGridColumn> 
                 <th>Actions</th>
             </Column>
             <GridRow >
                 <td>@context.Date</td>
-                <td>@context.ArmyName</td>
                 <td>@context.Player1Name</td>
-                <td>@context.Player1ArmyName</td>
+                <td>@context.ArmyPlayer1Name</td>
                 <td>@context.Player2Name</td>
-                <td>@context.Player2ArmyName</td>
-                <td>@context.Score</td>
+                <td>@context.ArmyPlayer2Name</td>
+                <td>@context.ScorePlayer1</td>
+                <td>@context.ScorePlayer2</td>
                 <td>
                     <a href="/game/detail/@context.id" class="btn btn-primary">Detail</a>
                     <a href="/game/edit/@context.id" class="btn btn-primary">Edit</a>
@@ -43,10 +48,36 @@
     </div>
 </div>
 </div>
+</div>
 
 @code {
     Game[] games;
     ApplicationUser user;
+
+    private Expression<Func<Game,bool>> MyFilter
+    {
+        get
+        {
+            var param = Expression.Parameter(typeof(Game), "gr");
+            return Expression.Lambda<Func<Game,bool>>(Expression.Or(Expression.Equal(
+                Expression.Property(param, "Player1"),
+                Expression.Constant(user)),Expression.Equal(
+                    Expression.Property(param, "Player2"),
+                    Expression.Constant(user)))
+                ,param);
+            
+        }
+    }
+
+    private Expression<Func<Game,bool>> ResetFilter
+    {
+        get
+        {
+            var param = Expression.Parameter(typeof(Game), "gr");
+            return Expression.Lambda<Func<Game,bool>>(Expression.Constant(true), param);
+        }
+        
+    }
     
     protected override async Task OnInitializedAsync()
     {
@@ -54,13 +85,4 @@
         games = await GameDataAccessProvider.ListGame();
     }
 
-    async Task ChangeAllView()
-    {
-        games = await GameDataAccessProvider.ListGame();
-    }
-
-    async Task ChangeMyView()
-    {
-        games = await GameDataAccessProvider.ListMyGame(user);
-    }
 }

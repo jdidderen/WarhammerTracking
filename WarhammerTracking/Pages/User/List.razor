@@ -15,9 +15,7 @@ else
     <a href="/user/add" class="btn btn-primary">Add</a>
     <DataGrid Items="Users" PageSize="5">
         <Column>
-            <DataGridColumn Items="@Users" ColumnName="UserName" DisplayColumnName="UserName"></DataGridColumn> 
-            <DataGridColumn Items="@Users" ColumnName="PlayerUserName" DisplayColumnName="Player"></DataGridColumn> 
-            <DataGridColumn Items="@Users" ColumnName="Expired" DisplayColumnName="Expired"></DataGridColumn> 
+            <DataGridColumn Items="@Users" ColumnName="UserName" DisplayColumnName="UserName" Size="20"></DataGridColumn> 
             <th>Actions</th>
         </Column>
         <GridRow >

@@ -1,5 +1,4 @@
 @page "/army"
-@using WarhammerTracking.Data.Army
 @attribute [Authorize(Roles = "User,Admin")]
 @inject ArmyDataAccessProvider ArmyDataAccessProvider
 
@@ -15,7 +14,7 @@ else
     <a href="/army/add" class="btn btn-primary">Add</a>
     <DataGrid Items="Armies" PageSize="5">
         <Column>
-            <DataGridColumn Items="@Armies" ColumnName="name" DisplayColumnName="Name"></DataGridColumn> 
+            <DataGridColumn Items="@Armies" ColumnName="name" DisplayColumnName="Name" Size="20"></DataGridColumn> 
             <th>Actions</th>
         </Column>
         <GridRow >

@@ -11,7 +11,7 @@
 @attribute [Authorize(Roles = "User,Admin")]
 @inject GameDataAccessProvider GameDataAccessProvider
 @inject UserDataAccessProvider UserDataAccessProvider
-@inject FactionDataAccessProvider FactionDataAccessProvider
+@inject ArmyDataAccessProvider ArmyDataAccessProvider
 @inject NavigationManager NavigationManager
 
 <h1>Games - Detail</h1>
@@ -41,12 +41,12 @@
             <div class="col-md-6">
             <h2>Player 1</h2>
                 <div class="form-group form-inline">
-                        <label for="User1">Player 1</label>
-                        <InputText for="User1" id="User1" @bind-Value="game.Player1.UserName" disabled/>
+                        <label for="Player1Name">Player 1</label>
+                        <input type="text" for="Player1Name" id="Player1Name" value="@game.Player1Name" disabled/>
             </div>
                 <div class="form-group form-inline">
-                        <label for="FactionPlayer1">Faction</label>
-                        <InputText for="FactionPlayer1" id="FactionPlayer1" @bind-Value="game.FactionPlayer1.name" disabled/>
+                        <label for="ArmyPlayer1Name">Faction</label>
+                        <input type="text" for="ArmyPlayer1Name" id="ArmyPlayer1Name" value="@game.ArmyPlayer1Name" disabled/>
             </div>
                 <div class="form-group form-inline">
                 <label for="CpPlayer1">CP</label>
@@ -97,12 +97,12 @@
             <div class="col-md-6">
             <h2>Player 2</h2>
             <div class="form-group form-inline">
-                        <label for="User2">Player 2</label>
-                        <InputText for="User2" id="User2" @bind-Value="game.Player2.UserName" disabled/>
+                        <label for="Player2Name">Player 2</label>
+                        <input type="text" for="Player2Name" id="Player2Name" value="@game.Player2Name" disabled/>
             </div>
             <div class="form-group form-inline">
-                        <label for="FactionPlayer2">Faction</label>
-                        <InputText for="FactionPlayer2" id="FactionPlayer2" @bind-Value="game.FactionPlayer2.name" disabled/>                        
+                        <label for="ArmyPlayer2Name">Faction</label>
+                        <input type="text" for="ArmyPlayer2Name" id="ArmyPlayer2Name" value="@game.ArmyPlayer2Name" disabled/>                        
             </div>
             <div class="form-group form-inline">
                 <label for="CpPlayer2">CP</label>

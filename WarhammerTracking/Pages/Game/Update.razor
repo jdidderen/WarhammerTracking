@@ -11,7 +11,7 @@
 @attribute [Authorize(Roles = "User,Admin")]
 @inject GameDataAccessProvider GameDataAccessProvider
 @inject UserDataAccessProvider UserDataAccessProvider
-@inject FactionDataAccessProvider FactionDataAccessProvider
+@inject ArmyDataAccessProvider ArmyDataAccessProvider
 @inject NavigationManager NavigationManager
 
 <h1>Games - Update</h1>
@@ -51,12 +51,12 @@
                         </InputSelect>
             </div>
                 <div class="form-group form-inline">
-                        <label for="FactionPlayer1">Faction</label>
-                        <InputSelect for="FactionPlayer1" id="FactionPlayer1" @bind-Value="FactionPlayer1">
+                        <label for="ArmyPlayer1Id">Army</label>
+                        <InputSelect for="ArmyPlayer1Id" id="ArmyPlayer1Id" @bind-Value="ArmyPlayer1Id">
                         <option></option>
-                        @foreach (var faction in Factions)
+                        @foreach (var army in Armies)
                         {
-                        <option value=@faction.id.ToString()>@faction.name.ToString()</option>
+                        <option value=@army.id.ToString()>@army.name.ToString()</option>
                         }
                         </InputSelect>
             </div>
@@ -120,12 +120,12 @@
                         </InputSelect>
             </div>
             <div class="form-group form-inline">
-                        <label for="FactionPlayer2">Faction</label>
-                        <InputSelect for="FactionPlayer2" id="FactionPlayer2" @bind-Value="FactionPlayer2">
+                        <label for="ArmyPlayer2Id">Army</label>
+                        <InputSelect for="ArmyPlayer2Id" id="ArmyPlayer2Id" @bind-Value="ArmyPlayer2Id">
                         <option value=""></option>
-                        @foreach (var faction in Factions)
+                        @foreach (var army in Armies)
                         {
-                        <option value=@faction.id.ToString()>@faction.name.ToString()</option>
+                        <option value=@army.id.ToString()>@army.name.ToString()</option>
                         }
                         </InputSelect>
             </div>
@@ -214,11 +214,11 @@
     public int id { get; set; }
     
     ApplicationUser[] Users;
-    Faction[] Factions;
+    Army[] Armies;
     string User1Id;
     string User2Id;
-    string FactionPlayer1;
-    string FactionPlayer2;
+    string ArmyPlayer1Id;
+    string ArmyPlayer2Id;
     Game game;
     bool showNote = true;
     bool showList1 = false;
@@ -227,17 +227,17 @@
     protected override async Task OnInitializedAsync()
     {
         Users = await UserDataAccessProvider.ListUser();
-        Factions = await FactionDataAccessProvider.ListFaction();
+        Armies = await ArmyDataAccessProvider.ListArmy();
         game = await GameDataAccessProvider.GetGame(id);
-        User1Id = game.Player1Id;
-        User2Id = game.Player2Id;
-        FactionPlayer1 = game.FactionPlayer1Id.ToString();
-        FactionPlayer2 = game.FactionPlayer2Id.ToString();
+        User1Id = game.Player1.Id;
+        User2Id = game.Player1.Id;
+        ArmyPlayer1Id = game.ArmyPlayer1.id.ToString();
+        ArmyPlayer2Id = game.ArmyPlayer2.id.ToString();
     }
 
     private async void AddLine(string UserId)
     {
-        game.GameLines.Add(new GameLine() {PlayerId = UserId,Player= await UserDataAccessProvider.GetUser(UserId),Game = game,GameId = game.id});
+        game.GameLines.Add(new GameLine() {Player= await UserDataAccessProvider.GetUser(UserId),Game = game});
     }
 
     private void Cancel()
@@ -249,14 +249,14 @@
     {
         ApplicationUser User1 = await UserDataAccessProvider.GetUser(User1Id);
         ApplicationUser User2 = await UserDataAccessProvider.GetUser(User2Id);
-        Faction Faction1 = await FactionDataAccessProvider.GetFaction(Int32.Parse(FactionPlayer1));
-        Faction Faction2 = await FactionDataAccessProvider.GetFaction(Int32.Parse(FactionPlayer2));
-        if (User1 != null && User2 != null && Faction1 != null && Faction2 != null)
+        Army Army1 = await ArmyDataAccessProvider.GetArmy(Int32.Parse(ArmyPlayer1Id));
+        Army Army2 = await ArmyDataAccessProvider.GetArmy(Int32.Parse(ArmyPlayer2Id));
+        if (User1 != null && User2 != null && Army1 != null && Army2 != null)
         {
             game.Player1 = User1;
             game.Player2 = User2;
-            game.FactionPlayer1 = Faction1;
-            game.FactionPlayer2 = Faction2;
+            game.ArmyPlayer1 = Army1;
+            game.ArmyPlayer2 = Army2;
 
         }
         if (editContext.Validate())

@@ -1,4 +1,5 @@
 @inject AppState AppState
+@using Microsoft.AspNetCore.Components
 @typeparam TItem
 
 <style>
@@ -16,7 +17,7 @@
     <span @onclick="@(() => SortTable(ColumnName))">@DisplayColumnName</span>
     <span class="oi @(GetSortStyle(ColumnName))"></span>
     <br /> 
-    <input width="70px" @oninput="@((ui) => { Filtering((string)ui.Value, ColumnName); })" /> 
+    <input size="@Size" @oninput="@((ui) => { Filtering((string)ui.Value, ColumnName); })" /> 
 </th>
 
 @code { 
@@ -25,6 +26,8 @@
     public string DisplayColumnName { get; set; } = string.Empty;
     [Parameter]
     public string ColumnName { get; set; } 
+    [Parameter]
+    public int Size { get; set; }
     [CascadingParameter]
     public DataGrid<TItem> DataGrid { get; set; }  
     [Parameter]
@@ -54,7 +57,6 @@
             IsSortedAscending = !IsSortedAscending;
         }
     }
-    
     private string GetSortStyle(string columnName)
     {
         if (DataGrid.CurrentSortColumn != columnName)
@@ -70,7 +72,6 @@
             return "oi-arrow-bottom";
         }
     }
-    
     private void Filtering(string value, string columnName)
     {
         DataGrid.FilterDictionary[columnName] = value;
