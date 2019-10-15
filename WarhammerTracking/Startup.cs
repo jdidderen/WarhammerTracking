@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using Blazored.Modal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.DataProtection;
@@ -53,6 +54,7 @@ namespace WarhammerTracking
             services.AddScoped<GameRequestDataAccessProvider>();
             services.AddScoped<UserDataAccessProvider>();
             services.AddScoped<AppState>();
+            services.AddBlazoredModal();
             
         }
 

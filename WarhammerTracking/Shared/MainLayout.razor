@@ -1,10 +1,14 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Localization
+@using WarhammerTracking.Services
+@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
+<BlazoredModal />
 <div class="sidebar">
     <NavMenu />
 </div>
 
-<div class="main">
+<main>
     <div class="top-row px-4">
         <LoginDisplay />
     </div>
@@ -12,4 +16,4 @@
     <div class="content px-4">
         @Body
     </div>
-</div>
+</main>

@@ -18,7 +18,11 @@
         <div class="col-md-12">
             <div class="form-group form-inline">
                 <label for="Date">@L["Date"]</label>
-                <input for="Date" class="form-control" @bind="@game.Date" disabled/>
+                <InputDate id="Date" @bind-Value="@game.Date" disabled/>
+                <label style="margin-left: 20px;" for="Player1Score">@L["Player1Score"]</label>
+                <span>@game.ScorePlayer1</span>
+                <label style="margin-left: 20px;" for="Date">@L["Player2Score"]</label>
+                <span>@game.ScorePlayer2</span>
             </div>
         </div>
         <div class="row">

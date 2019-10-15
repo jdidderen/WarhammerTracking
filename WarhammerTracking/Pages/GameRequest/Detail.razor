@@ -19,7 +19,7 @@
         <ValidationSummary />
         <div class="form-group form-inline">
             <label for="Date">@L["Date"]</label>
-            <span>@GameRequest.Date.ToString("dd/MM/yyyy")</span>
+            <InputDate id="Date" @bind-Value="GameRequest.Date" disabled/>
         </div>
         <div class="form-group form-inline">
             <label for="Player">@L["Player"]</label>

@@ -37,7 +37,7 @@ namespace WarhammerTracking.Data.Game
         [Required]
         public ApplicationUser Player2 { get; set; }
         [NotMapped]
-        public string Player2Name => Player1 != null ? Player2.UserName : "";
+        public string Player2Name => Player2 != null ? Player2.UserName : "";
         [Required]
         public Army.Army ArmyPlayer1 { get; set; }
         [NotMapped]

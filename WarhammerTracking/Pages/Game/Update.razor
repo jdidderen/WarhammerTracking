@@ -8,17 +8,25 @@
 @inject UserDataAccessProvider UserDataAccessProvider
 @inject ArmyDataAccessProvider ArmyDataAccessProvider
 @inject NavigationManager NavigationManager
+@inject IModalService Modal
 @inject IStringLocalizer<Update> L
 
 <h1>@L["Games"] - @L["Update"]</h1>
 <div class="shadow-lg rounded form-box">
+<div class="row col-md-12" style="margin-bottom: 20px;">
+    <button @onclick="@(() => ShowDiceModal())" class="btn btn-primary">Roll The Dice</button>
+</div>
 <EditForm Model="game" OnSubmit=@FormSubmit>
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="col-md-12">
             <div class="form-group form-inline">
                 <label for="Date">@L["Date"]</label>
-                <input for="Date" class="form-control" @bind="@game.Date"/>
+                <InputDate id="Date" @bind-Value="game.Date" />
+                <label style="margin-left: 20px;" for="Player1Score">@L["Player1Score"]</label>
+                <span>@game.ScorePlayer1</span>
+                <label style="margin-left: 20px;" for="Date">@L["Player2Score"]</label>
+                <span>@game.ScorePlayer2</span>
             </div>
         </div>
         <div class="row">
@@ -226,7 +234,7 @@
         Armies = await ArmyDataAccessProvider.ListArmy();
         game = await GameDataAccessProvider.GetGame(id);
         User1Id = game.Player1.Id;
-        User2Id = game.Player1.Id;
+        User2Id = game.Player2.Id;
         ArmyPlayer1Id = game.ArmyPlayer1.id.ToString();
         ArmyPlayer2Id = game.ArmyPlayer2.id.ToString();
     }
@@ -265,7 +273,7 @@
             Console.WriteLine("Fail");
         }
     }
-    
+
     void ChangeNoteView()
     {
         showNote = true;
@@ -285,6 +293,13 @@
         showNote = false;
         showList1 = false;
         showList2 = true;
+    }
+    
+    void ShowDiceModal()
+    {
+        var parameters = new ModalParameters();
+
+        Modal.Show<RollDice>("Roll the Dices", parameters);
     }
 
 }
