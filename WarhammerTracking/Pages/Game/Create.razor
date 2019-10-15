@@ -1,48 +1,44 @@
 @page "/game/add"
 @page "/game/add/{player1}/{player2}/{date}"
-@using System.Collections.ObjectModel
-@using System.Runtime.InteropServices.ComTypes
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Http.Extensions
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Mvc.Routing
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
-@using WarhammerTracking.Data.Army
 @using WarhammerTracking.Data.Game
 @attribute [Authorize(Roles = "User,Admin")]
 @inject GameDataAccessProvider GameDataAccessProvider
 @inject UserDataAccessProvider UserDataAccessProvider
 @inject ArmyDataAccessProvider ArmyDataAccessProvider
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<Create> L
 
-<h1>Games - Add</h1>
+<h1>@L["Games"] - @L["Add"]</h1>
 <div class="shadow-lg rounded form-box">
     <EditForm Model="game" OnSubmit=@FormSubmit>
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="col-md-12">
             <div class="form-group form-inline">
-                <label for="Date">Date</label>
-                <InputDate for="Date" class="form-control" @bind-Value="@game.Date"/>
+                <label for="Date">@L["Date"]</label>
+                <input for="Date" class="form-control" @bind="@game.Date"/>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group form-inline">
-                    <label for="TableNumber">Table Number</label>
+                    <label for="TableNumber">@L["TableNumber"]</label>
                     <InputText id="TableNumber" class="form-control" @bind-Value="@game.TableNumber"/>
-                    <label style="margin-left: 30px;" for="ScenarioNumber">Scenario Number</label>
+                    <label style="margin-left: 30px;" for="ScenarioNumber">@L["ScenarioNumber"]</label>
                     <InputText id="ScenarioNumber" class="form-control" @bind-Value="@game.ScenarioNumber"/>
-                    <label style="margin-left: 30px;" for="Location">Location</label>
+                    <label style="margin-left: 30px;" for="Location">@L["Location"]</label>
                     <InputText id="Location" class="form-control" @bind-Value="@game.Location"/>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-            <h2>Player 1</h2>
+            <h2>@L["Player1"]</h2>
             <div class="form-group form-inline">
-                        <label for="User1">Player 1</label>
+                        <label for="User1">@L["Player1"]</label>
                         <InputSelect for="User1" id="user1" @bind-Value="User1Id">
                         <option value=""></option>
                         @foreach (var user in Users)
@@ -52,7 +48,7 @@
                         </InputSelect>
             </div>
             <div class="form-group form-inline">
-                        <label for="ArmyPlayer1">Army</label>
+                        <label for="ArmyPlayer1">@L["Army"]</label>
                         <InputSelect for="ArmyPlayer1" id="ArmyPlayer1" @bind-Value="ArmyPlayer1">
                         <option></option>
                         @foreach (var army in Armies)
@@ -62,14 +58,14 @@
                         </InputSelect>
             </div>
             <div class="form-group form-inline">
-                <label for="CpPlayer1">CP</label>
+                <label for="CpPlayer1">@L["CP"]</label>
                 <InputNumber for="CpPlayer1" class="form-control" @bind-Value="@game.CpPlayer1"/>
             </div>
         </div>
             <div class="col-md-6">
-            <h2>Player 2</h2>
+            <h2>@L["Player2"]</h2>
             <div class="form-group form-inline">
-                        <label for="User2">Player 2</label>
+                        <label for="User2">@L["Player2"]</label>
                         <InputSelect for="User2" id="user2" @bind-Value="User2Id">
                         <option value=""></option>
                         @foreach (var user in Users)
@@ -79,7 +75,7 @@
                         </InputSelect>
             </div>
             <div class="form-group form-inline">
-                        <label for="ArmyPlayer2">Army</label>
+                        <label for="ArmyPlayer2">@L["Army"]</label>
                         <InputSelect for="ArmyPlayer2" id="ArmyPlayer2" @bind-Value="ArmyPlayer2">
                         <option value=""></option>
                         @foreach (var army in Armies)
@@ -89,7 +85,7 @@
                         </InputSelect>
             </div>
             <div class="form-group form-inline">
-                <label for="CpPlayer2">CP</label>
+                <label for="CpPlayer2">@L["CP"]</label>
                 <InputNumber for="CpPlayer2" class="form-control" @bind-Value="@game.CpPlayer2"/>
             </div>
         </div>        
@@ -97,9 +93,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group" style="margin-bottom: 10px;" role="group">
-                    <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">Note</button>
-                    <button type="button" class="btn btn-dark" @onclick="ChangeList1View">Player 1 - List</button>
-                    <button type="button" class="btn btn-dark" @onclick="ChangeList2View">Player 2 - List</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">@L["Note"]</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeList1View">@L["Player1"] - @L["List"]</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeList2View">@L["Player2"] - @L["List"]</button>
                 </div>
                 @if (showNote)
                 {
@@ -121,8 +117,8 @@
                 }
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
+        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
     </EditForm>
 </div>
 
@@ -144,19 +140,27 @@
     bool showList1 = false;
     bool showList2 = false;
     
+    private DateTime dateRecorded = DateTime.Now;
+    public string DateRecorded
+    {
+        get => dateRecorded.ToShortDateString();
+        set => DateTime.TryParse(value, out dateRecorded);
+    }
+    
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine(System.Globalization.CultureInfo.CurrentCulture);
         Users = await UserDataAccessProvider.ListUser();
         Armies = await ArmyDataAccessProvider.ListArmy();
         if (!String.IsNullOrEmpty(player1) && !String.IsNullOrEmpty(player2) && !String.IsNullOrEmpty(date))
         {
             User1Id = player1;
             User2Id = player2;
-            game.Date = DateTime.ParseExact(date, "dd-MM-yyyy",null);
+//            game.Date = DateTime.ParseExact(date, "dd-MM-yyyy",null);
         }
         else
         {
-            game.Date = DateTime.Now;
+//            game.Date = DateTime.Now;
         }
     }
 

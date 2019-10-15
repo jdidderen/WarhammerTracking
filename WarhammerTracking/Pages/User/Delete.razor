@@ -1,16 +1,15 @@
 @page "/user/delete/{id}"
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Http.Extensions
-@using Microsoft.AspNetCore.Mvc.Routing
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
-@using WarhammerTracking.Data.Army
 @attribute [Authorize(Roles = "Admin")]
 @inject UserDataAccessProvider UserDataAccessProvider
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<Delete> L
 
-<h1>Users - Delete</h1>
+<h1>@L["Users"] - @L["Delete"]</h1>
 <div class="alert alert-danger" role="alert">
-Are you sure you want to delete this user ?
+@L["DeleteMessage"] @L["user_single"] ?
 </div>
 
 <div class="shadow-lg rounded form-box">
@@ -19,15 +18,15 @@ Are you sure you want to delete this user ?
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group form-inline">
-            <label for="username">UserName</label>
+            <label for="username">@L["UserName"]</label>
             <InputText id="username" @bind-Value="user.UserName" disabled/>
         </div>
         <div class="form-group form-inline">
-            <label for="email">Email</label>
+            <label for="email">@L["Email"]</label>
             <InputText id="email" @bind-Value="user.Email" disabled/>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
+        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
     </EditForm>
 </div>
 </div>

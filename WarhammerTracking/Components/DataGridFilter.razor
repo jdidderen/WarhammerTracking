@@ -1,6 +1,7 @@
-@inject AppState AppState
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components
+@using WarhammerTracking.Services
+@inject AppState AppState
 @typeparam TItem
 
 <input type="button" class="btn btn-dark" @onclick="@(() => CallParent(Expression))" value="@Name" />

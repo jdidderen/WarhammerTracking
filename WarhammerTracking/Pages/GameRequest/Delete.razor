@@ -1,5 +1,6 @@
 @page "/gamerequest/delete/{id:int}"
 @using Microsoft.AspNetCore.Components
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
 @using WarhammerTracking.Data.Game
 @using WarhammerTracking.GameRequest
@@ -7,10 +8,11 @@
 @inject GameRequestDataAccessProvider GameRequestDataAccessProvider
 @inject UserDataAccessProvider UserDataAccessProvider
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<Delete> L
 
-<h1>Game Request - Delete</h1>
+<h1>@L["GameRequests"] - @L["Delete"]</h1>
 <div class="alert alert-danger" role="alert">
-Are you sure you want to delete this game request ?
+@L["DeleteMessage"] @L["GameRequest"] ?
 </div>
 <div class="shadow-lg rounded form-box">
 <div class="row">
@@ -19,19 +21,19 @@ Are you sure you want to delete this game request ?
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group form-inline">
-            <label for="Date">Date</label>
+            <label for="Date">@L["Date"]</label>
             <span>@GameRequest.Date.ToString("dd/MM/yyyy")</span>
         </div>
         <div class="form-group form-inline">
-            <label for="Player">Player</label>
+            <label for="Player">@L["Player"]</label>
             <InputText id="Player" class="form-control" @bind-Value="GameRequest.Player.UserName" disabled/>
         </div>        
         <div class="form-group form-inline">
-            <label for="Expired">Expired</label>
+            <label for="Expired">@L["Expired"]</label>
             <InputCheckbox id="Expired" class="form-control" @bind-Value="GameRequest.Expired" disabled/>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
+        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
     </EditForm>
     </div>
 </div>

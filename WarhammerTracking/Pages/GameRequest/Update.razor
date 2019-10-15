@@ -1,20 +1,16 @@
 @page "/gamerequest/edit/{id:int}"
-@using System.Collections.ObjectModel
-@using System.Runtime.InteropServices.ComTypes
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Http.Extensions
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Mvc.Routing
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
-@using WarhammerTracking.Data.Army
 @using WarhammerTracking.Data.Game
 @using WarhammerTracking.GameRequest
 @attribute [Authorize(Roles = "User,Admin")]
 @inject GameRequestDataAccessProvider GameRequestDataAccessProvider
 @inject UserDataAccessProvider UserDataAccessProvider
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<Update> L
 
-<h1>Game Request - Update</h1>
+<h1>@L["GameRequests"] - @L["Update"]</h1>
 
 <div class="shadow-lg rounded form-box">
 <div class="row">
@@ -23,11 +19,11 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group form-inline">
-            <label for="Date">Date</label>
+            <label for="Date">@L["Date"]</label>
             <InputDate id="Date" @bind-Value="GameRequest.Date" />
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
+        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
     </EditForm>
     </div>
 </div>

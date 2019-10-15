@@ -1,27 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WarhammerTracking.Areas.Identity;
-using WarhammerTracking.Components;
 using WarhammerTracking.Data;
 using WarhammerTracking.Data.Army;
 using WarhammerTracking.Data.Game;
+using WarhammerTracking.Services;
 
 namespace WarhammerTracking
 {
@@ -31,7 +29,7 @@ namespace WarhammerTracking
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -47,8 +45,25 @@ namespace WarhammerTracking
             services.AddDataProtection()
                 .SetApplicationName("warhammer tracking")
                 .PersistKeysToFileSystem(new DirectoryInfo("/opt/warhammer/keys/"));
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            
+            // Translations
+//            
+//            var supportedCultures = new List<CultureInfo>{
+//                new CultureInfo("en-US"),
+//                new CultureInfo("fr-FR")
+//            };
+//            services.Configure<RequestLocalizationOptions>(options =>
+//            {
+//                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
+//                options.SupportedUICultures = supportedCultures;
+//                options.SupportedUICultures = supportedCultures;
+//            });
+//            
+//            services.AddLocalization(options => options.ResourcesPath = "Translations");
+            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddScoped<ArmyDataAccessProvider>();
@@ -56,6 +71,7 @@ namespace WarhammerTracking
             services.AddScoped<GameRequestDataAccessProvider>();
             services.AddScoped<UserDataAccessProvider>();
             services.AddScoped<AppState, AppState>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,7 +95,7 @@ namespace WarhammerTracking
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-
+            app.UseRequestLocalization();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -94,6 +110,7 @@ namespace WarhammerTracking
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
             CreateUserRoles(serviceProvider).Wait();
             UserDataInitializer.SeedData(userManager);
         }

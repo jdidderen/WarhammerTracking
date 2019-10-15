@@ -1,41 +1,42 @@
 @page "/gamerequest"
 @using System.Linq.Expressions
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
 @using WarhammerTracking.Data.Game
 @using WarhammerTracking.GameRequest
 @attribute [Authorize(Roles = "User,Admin")]
 @inject GameRequestDataAccessProvider GameRequestDataAccessProvider
 @inject UserDataAccessProvider UserDataAccessProvider
-@inject AppState AppState
+@inject IStringLocalizer<List> L
 
-<h1>Game Requests</h1>
+<h1>@L["GameRequests"]</h1>
 <div class="shadow-lg rounded form-box">
 <div class="col-md-12">
     <div class="row" style="margin-bottom: 10px;">
-        <a href="/gamerequest/add" class="btn btn-primary">Add</a>
+        <a href="/gamerequest/add" class="btn btn-primary">@L["Add"]</a>
     </div>
     <div class="row">
     <DataGrid Items="_gameRequests" PageSize="5">
         <Filters>
-            <DataGridFilter Name="Reset" Expression="@ResetFilter"></DataGridFilter>
-            <DataGridFilter Name="Requests from others" Expression="@AllFilter"></DataGridFilter>
-            <DataGridFilter Name="My requests" Expression="@MyFilter"></DataGridFilter>
-            <DataGridFilter Name="Expired requests" Expression="@ExpiredFilter"></DataGridFilter>
+            <DataGridFilter Name="@L["Reset"]" Expression="@ResetFilter"></DataGridFilter>
+            <DataGridFilter Name="@L["OthersFilter"]" Expression="@AllFilter"></DataGridFilter>
+            <DataGridFilter Name="@L["MyFilter"]" Expression="@MyFilter"></DataGridFilter>
+            <DataGridFilter Name="@L["ExpiredFilter"]" Expression="@ExpiredFilter"></DataGridFilter>
         </Filters>
         <Column>
-            <DataGridColumn Items="@_gameRequests" ColumnName="Date" DisplayColumnName="Date" Size="20"></DataGridColumn> 
-            <DataGridColumn Items="@_gameRequests" ColumnName="PlayerUserName" DisplayColumnName="Player" Size="20"></DataGridColumn> 
-            <DataGridColumn Items="@_gameRequests" ColumnName="Expired" DisplayColumnName="Expired" Size="5"></DataGridColumn> 
-            <th>Actions</th>
+            <DataGridColumn Items="@_gameRequests" ColumnName="Date" DisplayColumnName="@L["Date"]" Size="20"></DataGridColumn> 
+            <DataGridColumn Items="@_gameRequests" ColumnName="PlayerUserName" DisplayColumnName="@L["Player"]" Size="20"></DataGridColumn> 
+            <DataGridColumn Items="@_gameRequests" ColumnName="Expired" DisplayColumnName="@L["Expired"]" Size="5"></DataGridColumn> 
+            <th>@L["Actions"]</th>
         </Column>
         <GridRow >
             <td>@context.Date.ToString("dd/MM/yyyy")</td>
             <td>@context.PlayerUserName</td>
             <td><input type="checkbox" @bind="@context.Expired" disabled/></td>
             <td>
-                <a href="/gamerequest/detail/@context.id" class="btn btn-primary">Detail</a>
-                <a href="/gamerequest/edit/@context.id" class="btn btn-primary">Edit</a>
-                <a href="/gamerequest/delete/@context.id" class="btn btn-danger">Delete</a>
+                <a href="/gamerequest/detail/@context.id" class="btn btn-primary">@L["Detail"]</a>
+                <a href="/gamerequest/edit/@context.id" class="btn btn-primary">@L["Edit"]</a>
+                <a href="/gamerequest/delete/@context.id" class="btn btn-danger">@L["Delete"]</a>
             </td>
         </GridRow>
     </DataGrid>

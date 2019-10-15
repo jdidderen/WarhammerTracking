@@ -1,4 +1,7 @@
-﻿<div class="top-row pl-4 navbar navbar-dark text-center">
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<NavMenu> L
+
+<div class="top-row pl-4 navbar navbar-dark text-center">
     <a class="navbar-brand title-center" href="/">Warhammer Tracking</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -10,30 +13,30 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> @L["Home"]
             </NavLink>
         </li>
         <AuthorizeView Roles="User,Admin">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="army">
-                <span class="wh40k wh40k-adeptus-custodes" aria-hidden="true"></span>Armies
+                <span class="wh40k wh40k-adeptus-custodes" aria-hidden="true"></span>@L["Armies"]
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="game">
-                <span class="wh40k wh40k-adeptus-mechanicus" aria-hidden="true"></span>Games
+                <span class="wh40k wh40k-adeptus-mechanicus" aria-hidden="true"></span>@L["Games"]
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="gamerequest">
-                <span class="wh40k wh40k-adeptus-mechanicus" aria-hidden="true"></span>Game Requests
+                <span class="wh40k wh40k-adeptus-arbites" aria-hidden="true"></span>@L["GameRequests"]
             </NavLink>
         </li>
         </AuthorizeView>
         <AuthorizeView Roles="Admin">
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="user">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Users
+                    <span class="wh40k wh40k-angels-of-retributio" aria-hidden="true"></span> @L["Users"]
                 </NavLink>
             </li>
         </AuthorizeView>

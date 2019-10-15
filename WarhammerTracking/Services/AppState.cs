@@ -1,6 +1,6 @@
 using System;
 
-namespace WarhammerTracking.Components
+namespace WarhammerTracking.Services
 {
     public class AppState
     {

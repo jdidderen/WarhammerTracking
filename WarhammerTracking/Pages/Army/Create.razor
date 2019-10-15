@@ -1,24 +1,23 @@
 @page "/army/add"
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Http.Extensions
-@using Microsoft.AspNetCore.Mvc.Routing
-@using WarhammerTracking.Data.Army
+@using Microsoft.Extensions.Localization
 @attribute [Authorize(Roles = "User,Admin")]
 @inject ArmyDataAccessProvider ArmyDataAccessProvider
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<Create> L
 
-<h1>Armies - Add</h1>
+<h1>@L["Armies"] - @L["Add"]</h1>
 <div class="shadow-lg rounded form-box">
 <div class="row">
     <EditForm Model="army" OnSubmit=@FormSubmit>
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group form-inline">
-            <label for="Name">Name</label>
+            <label for="Name">@L["Name"]</label>
             <InputText id="Name" @bind-Value="@army.name" />
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
+        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
     </EditForm>
 </div>
 </div>

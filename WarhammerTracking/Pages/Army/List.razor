@@ -1,39 +1,36 @@
 @page "/army"
+@using Microsoft.Extensions.Localization
 @attribute [Authorize(Roles = "User,Admin")]
 @inject ArmyDataAccessProvider ArmyDataAccessProvider
+@inject IStringLocalizer<List> L
 
-<h1>Armies</h1>
+<h1>@L["Armies"]</h1>
 
-@if (Armies == null)
-{
-    <p><em>No records...</em></p>
-}
-else
-{
     <div class="shadow-lg rounded form-box">
-    <a href="/army/add" class="btn btn-primary">Add</a>
+    <a href="/army/add" class="btn btn-primary">@L["Add"]</a>
     <DataGrid Items="Armies" PageSize="5">
         <Column>
-            <DataGridColumn Items="@Armies" ColumnName="name" DisplayColumnName="Name" Size="20"></DataGridColumn> 
-            <th>Actions</th>
+            <DataGridColumn Items="@Armies" ColumnName="name" DisplayColumnName="@L["Name"]" Size="20"></DataGridColumn> 
+            <th>@L["Actions"]</th>
         </Column>
         <GridRow >
             <td>@context.name</td>
             <td>
-                <a href="/army/edit/@context.id" class="btn btn-primary">Edit</a>
-                <a href="/army/delete/@context.id" class="btn btn-danger">Delete</a>
+                <a href="/army/edit/@context.id" class="btn btn-primary">@L["Edit"]</a>
+                <a href="/army/delete/@context.id" class="btn btn-danger">@L["Delete"]</a>
             </td>
         </GridRow>
 
     </DataGrid>
 </div>
-}
 
 @code {
+    
     Army[] Armies;
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         Armies = await ArmyDataAccessProvider.ListArmy();
     }
 

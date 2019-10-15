@@ -1,17 +1,15 @@
 @page "/game/delete/{id:int}"
-@using System.Runtime.InteropServices.ComTypes
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Http.Extensions
-@using Microsoft.AspNetCore.Mvc.Routing
-@using WarhammerTracking.Data.Army
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data.Game
 @attribute [Authorize(Roles = "User,Admin")]
 @inject GameDataAccessProvider GameDataAccessProvider
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<Delete> L
 
-<h1>Game - Delete</h1>
+<h1>@L["Games"] - @L["Delete"]</h1>
 <div class="alert alert-danger" role="alert">
-Are you sure you want to delete this game ?
+@L["DeleteMessage"] @L["Game"] ?
 </div>
 <div class="shadow-lg rounded form-box">
 <EditForm Model="game" OnSubmit=@FormSubmit>
@@ -19,47 +17,47 @@ Are you sure you want to delete this game ?
         <ValidationSummary />
         <div class="col-md-12">
             <div class="form-group form-inline">
-                <label for="Date">Date</label>
-                <span>@game.Date.ToString("dd/MM/yyyy")</span>
+                <label for="Date">@L["Date"]</label>
+                <input for="Date" class="form-control" @bind="@game.Date" disabled/>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group form-inline">
-                    <label for="TableNumber">Table Number</label>
+                    <label for="TableNumber">@L["TableNumber"]</label>
                     <InputText id="TableNumber" class="form-control" @bind-Value="game.TableNumber" disabled/>
-                    <label style="margin-left: 30px;" for="ScenarioNumber">Scenario Number</label>
+                    <label style="margin-left: 30px;" for="ScenarioNumber">@L["ScenarioNumber"]</label>
                     <InputText id="ScenarioNumber" class="form-control" @bind-Value="game.ScenarioNumber" disabled/>
-                    <label style="margin-left: 30px;" for="Location">Location</label>
+                    <label style="margin-left: 30px;" for="Location">@L["Location"]</label>
                     <InputText id="Location" class="form-control" @bind-Value="game.Location" disabled/>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-            <h2>Player 1</h2>
+            <h2>@L["Player1"]</h2>
                 <div class="form-group form-inline">
-                        <label for="User1">Player 1</label>
+                        <label for="User1">@L["Player1"]</label>
                         <input type="text" for="User1" id="User1" value="@game.Player1.UserName" disabled/>
             </div>
                 <div class="form-group form-inline">
-                        <label for="ArmyPlayer1Name">Faction</label>
+                        <label for="ArmyPlayer1Name">@L["Army"]</label>
                         <input type="text" for="FactionPlayer1" id="ArmyPlayer1Name" value="@game.ArmyPlayer1Name" disabled/>
             </div>
                 <div class="form-group form-inline">
-                <label for="CpPlayer1">CP</label>
+                <label for="CpPlayer1">@L["CP"]</label>
                 <InputNumber for="CpPlayer1" class="form-control" @bind-Value="game.CpPlayer1" disabled/>
             </div>
                 <div class="form-group">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Maelstrom</th>
-                            <th>Eternal</th>
-                            <th>KP</th>
-                            <th>Others</th>
-                            <th>Total</th>
-                            <th>CP Used</th>
+                            <th>@L["Maelstrom"]</th>
+                            <th>@L["Eternal"]</th>
+                            <th>@L["KP"]</th>
+                            <th>@L["Others"]</th>
+                            <th>@L["Total"]</th>
+                            <th>@L["CpUsed"]</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -93,29 +91,29 @@ Are you sure you want to delete this game ?
             </div>
             </div>
             <div class="col-md-6">
-            <h2>Player 2</h2>
+            <h2>@L["Player2"]</h2>
             <div class="form-group form-inline">
-                        <label for="User2">Player 2</label>
+                        <label for="User2">@L["Player2"]</label>
                         <input type="text" for="User2" id="User2" value="@game.Player2.UserName" disabled/>
             </div>
             <div class="form-group form-inline">
-                        <label for="ArmyPlayer1Name">Faction</label>
+                        <label for="ArmyPlayer1Name">@L["Army"]</label>
                         <input type="text" for="ArmyPlayer1Name" id="ArmyPlayer1Name" value="@game.ArmyPlayer2Name" disabled/>                        
             </div>
             <div class="form-group form-inline">
-                <label for="CpPlayer2">CP</label>
+                <label for="CpPlayer2">@L["CP"]</label>
                 <InputNumber for="CpPlayer2" class="form-control" @bind-Value="game.CpPlayer2" disabled/>
             </div>
             <div class="form-group">
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th>Maelstrom</th>
-                                        <th>Eternal</th>
-                                        <th>KP</th>
-                                        <th>Others</th>
-                                        <th>Total</th>
-                                        <th>CP Used</th>
+                                        <th>@L["Maelstrom"]</th>
+                                        <th>@L["Eternal"]</th>
+                                        <th>@L["KP"]</th>
+                                        <th>@L["Others"]</th>
+                                        <th>@L["Total"]</th>
+                                        <th>@L["CpUsed"]</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -152,9 +150,9 @@ Are you sure you want to delete this game ?
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group" style="margin-bottom: 10px;" role="group">
-                    <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">Note</button>
-                    <button type="button" class="btn btn-dark" @onclick="ChangeList1View">Player 1 - List</button>
-                    <button type="button" class="btn btn-dark" @onclick="ChangeList2View">Player 2 - List</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">@L["Note"]</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeList1View">@L["Player1"] - @L["List"]</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeList2View">@L["Player2"] - @L["List"]</button>
                 </div>
                 @if (showNote)
                 {
@@ -176,8 +174,8 @@ Are you sure you want to delete this game ?
                 }
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
+        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
     </EditForm>
 </div>
 @code {

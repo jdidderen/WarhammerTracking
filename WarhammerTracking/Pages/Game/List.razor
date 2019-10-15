@@ -1,32 +1,34 @@
 @page "/game"
 @using System.Linq.Expressions
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
 @using WarhammerTracking.Data.Game
 @attribute [Authorize(Roles = "User,Admin")]
 @inject GameDataAccessProvider GameDataAccessProvider
 @inject UserDataAccessProvider UserDataAccessProvider
+@inject IStringLocalizer<List> L
 
-<h1>Games</h1>
+<h1>@L["Games"]</h1>
     <div class="shadow-lg rounded form-box">
     <div class="row">
 <div class="col-md-12">
     <div class="row" style="margin-bottom: 10px;">
-        <a href="/game/add" class="btn btn-primary">Add</a>
+        <a href="/game/add" class="btn btn-primary">@L["Add"]</a>
     </div>
     <div class="row">
         <DataGrid Items="games" PageSize="5">
         <Filters>
-            <DataGridFilter Name="Reset" Expression="@ResetFilter"></DataGridFilter>
-            <DataGridFilter Name="My requests" Expression="@MyFilter"></DataGridFilter>
+            <DataGridFilter Name="@L["Reset"]" Expression="@ResetFilter"></DataGridFilter>
+            <DataGridFilter Name="@L["MyFilter"]" Expression="@MyFilter"></DataGridFilter>
         </Filters>
             <Column>
-                <DataGridColumn Items="@games" ColumnName="Date" DisplayColumnName="Date" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player1Name" DisplayColumnName="Player 1" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="ArmyPlayer1Name" DisplayColumnName="Player 1 / Army" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player2Name" DisplayColumnName="Player 2" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="ArmyPlayer2Name" DisplayColumnName="Player 2 / Army" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player 1 / Score" DisplayColumnName="Player 1 / Score" Size="5"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player 2 / Score" DisplayColumnName="Player 2 / Score" Size="5"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Date" DisplayColumnName="@L["Date"]" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player1Name" DisplayColumnName="@L["Player1"]" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="ArmyPlayer1Name" DisplayColumnName="@L["Player1Army"]" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player2Name" DisplayColumnName="@L["Player2"]" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="ArmyPlayer2Name" DisplayColumnName="@L["Player1Army"]" Size="10"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player 1 / Score" DisplayColumnName="@L["Player1Score"]" Size="5"></DataGridColumn> 
+                <DataGridColumn Items="@games" ColumnName="Player 2 / Score" DisplayColumnName="@L["Player2Score"]" Size="5"></DataGridColumn> 
                 <th>Actions</th>
             </Column>
             <GridRow >
@@ -38,9 +40,9 @@
                 <td>@context.ScorePlayer1</td>
                 <td>@context.ScorePlayer2</td>
                 <td>
-                    <a href="/game/detail/@context.id" class="btn btn-primary">Detail</a>
-                    <a href="/game/edit/@context.id" class="btn btn-primary">Edit</a>
-                    <a href="/game/delete/@context.id" class="btn btn-danger">Delete</a>
+                    <a href="/game/detail/@context.id" class="btn btn-primary">@L["Detail"]</a>
+                    <a href="/game/edit/@context.id" class="btn btn-primary">@L["Edit"]</a>
+                    <a href="/game/delete/@context.id" class="btn btn-danger">@L["Delete"]</a>
                 </td>
             </GridRow>
     

@@ -2,8 +2,7 @@
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
 @attribute [Authorize(Roles = "Admin")]
 @attribute [Authorize]
@@ -11,7 +10,8 @@
 @inject NavigationManager NavigationManager
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
-<h1>Users - Create</h1>
+@inject IStringLocalizer<Create> L
+<h1>@L["Users"] - @L["Create"]</h1>
 <div class="shadow-lg rounded form-box">
 <div class="row">
     <div class="col-md-12">
@@ -19,35 +19,35 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group form-inline">
-            <label for="username">UserName</label>
+            <label for="username">@L["UserName"]</label>
             <InputText id="username" @bind-Value="ApplicationUser.UserName" />
         </div>
         <div class="form-group form-inline">
-            <label for="email">Email</label>
+            <label for="email">@L["Email"]</label>
             <InputText id="email" @bind-Value="ApplicationUser.Email" />
         </div>
         <div class="form-group form-inline">
-            <label for="phone">Phone Number</label>
+            <label for="phone">@L["PhoneNumber"]</label>
             <InputText id="phone" @bind-Value="ApplicationUser.PhoneNumber" />
         </div>
         <div class="form-group form-inline">
-            <label for="password">Password</label>
+            <label for="password">@L["Password"]</label>
             <InputText id="password" type="password" @bind-Value="ApplicationUser.Password" />
         </div>
         <div class="form-group form-inline">
-            <label for="confirmpassword">Confirm Password</label>
+            <label for="confirmpassword">@L["ConfirmPassword"]</label>
             <InputText id="confirmpassword" type="password" @bind-Value="ApplicationUser.ConfirmPassword" />
         </div>      
         <div class="form-group form-inline">
-            <label for="role">Role</label>
+            <label for="role">@L["Role"]</label>
             <InputSelect id="role" @bind-Value="role" >
                 <option value=""></option>
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
+                <option value="User">@L["User"]</option>
+                <option value="Admin">@L["Admin"]</option>
             </InputSelect>
         </div>   
-        <button class="btn btn-primary" type="submit">Submit</button>
-        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-secondary"/>
+        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
+        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
     </EditForm>
     </div>
 </div>

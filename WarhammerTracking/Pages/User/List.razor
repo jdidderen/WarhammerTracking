@@ -1,33 +1,28 @@
 @page "/user"
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
 @attribute [Authorize(Roles = "Admin")]
 @inject UserDataAccessProvider UserDataAccessProvider
+@inject IStringLocalizer<List> L
 
-<h1>Users</h1>
+<h1>@L["Users"]</h1>
 
-@if (Users == null)
-{
-    <p><em>No records...</em></p>
-}
-else
-{
     <div class="shadow-lg rounded form-box">
-    <a href="/user/add" class="btn btn-primary">Add</a>
+    <a href="/user/add" class="btn btn-primary">@L["Add"]</a>
     <DataGrid Items="Users" PageSize="5">
         <Column>
-            <DataGridColumn Items="@Users" ColumnName="UserName" DisplayColumnName="UserName" Size="20"></DataGridColumn> 
-            <th>Actions</th>
+            <DataGridColumn Items="@Users" ColumnName="UserName" DisplayColumnName="@L["UserName"]" Size="20"></DataGridColumn> 
+            <th>@L["Actions"]</th>
         </Column>
         <GridRow >
             <td>@context.UserName</td>
             <td>
-                <a href="/user/edit/@context.Id" class="btn btn-primary">Edit</a>
-                <a href="/user/delete/@context.Id" class="btn btn-danger">Delete</a>
+                <a href="/user/edit/@context.Id" class="btn btn-primary">@L["Edit"]</a>
+                <a href="/user/delete/@context.Id" class="btn btn-danger">@L["Delete"]</a>
             </td>
         </GridRow>
     </DataGrid>
 </div>
-}
 
 @code {
     ApplicationUser[] Users;

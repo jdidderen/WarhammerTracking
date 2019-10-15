@@ -1,5 +1,6 @@
 @page "/gamerequest/detail/{id:int}"
 @using Microsoft.AspNetCore.Components
+@using Microsoft.Extensions.Localization
 @using WarhammerTracking.Data
 @using WarhammerTracking.Data.Game
 @using WarhammerTracking.GameRequest
@@ -7,8 +8,9 @@
 @inject GameRequestDataAccessProvider GameRequestDataAccessProvider
 @inject UserDataAccessProvider UserDataAccessProvider
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<Detail> L
 
-<h1>Game Request - Detail</h1>
+<h1>@L["GameRequests"] - @L["Detail"]</h1>
 <div class="shadow-lg rounded form-box">
 <div class="row">
     <div class="col-md-12">
@@ -16,18 +18,18 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group form-inline">
-            <label for="Date">Date</label>
+            <label for="Date">@L["Date"]</label>
             <span>@GameRequest.Date.ToString("dd/MM/yyyy")</span>
         </div>
         <div class="form-group form-inline">
-            <label for="Player">Player</label>
+            <label for="Player">@L["Player"]</label>
             <InputText id="Player" class="form-control" @bind-Value="GameRequest.Player.UserName" disabled/>
         </div>        
         <div class="form-group form-inline">
-            <label for="Expired">Expired</label>
+            <label for="Expired">@L["Expired"]</label>
             <InputCheckbox id="Expired" class="form-control" @bind-Value="GameRequest.Expired" disabled/>
         </div>
-        <input type="button" value="Create Game" @onclick="CreateGame" class="btn btn-primary"/>
+        <input type="button" value="@L["CreateGame"]" @onclick="CreateGame" class="btn btn-primary"/>
     </EditForm>
     </div>
 </div>

@@ -1,86 +1,13 @@
 ﻿@page "/"
-@using WarhammerTracking.Data.Game
-@inject GameDataAccessProvider GameDataAccessProvider
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Index> L
 
+    @* <h1>@L["Hello"]</h1> *@
     <AuthorizeView Roles="User,Admin">
-    <div class="btn-group" style="margin-bottom: 10px;" role="group">
-      <button type="button" class="btn btn-dark" @onclick="ChangeNextView">Next games</button>
-      <button type="button" class="btn btn-dark" @onclick="ChangeLastView">Last games</button>
-    </div>
-@if (showLast)
-{
-    <h1>Last 5 Games</h1>
-}
-else
-{
-    <h1>Next 5 Games</h1>
-}
-    <div class="shadow-lg rounded form-box">
-    <div class="row">
-        <div class="col-md-12">
-           
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>Player 1</th>
-                <th>Player 1 / Faction</th>
-                <th>Player 2</th>
-                <th>Player 2 / Faction</th>
-                <th>Player 1 / Score</th>
-                <th>Player 2 / Score</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var game in Games)
-            {
-                <tr>
-                    <td>@game.id</td>
-                    <td>@game.Date.ToString("dd/MM/yyyy")</td>
-                    <td>@game.Player1Name</td>
-                    <td>@game.ArmyPlayer1Name</td>
-                    <td>@game.Player2Name</td>
-                    <td>@game.ArmyPlayer2Name</td>
-                    <td>@game.ScorePlayer1</td>
-                    <td>@game.ScorePlayer2</td>
-                    <td>
-                        <a href="/game/detail/@game.id" class="btn btn-primary">Detail</a>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-        </div>
-        </div>
-</div>
     
     </AuthorizeView>
 
 @code {
-    Data.Game.Game[] Games;
-    bool showLast = false;
-    bool showNext = true;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        Games = await GameDataAccessProvider.NextFiveGames();
-    }
 
-    async void ChangeLastView()
-    {
-        Games = await GameDataAccessProvider.LastFiveGames();
-        showLast = true;
-        showNext = false;
-        StateHasChanged();
-    }
 
-    async void ChangeNextView()
-    {
-        Games = await GameDataAccessProvider.NextFiveGames();
-        showLast = false;
-        showNext = true;
-        StateHasChanged();
-    }
 }
