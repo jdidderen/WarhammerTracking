@@ -1,218 +1,196 @@
 @page "/game/detail/{id:int}"
-@using Microsoft.AspNetCore.Components
-@using Microsoft.Extensions.Localization
-@using WarhammerTracking.Data
-@using WarhammerTracking.Data.Game
-@attribute [Authorize(Roles = "User,Admin")]
-@inject GameDataAccessProvider GameDataAccessProvider
-@inject UserDataAccessProvider UserDataAccessProvider
-@inject ArmyDataAccessProvider ArmyDataAccessProvider
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<Detail> L
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits DetailGame
 
-<h1>@L["Games"] - @L["Detail"]</h1>
+<h1>@L.GetLocalization("Games") - @L.GetLocalization("Detail")</h1>
 <div class="shadow-lg rounded form-box">
-<EditForm Model="game">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+    <EditForm Model="Game">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
         <div class="col-md-12">
             <div class="form-group form-inline">
-                <label for="Date">@L["Date"]</label>
-                <InputDate id="Date" @bind-Value="@game.Date" disabled/>
-                <label style="margin-left: 20px;" for="Player1Score">@L["Player1Score"]</label>
-                <span>@game.ScorePlayer1</span>
-                <label style="margin-left: 20px;" for="Date">@L["Player2Score"]</label>
-                <span>@game.ScorePlayer2</span>
+                <label for="Date">@L.GetLocalization("Date")</label>
+                <InputDate id="Date" @bind-Value="@Game.Date" disabled/>
+                <label style="margin-left: 20px;" for="Player1Score">@L.GetLocalization("Player1Score")</label>
+                <span id="Player1Score">@Game.ScorePlayer1</span>
+                <label style="margin-left: 20px;" for="Date">@L.GetLocalization("Player2Score")</label>
+                <span>@Game.ScorePlayer2</span>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group form-inline">
-                    <label for="TableNumber">@L["TableNumber"]</label>
-                    <InputText id="TableNumber" class="form-control" @bind-Value="game.TableNumber" disabled/>
-                    <label style="margin-left: 30px;" for="ScenarioNumber">@L["ScenarioNumber"]</label>
-                    <InputText id="ScenarioNumber" class="form-control" @bind-Value="game.ScenarioNumber" disabled/>
-                    <label style="margin-left: 30px;" for="Location">@L["Location"]</label>
-                    <InputText id="Location" class="form-control" @bind-Value="game.Location" disabled/>
+                    <label for="TableNumber">@L.GetLocalization("TableNumber")</label>
+                    <InputText id="TableNumber" class="form-control" @bind-Value="@Game.TableNumber" disabled/>
+                    <label style="margin-left: 30px;" for="ScenarioNumber">@L.GetLocalization("ScenarioNumber")</label>
+                    <InputText id="ScenarioNumber" class="form-control" @bind-Value="@Game.ScenarioNumber" disabled/>
+                    <label style="margin-left: 30px;" for="Location">@L.GetLocalization("Location")</label>
+                    <InputText id="Location" class="form-control" @bind-Value="@Game.Location" disabled/>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-            <h2>@L["Player1"]</h2>
+                <h2>@L.GetLocalization("Player1")</h2>
                 <div class="form-group form-inline">
-                        <label for="Player1Name">@L["Player1"]</label>
-                        <input type="text" for="Player1Name" id="Player1Name" value="@game.Player1Name" disabled/>
-            </div>
+                    <label for="Player1Name">@L.GetLocalization("Player1")</label>
+                    <input type="text" for="Player1Name" id="Player1Name" value="@Game.Player1Name" disabled/>
+                </div>
                 <div class="form-group form-inline">
-                        <label for="ArmyPlayer1Name">@L["Army"]</label>
-                        <input type="text" for="ArmyPlayer1Name" id="ArmyPlayer1Name" value="@game.ArmyPlayer1Name" disabled/>
-            </div>
+                    <label for="ArmyPlayer1Name">@L.GetLocalization("Army")</label>
+                    <input type="text" for="ArmyPlayer1Name" id="ArmyPlayer1Name" value="@Game.ArmyPlayer1Name" disabled/>
+                </div>
                 <div class="form-group form-inline">
-                <label for="CpPlayer1">@L["CP"]</label>
-                <InputNumber for="CpPlayer1" class="form-control" @bind-Value="game.CpPlayer1" disabled/>
-            </div>
+                    <label for="CpPlayer1">@L.GetLocalization("CP")</label>
+                    <InputNumber id="CpPlayer1" class="form-control" @bind-Value="@Game.CpPlayer1" disabled/>
+                </div>
                 <div class="form-group">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>@L["Maelstrom"]</th>
-                            <th>@L["Eternal"]</th>
-                            <th>@L["KP"]</th>
-                            <th>@L["Others"]</th>
-                            <th>@L["Total"]</th>
-                            <th>@L["CpUsed"]</th>
+                            <th>@L.GetLocalization("Maelstrom")</th>
+                            <th>@L.GetLocalization("Eternal")</th>
+                            <th>@L.GetLocalization("KP")</th>
+                            <th>@L.GetLocalization("Others")</th>
+                            <th>@L.GetLocalization("Total")</th>
+                            <th>@L.GetLocalization("CpUsed")</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @if (game.GameLines != null)
+                        @if (Game.GameLines != null)
                         {
-                            @foreach (var line1 in game.GameLines)
-                            {
-                                if (line1.Player.Id == game.Player1.Id)
-                                {
-                                    <tr>
-                                        <td><InputNumber class="form-control" @bind-Value="@line1.Maelstrom" disabled/></td>
-                                        <td><InputNumber class="form-control" @bind-Value="@line1.Eternal" disabled/></td>
-                                        <td><InputNumber class="form-control" @bind-Value="@line1.KP" disabled/></td>
-                                        <td><InputNumber class="form-control" @bind-Value="@line1.Others" disabled/></td>
-                                        <td>@line1.Total</td>
-                                        <td><InputNumber class="form-control" @bind-Value="@line1.CpUsed" disabled/></td>
-                                    </tr>
-                                }
-                            }
+                        @foreach (var line1 in Game.GameLines)
+                        {
+                        if (line1.Player.Id == Game.Player1.Id)
+                        {
+                        <tr>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line1.Maelstrom" disabled/>
+                            </td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line1.Eternal" disabled/>
+                            </td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line1.Kp" disabled/>
+                            </td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line1.Others" disabled/>
+                            </td>
+                            <td>@line1.Total</td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line1.CpUsed" disabled/>
+                            </td>
+                        </tr>
                         }
-                            <tr>
-                                <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer1</td>
-                                <td class="text-center font-weight-bold">@game.TotalEternalPlayer1</td>
-                                <td class="text-center font-weight-bold">@game.TotalKPPlayer1</td>
-                                <td class="text-center font-weight-bold">@game.TotalOthersPlayer1</td>
-                                <td class="text-center font-weight-bold">@game.TotalPlayer1</td>
-                                <td class="text-center font-weight-bold">@game.CpLeftPlayer1</td>
-                            </tr>
+                        }
+                        }
+                        <tr>
+                            <td class="text-center font-weight-bold">@Game.TotalMaelstromPlayer1</td>
+                            <td class="text-center font-weight-bold">@Game.TotalEternalPlayer1</td>
+                            <td class="text-center font-weight-bold">@Game.TotalKpPlayer1</td>
+                            <td class="text-center font-weight-bold">@Game.TotalOthersPlayer1</td>
+                            <td class="text-center font-weight-bold">@Game.TotalPlayer1</td>
+                            <td class="text-center font-weight-bold">@Game.CpLeftPlayer1</td>
+                        </tr>
                         </tbody>
                     </table>
-            </div>
+                </div>
             </div>
             <div class="col-md-6">
-            <h2>@L["Player2"]</h2>
-            <div class="form-group form-inline">
-                        <label for="Player2Name">@L["Player2"]</label>
-                        <input type="text" for="Player2Name" id="Player2Name" value="@game.Player2Name" disabled/>
+                <h2>@L.GetLocalization("Player2")</h2>
+                <div class="form-group form-inline">
+                    <label for="Player2Name">@L.GetLocalization("Player2")</label>
+                    <input type="text" for="Player2Name" id="Player2Name" value="@Game.Player2Name" disabled/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="ArmyPlayer2Name">@L.GetLocalization("Army")</label>
+                    <input type="text" for="ArmyPlayer2Name" id="ArmyPlayer2Name" value="@Game.ArmyPlayer2Name" disabled/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="CpPlayer2">@L.GetLocalization("CP")</label>
+                    <InputNumber id="CpPlayer2" class="form-control" @bind-Value="@Game.CpPlayer2" disabled/>
+                </div>
+                <div class="form-group">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>@L.GetLocalization("Maelstrom")</th>
+                            <th>@L.GetLocalization("Eternal")</th>
+                            <th>@L.GetLocalization("KP")</th>
+                            <th>@L.GetLocalization("Others")</th>
+                            <th>@L.GetLocalization("Total")</th>
+                            <th>@L.GetLocalization("CpUsed")</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (Game.GameLines != null)
+                        {
+                        @foreach (var line2 in Game.GameLines)
+                        {
+                        if (line2.Player.Id == Game.Player2.Id)
+                        {
+                        <tr>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line2.Maelstrom" disabled/>
+                            </td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line2.Eternal" disabled/>
+                            </td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line2.Kp" disabled/>
+                            </td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line2.Others" disabled/>
+                            </td>
+                            <td>@line2.Total</td>
+                            <td>
+                                <InputNumber class="form-control" @bind-Value="@line2.CpUsed" disabled/>
+                            </td>
+                        </tr>
+                        }
+                        }
+                        }
+                        <tr>
+                            <td class="text-center font-weight-bold">@Game.TotalMaelstromPlayer2</td>
+                            <td class="text-center font-weight-bold">@Game.TotalEternalPlayer2</td>
+                            <td class="text-center font-weight-bold">@Game.TotalKpPlayer2</td>
+                            <td class="text-center font-weight-bold">@Game.TotalOthersPlayer2</td>
+                            <td class="text-center font-weight-bold">@Game.TotalPlayer2</td>
+                            <td class="text-center font-weight-bold">@Game.CpLeftPlayer2</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="form-group form-inline">
-                        <label for="ArmyPlayer2Name">@L["Army"]</label>
-                        <input type="text" for="ArmyPlayer2Name" id="ArmyPlayer2Name" value="@game.ArmyPlayer2Name" disabled/>                        
-            </div>
-            <div class="form-group form-inline">
-                <label for="CpPlayer2">@L["CP"]</label>
-                <InputNumber for="CpPlayer2" class="form-control" @bind-Value="game.CpPlayer2" disabled/>
-            </div>
-            <div class="form-group">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>@L["Maelstrom"]</th>
-                                        <th>@L["Eternal"]</th>
-                                        <th>@L["KP"]</th>
-                                        <th>@L["Others"]</th>
-                                        <th>@L["Total"]</th>
-                                        <th>@L["CpUsed"]</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @if (game.GameLines != null)
-                                    {
-                                        @foreach (var line2 in game.GameLines)
-                                        {
-                                            if (line2.Player.Id == game.Player2.Id)
-                                            {
-                                                <tr>
-                                                    <td><InputNumber class="form-control" @bind-Value="@line2.Maelstrom" disabled/></td>
-                                                    <td><InputNumber class="form-control" @bind-Value="@line2.Eternal" disabled/></td>
-                                                    <td><InputNumber class="form-control" @bind-Value="@line2.KP" disabled/></td>
-                                                    <td><InputNumber class="form-control" @bind-Value="@line2.Others" disabled/></td>
-                                                    <td>@line2.Total</td>
-                                                    <td><InputNumber class="form-control" @bind-Value="@line2.CpUsed" disabled/></td>
-                                                </tr>
-                                            }
-                                        }
-                                    }
-                                        <tr>
-                                            <td class="text-center font-weight-bold">@game.TotalMaelstromPlayer2</td>
-                                            <td class="text-center font-weight-bold">@game.TotalEternalPlayer2</td>
-                                            <td class="text-center font-weight-bold">@game.TotalKPPlayer2</td>
-                                            <td class="text-center font-weight-bold">@game.TotalOthersPlayer2</td>
-                                            <td class="text-center font-weight-bold">@game.TotalPlayer2</td>
-                                            <td class="text-center font-weight-bold">@game.CpLeftPlayer2</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                        </div>
-        </div>        
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group" style="margin-bottom: 10px;" role="group">
-                    <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">@L["Note"]</button>
-                    <button type="button" class="btn btn-dark" @onclick="ChangeList1View">@L["Player1"] - @L["List"]</button>
-                    <button type="button" class="btn btn-dark" @onclick="ChangeList2View">@L["Player2"] - @L["List"]</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeNoteView">@L.GetLocalization("Note")</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeList1View">@L.GetLocalization("Player1") - @L.GetLocalization("List")</button>
+                    <button type="button" class="btn btn-dark" @onclick="ChangeList2View">@L.GetLocalization("Player2") - @L.GetLocalization("List")</button>
                 </div>
-                @if (showNote)
+                @if (ShowNote)
                 {
-                    <div class="form-group">
-                        <InputTextArea id="Note" @bind-Value="game.Note" class="form-control" disabled></InputTextArea>
-                    </div>
+                <div class="form-group">
+                    <InputTextArea id="Note" @bind-Value="@Game.Note" class="form-control" disabled></InputTextArea>
+                </div>
                 }
-                @if (showList1)
+                @if (ShowList1)
                 {
-                    <div class="form-group">
-                        <InputTextArea id="List1" @bind-Value="game.ListPlayer1" class="form-control" disabled></InputTextArea>
-                    </div>
+                <div class="form-group">
+                    <InputTextArea id="List1" @bind-Value="@Game.ListPlayer1" class="form-control" disabled></InputTextArea>
+                </div>
                 }
-                @if (showList2)
+                @if (ShowList2)
                 {
-                    <div class="form-group">
-                        <InputTextArea id="List2" @bind-Value="game.ListPlayer2" class="form-control" disabled></InputTextArea>
-                    </div>
+                <div class="form-group">
+                    <InputTextArea id="List2" @bind-Value="@Game.ListPlayer2" class="form-control" disabled></InputTextArea>
+                </div>
                 }
             </div>
         </div>
     </EditForm>
 </div>
 
-@code {
-    [Parameter]
-    public int id { get; set; }
-
-    Game game;
-    bool showNote = true;
-    bool showList1 = false;
-    bool showList2 = false;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        game = await GameDataAccessProvider.GetGame(id);
-    }
-
-    void ChangeNoteView()
-    {
-        showNote = true;
-        showList1 = false;
-        showList2 = false;
-    }
-
-    void ChangeList1View()
-    {
-        showNote = false;
-        showList1 = true;
-        showList2 = false;
-    }
-    
-    void ChangeList2View()
-    {
-        showNote = false;
-        showList1 = false;
-        showList2 = true;
-    }
-}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }

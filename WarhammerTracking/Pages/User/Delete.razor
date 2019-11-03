@@ -1,69 +1,27 @@
 @page "/user/delete/{id}"
-@using Microsoft.AspNetCore.Components
-@using Microsoft.Extensions.Localization
-@using WarhammerTracking.Data
 @attribute [Authorize(Roles = "Admin")]
-@inject UserDataAccessProvider UserDataAccessProvider
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<Delete> L
+@inherits DeleteUser
 
-<h1>@L["Users"] - @L["Delete"]</h1>
+<h1>@L.GetLocalization("Users") - @L.GetLocalization("Delete")</h1>
 <div class="alert alert-danger" role="alert">
-@L["DeleteMessage"] @L["user_single"] ?
+    @L.GetLocalization("DeleteMessage") @L.GetLocalization("user_single") ?
 </div>
 
 <div class="shadow-lg rounded form-box">
-<div class="row">
-    <EditForm Model="user" OnSubmit=@FormSubmit>
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group form-inline">
-            <label for="username">@L["UserName"]</label>
-            <InputText id="username" @bind-Value="user.UserName" disabled/>
-        </div>
-        <div class="form-group form-inline">
-            <label for="email">@L["Email"]</label>
-            <InputText id="email" @bind-Value="user.Email" disabled/>
-        </div>
-        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
-        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
-    </EditForm>
+    <div class="row">
+        <EditForm Model="ApplicationUser" OnSubmit="@FormSubmit">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="form-group form-inline">
+                <label for="username">@L.GetLocalization("UserName")</label>
+                <InputText id="username" @bind-Value="@ApplicationUser.UserName" disabled/>
+            </div>
+            <div class="form-group form-inline">
+                <label for="email">@L.GetLocalization("Email")</label>
+                <InputText id="email" @bind-Value="@ApplicationUser.Email" disabled/>
+            </div>
+            <button class="btn btn-primary" type="submit">@L.GetLocalization("Submit")</button>
+            <input type="button" value="@L.GetLocalization("Cancel")" @onclick="@Cancel" class="btn btn-secondary"/>
+        </EditForm>
+    </div>
 </div>
-</div>
-@code {
-    [Parameter]
-    public string id { get; set; }
-    
-    ApplicationUser user;
-
-    protected override async Task OnInitializedAsync()
-    {
-        user = await UserDataAccessProvider.GetUser(id);
-    }
-
-    private void DeleteUser()
-    {
-        UserDataAccessProvider.DeleteUser(id);
-        NavigationManager.NavigateTo("user");
-    }
-
-    private void Cancel()
-    {
-        NavigationManager.NavigateTo("user");
-    }
-    
-    private async void FormSubmit(EditContext editContext)
-    {
-        if (editContext.Validate())
-        {
-            Console.WriteLine("Success");
-            await UserDataAccessProvider.DeleteUser(id);
-            NavigationManager.NavigateTo("user");
-        }
-        else
-        {
-            Console.WriteLine("Fail");
-        }
-    }
-
-}

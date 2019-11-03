@@ -1,56 +1,28 @@
 @page "/gamerequest/detail/{id:int}"
-@using Microsoft.AspNetCore.Components
-@using Microsoft.Extensions.Localization
-@using WarhammerTracking.Data
-@using WarhammerTracking.Data.Game
-@using WarhammerTracking.GameRequest
 @attribute [Authorize(Roles = "User,Admin")]
-@inject GameRequestDataAccessProvider GameRequestDataAccessProvider
-@inject UserDataAccessProvider UserDataAccessProvider
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<Detail> L
+@inherits DetailGameRequest
 
-<h1>@L["GameRequests"] - @L["Detail"]</h1>
+<h1>@L.GetLocalization("GameRequests") - @L.GetLocalization("Detail")</h1>
 <div class="shadow-lg rounded form-box">
-<div class="row">
-    <div class="col-md-12">
-    <EditForm Model="GameRequest">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group form-inline">
-            <label for="Date">@L["Date"]</label>
-            <InputDate id="Date" @bind-Value="GameRequest.Date" disabled/>
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm Model="GameRequest">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="form-group form-inline">
+                    <label for="Date">@L.GetLocalization("Date")</label>
+                    <InputDate id="Date" @bind-Value="GameRequest.Date" disabled/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="Player">@L.GetLocalization("Player")</label>
+                    <InputText id="Player" class="form-control" @bind-Value="GameRequest.Player.UserName" disabled/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="Expired">@L.GetLocalization("Expired")</label>
+                    <InputCheckbox id="Expired" class="form-control" @bind-Value="GameRequest.Expired" disabled/>
+                </div>
+                <input type="button" value="@L.GetLocalization("CreateGame")" @onclick="@CreateGame" class="btn btn-primary"/>
+            </EditForm>
         </div>
-        <div class="form-group form-inline">
-            <label for="Player">@L["Player"]</label>
-            <InputText id="Player" class="form-control" @bind-Value="GameRequest.Player.UserName" disabled/>
-        </div>        
-        <div class="form-group form-inline">
-            <label for="Expired">@L["Expired"]</label>
-            <InputCheckbox id="Expired" class="form-control" @bind-Value="GameRequest.Expired" disabled/>
-        </div>
-        <input type="button" value="@L["CreateGame"]" @onclick="CreateGame" class="btn btn-primary"/>
-    </EditForm>
     </div>
 </div>
-</div>
-
-@code {
-    [Parameter]
-    public int id { get; set; }
-    GameRequest GameRequest;
-
-    protected override async Task OnInitializedAsync()
-    {
-        GameRequest = await GameRequestDataAccessProvider.GetRequestGame(id);
-    }
-
-    private async void CreateGame()
-    {
-        ApplicationUser CurrentUser = await UserDataAccessProvider.GetCurrentUser();
-        GameRequest.Expired = true;
-        await GameRequestDataAccessProvider.UpdateGameRequest(GameRequest);
-        NavigationManager.NavigateTo("game/add/"+GameRequest.Player.Id+"/"+CurrentUser.Id+"/"+GameRequest.Date.ToString("dd-MM-yyyy"));
-    }
-
-}

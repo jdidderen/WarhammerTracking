@@ -1,0 +1,9 @@
+@page "/admin"
+@attribute  [Authorize(Roles = "Admin")]
+@inherits AdminPanelPage
+
+<h1>@L.GetLocalization("AdminPanel")</h1>
+
+<div class="shadow-lg rounded form-box">
+    <button @onclick="@DownloadXml" class="btn btn-primary">Download XML</button>
+</div>

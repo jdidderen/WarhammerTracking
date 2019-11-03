@@ -1,0 +1,42 @@
+@page "/unit/detail/{id:int}"
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits DetailUnit
+
+<h1>@L.GetLocalization("Units") - @L.GetLocalization("Detail")</h1>
+<div class="shadow-lg rounded form-box">
+    <div class="row">
+        <EditForm Model="Unit">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="form-group form-inline">
+                <label for="Name">@L.GetLocalization("Name")</label>
+                <InputText id="Name" @bind-Value="@Unit.Name" disabled/>
+            </div>
+            <div class="form-group form-inline">
+                <label for="Categories">@L.GetLocalization("Categories")</label>
+                <select multiple class="form-control" id="Categories">
+                    @if (Unit.Categories != null)
+                    {
+                    @foreach (var category in Unit.Categories)
+                    {
+                    <option>@category.Category.Name</option>
+                    }
+                    }
+
+                </select>
+            </div>
+            <div class="form-group form-inline">
+                <label for="Keywords">@L.GetLocalization("Keywords")</label>
+                <select multiple class="form-control" id="Keywords">
+                    @if (Unit.Keywords != null)
+                    {
+                    @foreach (var keyword in Unit.Keywords)
+                    {
+                    <option>@keyword.Keyword.Name</option>
+                    }
+                    }
+                </select>
+            </div>
+        </EditForm>
+    </div>
+</div>

@@ -1,105 +1,40 @@
 @page "/gamerequest"
-@using System.Linq.Expressions
-@using Microsoft.Extensions.Localization
-@using WarhammerTracking.Data
-@using WarhammerTracking.Data.Game
-@using WarhammerTracking.GameRequest
 @attribute [Authorize(Roles = "User,Admin")]
-@inject GameRequestDataAccessProvider GameRequestDataAccessProvider
-@inject UserDataAccessProvider UserDataAccessProvider
-@inject IStringLocalizer<List> L
-
-<h1>@L["GameRequests"]</h1>
+@inherits ListGameRequest
+<h1>@L.GetLocalization("GameRequests")</h1>
 <div class="shadow-lg rounded form-box">
-<div class="col-md-12">
-    <div class="row" style="margin-bottom: 10px;">
-        <a href="/gamerequest/add" class="btn btn-primary">@L["Add"]</a>
-    </div>
-    <div class="row">
-    <DataGrid Items="_gameRequests" PageSize="5">
-        <Filters>
-            <DataGridFilter Name="@L["Reset"]" Expression="@ResetFilter"></DataGridFilter>
-            <DataGridFilter Name="@L["OthersFilter"]" Expression="@AllFilter"></DataGridFilter>
-            <DataGridFilter Name="@L["MyFilter"]" Expression="@MyFilter"></DataGridFilter>
-            <DataGridFilter Name="@L["ExpiredFilter"]" Expression="@ExpiredFilter"></DataGridFilter>
-        </Filters>
-        <Column>
-            <DataGridColumn Items="@_gameRequests" ColumnName="Date" DisplayColumnName="@L["Date"]" Size="20"></DataGridColumn> 
-            <DataGridColumn Items="@_gameRequests" ColumnName="PlayerUserName" DisplayColumnName="@L["Player"]" Size="20"></DataGridColumn> 
-            <DataGridColumn Items="@_gameRequests" ColumnName="Expired" DisplayColumnName="@L["Expired"]" Size="5"></DataGridColumn> 
-            <th>@L["Actions"]</th>
-        </Column>
-        <GridRow >
-            <td>@context.Date.ToString("dd/MM/yyyy")</td>
-            <td>@context.PlayerUserName</td>
-            <td><input type="checkbox" @bind="@context.Expired" disabled/></td>
-            <td>
-                <a href="/gamerequest/detail/@context.id" class="btn btn-primary">@L["Detail"]</a>
-                <a href="/gamerequest/edit/@context.id" class="btn btn-primary">@L["Edit"]</a>
-                <a href="/gamerequest/delete/@context.id" class="btn btn-danger">@L["Delete"]</a>
-            </td>
-        </GridRow>
-    </DataGrid>
-</div>
-</div>
-</div>
-}
-
-@code {
-    GameRequest[] _gameRequests;
-    ApplicationUser user;
-
-    private Expression<Func<GameRequest,bool>> AllFilter
-    {
-        get
-        {
-            var param = Expression.Parameter(typeof(GameRequest), "gr");
-            return Expression.Lambda<Func<GameRequest,bool>>(Expression.And(Expression.NotEqual(
-                Expression.Property(param, "Player"),
-                Expression.Constant(user)),Expression.IsFalse(Expression.Property(param,"Expired")))
-                ,param);
-            
-        }
-    }
-
-    private Expression<Func<GameRequest,bool>> MyFilter
-    {
-        get
-        {
-            var param = Expression.Parameter(typeof(GameRequest), "gr");
-            return Expression.Lambda<Func<GameRequest,bool>>(Expression.And(Expression.Equal(
-                Expression.Property(param, "Player"),
-                Expression.Constant(user)),Expression.IsFalse(Expression.Property(param,"Expired")))
-                ,param);
-            
-        }
-    }
-    
-    private Expression<Func<GameRequest,bool>> ExpiredFilter
-    {
-        get
-        {
-            var param = Expression.Parameter(typeof(GameRequest), "gr");
-            return Expression.Lambda<Func<GameRequest,bool>>(Expression.IsTrue(Expression.Property(param,"Expired"))
-                ,param);
-            
-        }
-    }
-    
-    private Expression<Func<GameRequest,bool>> ResetFilter
-    {
-        get
-        {
-            var param = Expression.Parameter(typeof(GameRequest), "gr");
-            return Expression.Lambda<Func<GameRequest,bool>>(Expression.Constant(true), param);
-        }
-        
-    }
-    
-    protected override async Task OnInitializedAsync()
-    {
-        user = await UserDataAccessProvider.GetCurrentUser();
-        _gameRequests = await GameRequestDataAccessProvider.ListGameRequests(user);
-    }
-
-}
+    <div class="col-md-12">
+        <div class="row" style="margin-bottom: 10px;">
+            <a href="/gamerequest/add" class="btn btn-primary">@L.GetLocalization("Add")</a>
+        </div>
+        <div class="row">
+            <DataGrid  Items="@GameRequests" TItem="Data.Models.GameRequest" PageSize="5">
+                <Filters>
+                    <DataGridFilter Name="@L.GetLocalization("Reset")" Expression="@ResetFilter"></DataGridFilter>
+                    <DataGridFilter Name="@L.GetLocalization("OthersRequestFilter")" Expression="@AllFilter"></DataGridFilter>
+                    <DataGridFilter Name="@L.GetLocalization("MyFilter")" Expression="@MyFilter"></DataGridFilter>
+                    <DataGridFilter Name="@L.GetLocalization("ExpiredFilter")" Expression="@ExpiredFilter"></DataGridFilter>
+                </Filters>
+                <Column>
+                    <DataGridColumn TItem="Data.Models.GameRequest" ColumnName="Date" DisplayColumnName="@L.GetLocalization("Date")"></DataGridColumn>
+                    <DataGridColumn TItem="Data.Models.GameRequest" ColumnName="PlayerUserName" DisplayColumnName="@L.GetLocalization("Player")"></DataGridColumn>
+                    <DataGridColumn TItem="Data.Models.GameRequest" ColumnName="Expired" DisplayColumnName="@L.GetLocalization("Expired")"></DataGridColumn>
+                    <th>@L.GetLocalization("Actions")</th>
+                </Column>
+                <GridRow >
+                    <td>@context.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@context.PlayerUserName</td>
+                    <td>
+                        <input type="checkbox" @bind="@context.Expired" disabled/>
+                               </td>
+                               <td>
+                                   <a href="/gamerequest/detail/@context.Id" class="btn btn-primary">@L.GetLocalization("Detail")</a>
+                                   <a href="/gamerequest/edit/@context.Id" class="btn btn-primary">@L.GetLocalization("Edit")</a>
+                                   <a href="/gamerequest/delete/@context.Id" class="btn btn-danger">@L.GetLocalization("Delete")</a>
+                               </td>
+                               </GridRow>
+                               </DataGrid>
+                               </div>
+                               </div>
+                               </div>
+                               }

@@ -1,0 +1,21 @@
+@page "/unit/edit/{id:int}"
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits UpdateUnit
+
+<h1>@L.GetLocalization("Units") - @L.GetLocalization("Update")</h1>
+
+
+<div class="shadow-lg rounded form-box">
+    <div class="row">
+        <EditForm Model="Unit" OnSubmit="@FormSubmit">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="form-group form-inline">
+                <label for="Name">@L.GetLocalization("Name")</label>
+                <InputText id="Name" @bind-Value="@Unit.Name"/>
+            </div>
+            <button class="btn btn-primary" type="submit">@L.GetLocalization("Submit")</button>
+            <input type="button" value="@L.GetLocalization("Cancel")" @onclick="@Cancel" class="btn btn-secondary"/>
+        </EditForm>
+    </div>
+</div>

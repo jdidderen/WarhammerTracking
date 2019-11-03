@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Armies" xml:space="preserve">
+        <value>Armées</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+        <value>Ajouter</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nom</value>
+    </data>
+    <data name="Submit" xml:space="preserve">
+        <value>Sauvegarder</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Annuler</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Supprimer</value>
+    </data>
+    <data name="DeleteMessage" xml:space="preserve">
+        <value>Êtes-vous sur de vouloir supprimer cette</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Actions</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Éditer</value>
+    </data>
+    <data name="Update" xml:space="preserve">
+        <value>Mise à jour</value>
+    </data>
+    <data name="GameRequestFrom" xml:space="preserve">
+        <value>Demande de</value>
+    </data>
+    <data name="NoEvent" xml:space="preserve">
+        <value>Aucuns événements</value>
+    </data>
+    <data name="Date" xml:space="preserve">
+        <value>Date</value>
+    </data>
+    <data name="Games" xml:space="preserve">
+        <value>Parties</value>
+    </data>
+    <data name="TableNumber" xml:space="preserve">
+        <value>Numéro de table</value>
+    </data>
+    <data name="ScenarioNumber" xml:space="preserve">
+        <value>Numéro de scénario</value>
+    </data>
+    <data name="Location" xml:space="preserve">
+        <value>Lieu</value>
+    </data>
+    <data name="Player1" xml:space="preserve">
+        <value>Joueur 1</value>
+    </data>
+    <data name="Army" xml:space="preserve">
+        <value>Armée</value>
+    </data>
+    <data name="CP" xml:space="preserve">
+        <value>CP</value>
+    </data>
+    <data name="Player2" xml:space="preserve">
+        <value>Joueur 2</value>
+    </data>
+    <data name="Note" xml:space="preserve">
+        <value>Note</value>
+    </data>
+    <data name="List" xml:space="preserve">
+        <value>Liste</value>
+    </data>
+    <data name="Player1Army" xml:space="preserve">
+        <value>Joueur 1 / Armée</value>
+    </data>
+    <data name="Player2Army" xml:space="preserve">
+        <value>Joueur 2 / Armée</value>
+    </data>
+    <data name="Player1Score" xml:space="preserve">
+        <value>Joueur 1 / Score</value>
+    </data>
+    <data name="Player2Score" xml:space="preserve">
+        <value>Joueur 2 / Score</value>
+    </data>
+    <data name="Maelstrom" xml:space="preserve">
+        <value>Maelstrom</value>
+    </data>
+    <data name="Eternal" xml:space="preserve">
+        <value>Eternal</value>
+    </data>
+    <data name="KP" xml:space="preserve">
+        <value>KP</value>
+    </data>
+    <data name="Others" xml:space="preserve">
+        <value>Autres</value>
+    </data>
+    <data name="Total" xml:space="preserve">
+        <value>Total</value>
+    </data>
+    <data name="CpUsed" xml:space="preserve">
+        <value>CP utilisés</value>
+    </data>
+    <data name="Game" xml:space="preserve">
+        <value>partie</value>
+    </data>
+    <data name="Detail" xml:space="preserve">
+        <value>Détail</value>
+    </data>
+    <data name="Reset" xml:space="preserve">
+        <value>Reset</value>
+    </data>
+    <data name="MyFilter" xml:space="preserve">
+        <value>Mes parties</value>
+    </data>
+    <data name="AddLine" xml:space="preserve">
+        <value>Ajouter une ligne</value>
+    </data>
+    <data name="GameRequests" xml:space="preserve">
+        <value>Demandes de partie</value>
+    </data>
+    <data name="GameRequest" xml:space="preserve">
+        <value>demande de partie</value>
+    </data>
+    <data name="Player" xml:space="preserve">
+        <value>Joueur</value>
+    </data>
+    <data name="Expired" xml:space="preserve">
+        <value>Expirée</value>
+    </data>
+    <data name="CreateGame" xml:space="preserve">
+        <value>Créer une partie</value>
+    </data>
+    <data name="OthersRequestFilter" xml:space="preserve">
+        <value>Demandes d'autres joueurs</value>
+    </data>
+    <data name="ExpiredFilter" xml:space="preserve">
+        <value>Demandes expirées</value>
+    </data>
+    <data name="WinningFilter" xml:space="preserve">
+        <value>Mes parties gagnantes</value>
+    </data>
+    <data name="LosingFilter" xml:space="preserve">
+        <value>Mes parties perdantes</value>
+    </data>
+    <data name="DrawFilter" xml:space="preserve">
+        <value>Mes parties avec égalité</value>
+    </data>
+    <data name="Objectives" xml:space="preserve">
+        <value>Objectifs</value>
+    </data>
+    <data name="Title" xml:space="preserve">
+        <value>Titre</value>
+    </data>
+    <data name="Done" xml:space="preserve">
+        <value>Terminé</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="Objective" xml:space="preserve">
+        <value>objectif</value>
+    </data>
+    <data name="OthersObjectiveFilter" xml:space="preserve">
+        <value>Objectifs d'autres</value>
+    </data>
+    <data name="MyObjectiveFilter" xml:space="preserve">
+        <value>Mes objectifs</value>
+    </data>
+    <data name="DoneObjectiveFilter" xml:space="preserve">
+        <value>Objectifs terminés</value>
+    </data>
+    <data name="Units" xml:space="preserve">
+        <value>Unités</value>
+    </data>
+    <data name="Categories" xml:space="preserve">
+        <value>Catégories</value>
+    </data>
+    <data name="Keywords" xml:space="preserve">
+        <value>Mot-Clés</value>
+    </data>
+    <data name="Users" xml:space="preserve">
+        <value>Utilisateurs</value>
+    </data>
+    <data name="Create" xml:space="preserve">
+        <value>Création</value>
+    </data>
+    <data name="UserName" xml:space="preserve">
+        <value>Nom d'utilisateur</value>
+    </data>
+    <data name="Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="PhoneNumber" xml:space="preserve">
+        <value>Numéro de téléphone</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Mot de passe</value>
+    </data>
+    <data name="ConfirmPassword" xml:space="preserve">
+        <value>Confirmation de mot de passe</value>
+    </data>
+    <data name="Role" xml:space="preserve">
+        <value>Rôle</value>
+    </data>
+    <data name="User" xml:space="preserve">
+        <value>Utilisateur</value>
+    </data>
+    <data name="Admin" xml:space="preserve">
+        <value>Administrateur</value>
+    </data>
+    <data name="user_single" xml:space="preserve">
+        <value>utilisateur</value>
+    </data>
+    <data name="AdminPanel" xml:space="preserve">
+        <value>Panneau d'administration</value>
+    </data>
+    <data name="SearchingFor" xml:space="preserve">
+        <value>Qu'est-ce que vous chercher ?</value>
+    </data>
+</root>

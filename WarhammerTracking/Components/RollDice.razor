@@ -1,112 +1,113 @@
-@using Microsoft.AspNetCore.Components
 @inject IModalService ModalService
 <div class="row col-md-12 form-group form-inline" style="margin-bottom: 20px;">
     <label for="NumberRoll">Number of rolls</label>
-    <input type="number" id="NumberRoll" @bind="@NumberRoll" />
-</div>
-<div class="row" style="margin-bottom: 20px;">
-    <div class="col-md-2">
-        <div class="row" style="justify-content: center">
-            @Roll1 x
-        </div>
-        <div class="row">
-            <img src="images/dice1.png" class="mx-auto d-block"/>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="row" style="justify-content: center">
-            @Roll2 x
-        </div>
-        <div class="row">
-            <img src="images/dice2.png" class="mx-auto d-block"/>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="row" style="justify-content: center">
-            @Roll3 x
-        </div>
-        <div class="row">
-            <img src="images/dice3.png" class="mx-auto d-block"/>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="row" style="justify-content: center">
-            @Roll4 x
-        </div>
-        <div class="row">
-            <img src="images/dice4.png" class="mx-auto d-block"/>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="row" style="justify-content: center">
-            @Roll5 x
-        </div>
-        <div class="row">
-            <img src="images/dice5.png" class="mx-auto d-block"/>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="row" style="justify-content: center">
-            @Roll6 x
-        </div>
-        <div class="row">
-            <img src="images/dice6.png" class="mx-auto d-block"/>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <button @onclick="@RollTheDice" class="btn btn-primary">Roll the Dices</button>
-    <button @onclick="@Cancel" class="btn btn-secondary">Cancel</button>
-</div>
+    <input type="number" id="NumberRoll" @bind="@NumberRoll"/>
+           </div>
+           <div class="row" style="margin-bottom: 20px;">
+               <div class="col-md-2">
+                   <div class="row" style="justify-content: center">
+                       @Roll1 x
+                   </div>
+                   <div class="row">
+                       <img src="images/dice1.png" class="mx-auto d-block" alt="Dice1"/>
+                   </div>
+               </div>
+               <div class="col-md-2">
+                   <div class="row" style="justify-content: center">
+                       @Roll2 x
+                   </div>
+                   <div class="row">
+                       <img src="images/dice2.png" class="mx-auto d-block" alt="Dice2"/>
+                   </div>
+               </div>
+               <div class="col-md-2">
+                   <div class="row" style="justify-content: center">
+                       @Roll3 x
+                   </div>
+                   <div class="row">
+                       <img src="images/dice3.png" class="mx-auto d-block" alt="Dice3"/>
+                   </div>
+               </div>
+               <div class="col-md-2">
+                   <div class="row" style="justify-content: center">
+                       @Roll4 x
+                   </div>
+                   <div class="row">
+                       <img src="images/dice4.png" class="mx-auto d-block" alt="Dice4"/>
+                   </div>
+               </div>
+               <div class="col-md-2">
+                   <div class="row" style="justify-content: center">
+                       @Roll5 x
+                   </div>
+                   <div class="row">
+                       <img src="images/dice5.png" class="mx-auto d-block" alt="Dice5"/>
+                   </div>
+               </div>
+               <div class="col-md-2">
+                   <div class="row" style="justify-content: center">
+                       @Roll6 x
+                   </div>
+                   <div class="row">
+                       <img src="images/dice6.png" class="mx-auto d-block" alt="Dice6"/>
+                   </div>
+               </div>
+           </div>
+           <div class="row">
+               <button @onclick="@RollTheDice" class="btn btn-primary">Roll the Dices</button>
+               <button @onclick="@Cancel" class="btn btn-secondary">Cancel</button>
+           </div>
 
-@code {
+           @code {
 
-    [CascadingParameter] ModalParameters Parameters { get; set; }
-    
-    int NumberRoll { get; set; } = 1;
-    int Roll1 { get; set; }
-    int Roll2 { get; set; }
-    int Roll3 { get; set; }
-    int Roll4 { get; set; }
-    int Roll5 { get; set; }
-    int Roll6 { get; set; }
+               [CascadingParameter]
+               ModalParameters Parameters { get; set; }
 
-    void RollTheDice()
-    {
-        Random randomRoll = new Random ();
-        Roll1 = Roll2 = Roll3 = Roll4 = Roll5 = Roll6 = 0;
-        for (int index = 1; index <= NumberRoll; index++)
-        {
-            int result = randomRoll.Next(1, 7);
-            if (result == 1)
-            {
-                Roll1 += 1;
-            }
-            if (result == 2)
-            {
-                Roll2 += 1;
-            }
-            if (result == 3)
-            {
-                Roll3 += 1;
-            }
-            if (result == 4)
-            {
-                Roll4 += 1;
-            }
-            if (result == 5)
-            {
-                Roll5 += 1;
-            }
-            if (result == 6)
-            {
-                Roll6 += 1;
-            }
-        }
-    }
+               int NumberRoll { get; set; } = 1;
+               int Roll1 { get; set; }
+               int Roll2 { get; set; }
+               int Roll3 { get; set; }
+               int Roll4 { get; set; }
+               int Roll5 { get; set; }
+               int Roll6 { get; set; }
 
-    void Cancel()
-    {
-        ModalService.Cancel();
-    }
-}
+               void RollTheDice()
+               {
+                   var randomRoll = new Random();
+                   Roll1 = Roll2 = Roll3 = Roll4 = Roll5 = Roll6 = 0;
+                   for (var index = 1; index <= NumberRoll; index++)
+                   {
+                       var result = randomRoll.Next(1, 7);
+                       switch (result)
+                       {
+                           case 1:
+                               Roll1 += 1;
+                               break;
+                           case 2:
+                               Roll2 += 1;
+                               break;
+                           case 3:
+                               Roll3 += 1;
+                               break;
+                           case 4:
+                               Roll4 += 1;
+                               break;
+                           case 5:
+                               Roll5 += 1;
+                               break;
+                           case 6:
+                               Roll6 += 1;
+                               break;
+                           default:
+                               Console.WriteLine("Error");
+                               break;
+                       }
+                   }
+               }
+
+               void Cancel()
+               {
+                   ModalService.Cancel();
+               }
+
+           }

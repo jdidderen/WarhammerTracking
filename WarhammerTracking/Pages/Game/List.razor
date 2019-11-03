@@ -1,90 +1,50 @@
 @page "/game"
-@using System.Linq.Expressions
-@using Microsoft.Extensions.Localization
-@using WarhammerTracking.Data
-@using WarhammerTracking.Data.Game
 @attribute [Authorize(Roles = "User,Admin")]
-@inject GameDataAccessProvider GameDataAccessProvider
-@inject UserDataAccessProvider UserDataAccessProvider
-@inject IStringLocalizer<List> L
+@inherits ListGame
 
-<h1>@L["Games"]</h1>
-    <div class="shadow-lg rounded form-box">
+<h1>@L.GetLocalization("Games")</h1>
+<div class="shadow-lg rounded form-box">
     <div class="row">
-<div class="col-md-12">
-    <div class="row" style="margin-bottom: 10px;">
-        <a href="/game/add" class="btn btn-primary">@L["Add"]</a>
+        <div class="col-md-12">
+            <div class="row" style="margin-bottom: 10px;">
+                <a href="/game/add" class="btn btn-primary">@L.GetLocalization("Add")</a>
+            </div>
+            <div class="row">
+                <DataGrid  Items="@Games" TItem="Data.Models.Game" PageSize="5" FilterList="@FilterList">
+                    <Filters>
+                        <DataGridFilter Name="@L.GetLocalization("Reset")" Expression="@ResetFilter"></DataGridFilter>
+                        <DataGridFilter Name="@L.GetLocalization("MyFilter")" Expression="@MyFilter"></DataGridFilter>
+                        <DataGridFilter Name="@L.GetLocalization("WinningFilter")" Expression="@WinningFilter"></DataGridFilter>
+                        <DataGridFilter Name="@L.GetLocalization("LosingFilter")" Expression="@LosingFilter"></DataGridFilter>
+                        <DataGridFilter Name="@L.GetLocalization("DrawFilter")" Expression="@DrawFilter"></DataGridFilter>
+                    </Filters>
+                    <Column>
+                        <DataGridColumn TItem="Data.Models.Game" ColumnName="Date" DisplayColumnName="@L.GetLocalization("Date")" ></DataGridColumn>
+                        <DataGridColumn TItem="Data.Models.Game" ColumnName="Player1Name" DisplayColumnName="@L.GetLocalization("Player1")" ></DataGridColumn>
+                        <DataGridColumn TItem="Data.Models.Game" ColumnName="ArmyPlayer1Name" DisplayColumnName="@L.GetLocalization("Player1Army")"></DataGridColumn>
+                        <DataGridColumn TItem="Data.Models.Game" ColumnName="Player2Name" DisplayColumnName="@L.GetLocalization("Player2")"></DataGridColumn>
+                        <DataGridColumn TItem="Data.Models.Game" ColumnName="ArmyPlayer2Name" DisplayColumnName="@L.GetLocalization("Player1Army")"></DataGridColumn>
+                        <DataGridColumn TItem="Data.Models.Game" ColumnName="Player 1 / Score" DisplayColumnName="@L.GetLocalization("Player1Score")"></DataGridColumn>
+                        <DataGridColumn TItem="Data.Models.Game" ColumnName="Player 2 / Score" DisplayColumnName="@L.GetLocalization("Player2Score")"></DataGridColumn>
+                        <th>Actions</th>
+                    </Column>
+                    <GridRow >
+                        <td>@context.Date.ToString("dd/MM/yyyy")</td>
+                        <td>@context.Player1Name</td>
+                        <td>@context.ArmyPlayer1Name</td>
+                        <td>@context.Player2Name</td>
+                        <td>@context.ArmyPlayer2Name</td>
+                        <td>@context.ScorePlayer1</td>
+                        <td>@context.ScorePlayer2</td>
+                        <td>
+                            <a href="/game/detail/@context.Id" class="btn btn-primary">@L.GetLocalization("Detail")</a>
+                            <a href="/game/edit/@context.Id" class="btn btn-primary">@L.GetLocalization("Edit")</a>
+                            <a href="/game/delete/@context.Id" class="btn btn-danger">@L.GetLocalization("Delete")</a>
+                        </td>
+                    </GridRow>
+
+                </DataGrid>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <DataGrid Items="games" PageSize="5">
-        <Filters>
-            <DataGridFilter Name="@L["Reset"]" Expression="@ResetFilter"></DataGridFilter>
-            <DataGridFilter Name="@L["MyFilter"]" Expression="@MyFilter"></DataGridFilter>
-        </Filters>
-            <Column>
-                <DataGridColumn Items="@games" ColumnName="Date" DisplayColumnName="@L["Date"]" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player1Name" DisplayColumnName="@L["Player1"]" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="ArmyPlayer1Name" DisplayColumnName="@L["Player1Army"]" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player2Name" DisplayColumnName="@L["Player2"]" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="ArmyPlayer2Name" DisplayColumnName="@L["Player1Army"]" Size="10"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player 1 / Score" DisplayColumnName="@L["Player1Score"]" Size="5"></DataGridColumn> 
-                <DataGridColumn Items="@games" ColumnName="Player 2 / Score" DisplayColumnName="@L["Player2Score"]" Size="5"></DataGridColumn> 
-                <th>Actions</th>
-            </Column>
-            <GridRow >
-                <td>@context.Date</td>
-                <td>@context.Player1Name</td>
-                <td>@context.ArmyPlayer1Name</td>
-                <td>@context.Player2Name</td>
-                <td>@context.ArmyPlayer2Name</td>
-                <td>@context.ScorePlayer1</td>
-                <td>@context.ScorePlayer2</td>
-                <td>
-                    <a href="/game/detail/@context.id" class="btn btn-primary">@L["Detail"]</a>
-                    <a href="/game/edit/@context.id" class="btn btn-primary">@L["Edit"]</a>
-                    <a href="/game/delete/@context.id" class="btn btn-danger">@L["Delete"]</a>
-                </td>
-            </GridRow>
-    
-        </DataGrid>
-    </div>
 </div>
-</div>
-</div>
-
-@code {
-    Game[] games;
-    ApplicationUser user;
-
-    private Expression<Func<Game,bool>> MyFilter
-    {
-        get
-        {
-            var param = Expression.Parameter(typeof(Game), "gr");
-            return Expression.Lambda<Func<Game,bool>>(Expression.Or(Expression.Equal(
-                Expression.Property(param, "Player1"),
-                Expression.Constant(user)),Expression.Equal(
-                    Expression.Property(param, "Player2"),
-                    Expression.Constant(user)))
-                ,param);
-            
-        }
-    }
-
-    private Expression<Func<Game,bool>> ResetFilter
-    {
-        get
-        {
-            var param = Expression.Parameter(typeof(Game), "gr");
-            return Expression.Lambda<Func<Game,bool>>(Expression.Constant(true), param);
-        }
-        
-    }
-    
-    protected override async Task OnInitializedAsync()
-    {
-        user = await UserDataAccessProvider.GetCurrentUser();
-        games = await GameDataAccessProvider.ListGame();
-    }
-
-}

@@ -1,14 +1,14 @@
-﻿@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<LoginDisplay> L
+﻿@using WarhammerTracking.Services
+@inject LocalizationService L
 
 <AuthorizeView>
     <Authorized>
-        <a href="Identity/Account/Manage">@L["Hello"], @context.User.Identity.Name!</a>
+        <a href="Identity/Account/Manage">@L.GetLocalization("Hello"), @context.User.Identity.Name!</a>
         <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">@L["Logout"]</button>
+            <button type="submit" class="nav-link btn btn-link">@L.GetLocalization("Logout")</button>
         </form>
     </Authorized>
     <NotAuthorized>
-        <a href="Identity/Account/Login">@L["Login"]</a>
+        <a href="Identity/Account/Login">@L.GetLocalization("Login")</a>
     </NotAuthorized>
 </AuthorizeView>

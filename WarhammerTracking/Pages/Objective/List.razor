@@ -1,0 +1,43 @@
+@page "/objective"
+@attribute [Authorize(Roles = "User,Admin")]
+@inherits ListObjective
+
+<h1>@L.GetLocalization("Objectives")</h1>
+<div class="shadow-lg rounded form-box">
+    <div class="col-md-12">
+        <div class="row" style="margin-bottom: 10px;">
+            <a href="/objective/add" class="btn btn-primary">@L.GetLocalization("Add")</a>
+        </div>
+        <div class="row">
+            <DataGrid Items="Objectives" TItem="Data.Models.Objective" PageSize="5">
+                <Filters>
+                    <DataGridFilter Name="@L.GetLocalization("Reset")" Expression="@ResetFilter"></DataGridFilter>
+                    <DataGridFilter Name="@L.GetLocalization("OthersObjectiveFilter")" Expression="@AllFilter"></DataGridFilter>
+                    <DataGridFilter Name="@L.GetLocalization("MyObjectiveFilter")" Expression="@MyFilter"></DataGridFilter>
+                    <DataGridFilter Name="@L.GetLocalization("DoneObjectiveFilter")" Expression="@DoneFilter"></DataGridFilter>
+                </Filters>
+                <Column>
+                    <DataGridColumn TItem="Data.Models.Objective" ColumnName="Date" DisplayColumnName="@L.GetLocalization("Date")"></DataGridColumn>
+                    <DataGridColumn TItem="Data.Models.Objective" ColumnName="PlayerUserName" DisplayColumnName="@L.GetLocalization("Player")"></DataGridColumn>
+                    <DataGridColumn TItem="Data.Models.Objective" ColumnName="Title" DisplayColumnName="@L.GetLocalization("Title")"></DataGridColumn>
+                    <DataGridColumn TItem="Data.Models.Objective" ColumnName="Done" DisplayColumnName="@L.GetLocalization("Done")"></DataGridColumn>
+                    <th>@L.GetLocalization("Actions")</th>
+                </Column>
+                <GridRow >
+                    <td>@context.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@context.PlayerUserName</td>
+                    <td>@context.Title</td>
+                    <td>
+                        <input type="checkbox" @bind="@context.Done" disabled/>
+                    </td>
+                    <td>
+                        <a href="/objective/detail/@context.Id" class="btn btn-primary">@L.GetLocalization("Detail")</a>
+                        <a href="/objective/edit/@context.Id" class="btn btn-primary">@L.GetLocalization("Edit")</a>
+                        <a href="/objective/delete/@context.Id" class="btn btn-danger">@L.GetLocalization("Delete")</a>
+                    </td>
+                </GridRow>
+            </DataGrid>
+        </div>
+    </div>
+</div>
+}

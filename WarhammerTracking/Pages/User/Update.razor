@@ -1,97 +1,46 @@
 @page "/user/edit/{id}"
-@using System.ComponentModel.DataAnnotations
-@using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.Extensions.Localization
-@using WarhammerTracking.Data
 @attribute [Authorize(Roles = "Admin")]
-@inject UserDataAccessProvider UserDataAccessProvider
-@inject NavigationManager NavigationManager
-@inject UserManager<ApplicationUser> UserManager
-@inject SignInManager<ApplicationUser> SignInManager
-@inject IStringLocalizer<Update> L
+@inherits UpdateUser
 
-<h1>@L["Users"] - @L["Update"]</h1>
+<h1>@L.GetLocalization("Users") - @L.GetLocalization("Update")</h1>
 <div class="shadow-lg rounded form-box">
-<div class="row">
-    <div class="col-md-12">
-    <EditForm Model="ApplicationUser" OnSubmit=@FormSubmit>
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group form-inline">
-            <label for="username">@L["UserName"]</label>
-            <InputText id="username" @bind-Value="ApplicationUser.UserName" />
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm Model="ApplicationUser" OnSubmit="@FormSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="form-group form-inline">
+                    <label for="username">@L.GetLocalization("UserName")</label>
+                    <InputText id="username" @bind-Value="@ApplicationUser.UserName"/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="email">@L.GetLocalization("Email")</label>
+                    <InputText id="email" @bind-Value="@ApplicationUser.Email"/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="phone">@L.GetLocalization("PhoneNumber")</label>
+                    <InputText id="phone" @bind-Value="@ApplicationUser.PhoneNumber"/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="password">@L.GetLocalization("Password")</label>
+                    <InputText id="password" type="password" @bind-Value="@ApplicationUser.Password"/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="confirmpassword">@L.GetLocalization("ConfirmPassword")</label>
+                    <InputText id="confirmpassword" type="password" @bind-Value="@ApplicationUser.ConfirmPassword"/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="role">@L.GetLocalization("Role")</label>
+                    <InputSelect id="role" @bind-Value="@Role">
+                        <option value=""></option>
+                        <option value="User">@L.GetLocalization("User")</option>
+                        <option value="Admin">@L.GetLocalization("Admin")</option>
+                    </InputSelect>
+                </div>
+                <button class="btn btn-primary" type="submit">@L.GetLocalization("Submit")</button>
+                <input type="button" value="@L.GetLocalization("Cancel")" @onclick="@Cancel" class="btn btn-secondary"/>
+            </EditForm>
         </div>
-        <div class="form-group form-inline">
-            <label for="email">@L["Email"]</label>
-            <InputText id="email" @bind-Value="ApplicationUser.Email" />
-        </div>
-        <div class="form-group form-inline">
-            <label for="phone">@L["PhoneNumber"]</label>
-            <InputText id="phone" @bind-Value="ApplicationUser.PhoneNumber" />
-        </div>
-        <div class="form-group form-inline">
-            <label for="password">@L["Password"]</label>
-            <InputText id="password" type="password" @bind-Value="ApplicationUser.Password" />
-        </div>
-        <div class="form-group form-inline">
-            <label for="confirmpassword">@L["ConfirmPassword"]</label>
-            <InputText id="confirmpassword" type="password" @bind-Value="ApplicationUser.ConfirmPassword" />
-        </div>      
-        <div class="form-group form-inline">
-            <label for="role">@L["Role"]</label>
-            <InputSelect id="role" @bind-Value="role" >
-                <option value=""></option>
-                <option value="User">@L["User"]</option>
-                <option value="Admin">@L["Admin"]</option>
-            </InputSelect>
-        </div>   
-        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
-        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
-    </EditForm>
     </div>
 </div>
-</div>
-@code {
-    [Parameter]
-    public string id { get; set; }
-    [Required]
-    public string role { get; set; }
-    ApplicationUser ApplicationUser;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        ApplicationUser = await UserDataAccessProvider.GetUser(id);
-        ICollection<string> roles = await UserManager.GetRolesAsync(ApplicationUser);
-        foreach (var rol in roles)
-        {
-            role = rol;
-        }
-    }
 
-    private void Cancel()
-    {
-        NavigationManager.NavigateTo("user");
-    }
-
-    private async void FormSubmit(EditContext editContext)
-    {
-        if (editContext.Validate())
-        {
-            Console.WriteLine("Success");
-            if (!string.IsNullOrEmpty(ApplicationUser.Password) && ApplicationUser.Password == ApplicationUser.ConfirmPassword)
-            {
-                ApplicationUser.PasswordHash = UserManager.PasswordHasher.HashPassword(ApplicationUser,ApplicationUser.Password);
-            }
-            await UserDataAccessProvider.UpdateUser(ApplicationUser);
-            await UserManager.AddToRoleAsync(ApplicationUser, role);
-            NavigationManager.NavigateTo("user");
-        }
-        else
-        {
-            Console.WriteLine("Fail");
-        }
-    }
-    
-
-}

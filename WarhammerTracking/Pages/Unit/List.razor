@@ -1,0 +1,24 @@
+@page "/unit"
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits ListUnit
+
+<h1>@L.GetLocalization("Units")</h1>
+
+<div class="shadow-lg rounded form-box">
+    <a href="/unit/add" class="btn btn-primary">@L.GetLocalization("Add")</a>
+    <DataGrid Items="Units" TItem="Data.Models.Unit" FilterList="@FilterList" PageSize="10">
+        <Column>
+            <DataGridColumn TItem="Data.Models.Unit" ColumnName="Name" DisplayColumnName="@L.GetLocalization("Name")"></DataGridColumn>
+            <th>@L.GetLocalization("Actions")</th>
+        </Column>
+        <GridRow >
+            <td>@context.Name</td>
+            <td>
+                <a href="/unit/detail/@context.Id" class="btn btn-primary">@L.GetLocalization("Detail")</a>
+                <a href="/unit/edit/@context.Id" class="btn btn-primary">@L.GetLocalization("Edit")</a>
+                <a href="/unit/delete/@context.Id" class="btn btn-danger">@L.GetLocalization("Delete")</a>
+            </td>
+        </GridRow>
+
+    </DataGrid>
+</div>

@@ -1,9 +1,11 @@
 ﻿@page
 @using Microsoft.AspNetCore.Identity
-@using WarhammerTracking.Data
+@using WarhammerTracking.Data.Models
 @attribute [IgnoreAntiforgeryToken]
 @inject SignInManager<ApplicationUser> SignInManager
+
 @functions {
+
     public async Task<IActionResult> OnPost()
     {
         if (SignInManager.IsSignedIn(User))
@@ -13,4 +15,5 @@
 
         return Redirect("~/");
     }
+
 }

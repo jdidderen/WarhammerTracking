@@ -1,0 +1,23 @@
+@page "/unit/delete/{id:int}"
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits DeleteUnit
+
+<h1>@L.GetLocalization("Units") - @L.GetLocalization("Delete")</h1>
+<div class="alert alert-danger" role="alert">
+    @L.GetLocalization("DeleteMessage") @L.GetLocalization("Unit") ?
+</div>
+
+<div class="shadow-lg rounded form-box">
+    <div class="row">
+        <EditForm Model="Unit" OnSubmit="@FormSubmit">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="form-group form-inline">
+                <label for="Name">@L.GetLocalization("Name")</label>
+                <InputText id="Name" @bind-Value="@Unit.Name" disabled/>
+            </div>
+            <button class="btn btn-primary" type="submit">@L.GetLocalization("Submit")</button>
+            <input type="button" value="@L.GetLocalization("Cancel")" @onclick="@Cancel" class="btn btn-secondary"/>
+        </EditForm>
+    </div>
+</div>

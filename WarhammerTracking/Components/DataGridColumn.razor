@@ -1,8 +1,6 @@
-@using Microsoft.AspNetCore.Components
-@using WarhammerTracking.Services
-@inject AppState AppState
 @typeparam TItem
 
+<!--suppress SpellCheckingInspection -->
 <style>
 .noselect {
    cursor: pointer;
@@ -17,76 +15,44 @@
 <th class="noselect">
     <span @onclick="@(() => SortTable(ColumnName))">@DisplayColumnName</span>
     <span class="oi @(GetSortStyle(ColumnName))"></span>
-    <br /> 
-    <input size="@Size" @oninput="@((ui) => { Filtering((string)ui.Value, ColumnName); })" /> 
-</th>
+           </th>
 
-@code { 
+           @code {
 
-    [Parameter]
-    public string DisplayColumnName { get; set; } = string.Empty;
-    [Parameter]
-    public string ColumnName { get; set; } 
-    [Parameter]
-    public int Size { get; set; }
-    [CascadingParameter]
-    public DataGrid<TItem> DataGrid { get; set; }  
-    [Parameter]
-    public IEnumerable<TItem> Items { get; set; }
-    private bool IsSortedAscending; 
-    private string PreviousValue { get; set; } = string.Empty; 
-    private void SortTable(string columnName)
-    {
-        if (columnName != DataGrid.CurrentSortColumn)
-        {
-            DataGrid.Items = DataGrid.Items.OrderBy(x => x.GetType().GetProperty(columnName)?.GetValue(x, null)).ToList();
-            DataGrid.CurrentSortColumn = columnName;
-            IsSortedAscending = true;
-            AppState.CallRequestRefresh();
-        }
-        else
-        {
-            if (IsSortedAscending)
-            {
-                DataGrid.Items = DataGrid.Items.OrderByDescending(x => x.GetType().GetProperty(columnName)?.GetValue(x, null)).ToList();
-            }
-            else
-            {
-                DataGrid.Items = DataGrid.Items.OrderBy(x => x.GetType().GetProperty(columnName)?.GetValue(x, null)).ToList();
-            }
-            AppState.CallRequestRefresh();
-            IsSortedAscending = !IsSortedAscending;
-        }
-    }
-    private string GetSortStyle(string columnName)
-    {
-        if (DataGrid.CurrentSortColumn != columnName)
-        {
-            return string.Empty;
-        }
-        if (IsSortedAscending)
-        {
-            return "oi-arrow-top";
-        }
-        else
-        {
-            return "oi-arrow-bottom";
-        }
-    }
-    private void Filtering(string value, string columnName)
-    {
-        DataGrid.FilterDictionary[columnName] = value;
-        if (value.Length < PreviousValue.Length)
-        {
-            DataGrid.Items = Items;
-        }
-        foreach (var column in DataGrid.FilterDictionary)
-        {
-            DataGrid.Items = DataGrid.Items.Where(x => x.GetType().GetProperty(column.Key)?.GetValue(x, null).ToString().IndexOf(column.Value, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-        }
-        AppState.CallRequestRefresh();
-        PreviousValue = value;
-    } 
+               [Parameter]
+               public string DisplayColumnName { get; set; } = string.Empty;
 
+               [Parameter]
+               public string ColumnName { get; set; }
 
-}
+               [CascadingParameter]
+               public DataGrid<TItem> DataGrid { get; set; }
+
+               private bool _isSortedAscending;
+
+               private void SortTable(string columnName)
+               {
+                   if (columnName != DataGrid.CurrentSortColumn)
+                   {
+                       Console.WriteLine("1");
+                       DataGrid.SortTable(columnName,true);
+                       _isSortedAscending = true;
+                   }
+                   else
+                   {
+                       Console.WriteLine("2");
+                       DataGrid.SortTable(columnName, !_isSortedAscending);
+                       _isSortedAscending = !_isSortedAscending;
+                   }
+               }
+
+               private string GetSortStyle(string columnName)
+               {
+                   if (DataGrid.CurrentSortColumn != columnName)
+                   {
+                       return string.Empty;
+                   }
+                   return _isSortedAscending ? "oi-arrow-top" : "oi-arrow-bottom";
+               }
+
+           }

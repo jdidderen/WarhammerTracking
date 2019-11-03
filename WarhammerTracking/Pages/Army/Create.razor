@@ -1,48 +1,19 @@
 @page "/army/add"
-@using Microsoft.AspNetCore.Components
-@using Microsoft.Extensions.Localization
-@attribute [Authorize(Roles = "User,Admin")]
-@inject ArmyDataAccessProvider ArmyDataAccessProvider
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<Create> L
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits CreateArmy
 
-<h1>@L["Armies"] - @L["Add"]</h1>
+<h1>@L.GetLocalization("Armies") - @L.GetLocalization("Add")</h1>
 <div class="shadow-lg rounded form-box">
-<div class="row">
-    <EditForm Model="army" OnSubmit=@FormSubmit>
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group form-inline">
-            <label for="Name">@L["Name"]</label>
-            <InputText id="Name" @bind-Value="@army.name" />
-        </div>
-        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
-        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
-    </EditForm>
+    <div class="row">
+        <EditForm Model="Army" OnSubmit="@FormSubmit">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="form-group form-inline">
+                <label for="Name">@L.GetLocalization("Name")</label>
+                <InputText id="Name" @bind-Value="@Army.Name"/>
+            </div>
+            <button class="btn btn-primary" type="submit">@L.GetLocalization("Submit")</button>
+            <input type="button" value="@L.GetLocalization("Cancel")" @onclick="@Cancel" class="btn btn-secondary"/>
+        </EditForm>
+    </div>
 </div>
-</div>
-
-@code {
-
-    Army army = new Army();
-
-    private void Cancel()
-    {
-        NavigationManager.NavigateTo("army");
-    }
-    
-    private async void FormSubmit(EditContext editContext)
-    {
-        if (editContext.Validate())
-        {
-            Console.WriteLine("Success");
-            await ArmyDataAccessProvider.AddArmy(army);
-            NavigationManager.NavigateTo("army");
-        }
-        else
-        {
-            Console.WriteLine("Fail");
-        }
-    }
-
-}

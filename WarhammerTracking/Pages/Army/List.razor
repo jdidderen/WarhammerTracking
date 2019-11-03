@@ -1,37 +1,23 @@
 @page "/army"
-@using Microsoft.Extensions.Localization
-@attribute [Authorize(Roles = "User,Admin")]
-@inject ArmyDataAccessProvider ArmyDataAccessProvider
-@inject IStringLocalizer<List> L
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits ListArmy
 
-<h1>@L["Armies"]</h1>
+<h1>@L.GetLocalization("Armies")</h1>
 
-    <div class="shadow-lg rounded form-box">
-    <a href="/army/add" class="btn btn-primary">@L["Add"]</a>
-    <DataGrid Items="Armies" PageSize="5">
+<div class="shadow-lg rounded form-box">
+    <a href="/army/add" class="btn btn-primary">@L.GetLocalization("Add")</a>
+    <DataGrid Items="@Armies" TItem="Data.Models.Army" FilterList="@FilterList" PageSize="5">
         <Column>
-            <DataGridColumn Items="@Armies" ColumnName="name" DisplayColumnName="@L["Name"]" Size="20"></DataGridColumn> 
-            <th>@L["Actions"]</th>
+            <DataGridColumn TItem="Data.Models.Army" ColumnName="name" DisplayColumnName="@L.GetLocalization("Name")"></DataGridColumn>
+            <th>@L.GetLocalization("Actions")</th>
         </Column>
-        <GridRow >
-            <td>@context.name</td>
+        <GridRow>
+            <td>@context.Name</td>
             <td>
-                <a href="/army/edit/@context.id" class="btn btn-primary">@L["Edit"]</a>
-                <a href="/army/delete/@context.id" class="btn btn-danger">@L["Delete"]</a>
+                <a href="/army/edit/@context.Id" class="btn btn-primary">@L.GetLocalization("Edit")</a>
+                <a href="/army/delete/@context.Id" class="btn btn-danger">@L.GetLocalization("Delete")</a>
             </td>
         </GridRow>
 
     </DataGrid>
 </div>
-
-@code {
-    
-    Army[] Armies;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        Armies = await ArmyDataAccessProvider.ListArmy();
-    }
-
-}

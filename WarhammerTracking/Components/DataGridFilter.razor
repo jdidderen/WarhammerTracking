@@ -1,22 +1,22 @@
 @using System.Linq.Expressions
-@using Microsoft.AspNetCore.Components
-@using WarhammerTracking.Services
-@inject AppState AppState
 @typeparam TItem
 
-<input type="button" class="btn btn-dark" @onclick="@(() => CallParent(Expression))" value="@Name" />
+<input type="button" class="btn btn-dark" @onclick="@(() => CallParent())" value="@Name"/>
 
-@code { 
-    [CascadingParameter]
-    public DataGrid<TItem> DataGrid { get; set; }  
-    [Parameter]
-    public Expression<System.Func<TItem,bool>> Expression { get; set; }
-    [Parameter]
-    public string Name { get; set; }
+       @code {
 
-    private void CallParent(Expression<System.Func<TItem,bool>> Expression)
-    {
-        DataGrid.SetFilters(Expression);
-    }
+           [CascadingParameter]
+           public DataGrid<TItem> DataGrid { get; set; }
 
-}
+           [Parameter]
+           public Expression<Func<TItem, bool>> Expression { get; set; }
+
+           [Parameter]
+           public string Name { get; set; }
+
+           private void CallParent()
+           {
+               DataGrid.SetFilters(Expression);
+           }
+
+       }

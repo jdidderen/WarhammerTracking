@@ -1,55 +1,102 @@
-﻿@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<NavMenu> L
+﻿@using WarhammerTracking.Resources
+@using WarhammerTracking.Services
+@inject LocalizationService L
 
 <div class="top-row pl-4 navbar navbar-dark text-center">
     <a class="navbar-brand title-center" href="/">Warhammer Tracking</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <img class="logo" src="images/sp-logo.png"/>
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> @L["Home"]
-            </NavLink>
-        </li>
-        <AuthorizeView Roles="User,Admin">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="army">
-                <span class="wh40k wh40k-adeptus-custodes" aria-hidden="true"></span>@L["Armies"]
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="game">
-                <span class="wh40k wh40k-adeptus-mechanicus" aria-hidden="true"></span>@L["Games"]
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="gamerequest">
-                <span class="wh40k wh40k-adeptus-arbites" aria-hidden="true"></span>@L["GameRequests"]
-            </NavLink>
-        </li>
-        </AuthorizeView>
-        <AuthorizeView Roles="Admin">
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="user">
-                    <span class="wh40k wh40k-angels-of-retributio" aria-hidden="true"></span> @L["Users"]
-                </NavLink>
-            </li>
-        </AuthorizeView>
-    </ul>
-</div>
+            <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+                     <img class="logo" src="images/sp-logo.png" alt="Logo"/>
+                     <ul class="nav flex-column">
+                         <div class="account-responsive">
+                             <AuthorizeView>
+                                 <Authorized>
+                                     <li class="nav-item px-3">
+                                         <NavLink class="nav-link" href="Identity/Account/Manage">
+                                             <span class="oi oi-person" aria-hidden="true"></span> @L.GetLocalization("MyProfile")
+                                         </NavLink>
+                                     </li>
+                                     <li class="nav-item px-3">
+                                         <form method="post" action="Identity/Account/LogOut">
+                                             <button type="submit" class="btn btn-link">
+                                                 <span class="oi oi-account-logout" aria-hidden="true"></span> @L.GetLocalization("Logout")</button>
+                                         </form>
+                                     </li>
+                                 </Authorized>
+                                 <NotAuthorized>
+                                     <li class="nav-item px-3">
+                                         <NavLink class="nav-link" href="Identity/Account/Login">
+                                             <span class="oi oi-account-login" aria-hidden="true"></span> @L.GetLocalization("Login")
+                                         </NavLink>
+                                     </li>
+                                 </NotAuthorized>
+                             </AuthorizeView>
+                             <hr/>
+                         </div>
+                         <li class="nav-item px-3">
+                             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                                 <span class="oi oi-home" aria-hidden="true"></span> @L.GetLocalization("Home")
+                             </NavLink>
+                         </li>
+                         <AuthorizeView Roles="User,Admin">
+                             <li class="nav-item px-3">
+                                 <NavLink class="nav-link" href="army">
+                                     <span class="wh40k wh40k-adeptus-custodes" aria-hidden="true"></span>@L.GetLocalization("Armies")
+                                 </NavLink>
+                             </li>
+                             <li class="nav-item px-3">
+                                 <NavLink class="nav-link" href="unit">
+                                     <span class="wh40k wh40k-adeptus-astronomica" aria-hidden="true"></span>@L.GetLocalization("Units")
+                                 </NavLink>
+                             </li>
+                             <li class="nav-item px-3">
+                                 <NavLink class="nav-link" href="calendar">
+                                     <span class="wh40k wh40k-librarius-02" aria-hidden="true"></span>@L.GetLocalization("Calendar")
+                                 </NavLink>
+                             </li>
+                             <li class="nav-item px-3">
+                                 <NavLink class="nav-link" href="game">
+                                     <span class="wh40k wh40k-adeptus-mechanicus" aria-hidden="true"></span>@L.GetLocalization("Games")
+                                 </NavLink>
+                             </li>
+                             <li class="nav-item px-3">
+                                 <NavLink class="nav-link" href="gamerequest">
+                                     <span class="wh40k wh40k-adeptus-arbites" aria-hidden="true"></span>@L.GetLocalization("GameRequests")
+                                 </NavLink>
+                             </li>
+                             <li class="nav-item px-3">
+                                 <NavLink class="nav-link" href="objective">
+                                     <span class="wh40k wh40k-imperial-navy" aria-hidden="true"></span>@L.GetLocalization("Objectives")
+                                 </NavLink>
+                             </li>
+                         </AuthorizeView>
+                         <AuthorizeView Roles="Admin">
+                             <li class="nav-item px-3">
+                                 <NavLink class="nav-link" href="user">
+                                     <span class="wh40k wh40k-angels-of-retributio" aria-hidden="true"></span> @L.GetLocalization("Users")
+                                 </NavLink>
+                             </li>
+                             <li class="nav-item px-3">
+                                 <NavLink class="nav-link" href="admin">
+                                     <span class="wh40k wh40k-angels-of-retributio" aria-hidden="true"></span> @L.GetLocalization("Admin")
+                                 </NavLink>
+                             </li>
+                         </AuthorizeView>
+                     </ul>
+                 </div>
 
-@code {
-    bool collapseNavMenu = true;
+                 @code {
+                     bool collapseNavMenu = true;
 
-    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+                     string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+                     void ToggleNavMenu()
+                     {
+                         collapseNavMenu = !collapseNavMenu;
+                     }
+
+                 }

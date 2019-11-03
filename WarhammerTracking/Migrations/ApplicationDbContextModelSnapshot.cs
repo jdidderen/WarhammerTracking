@@ -16,7 +16,7 @@ namespace WarhammerTracking.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.1.0-preview1.19506.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -43,22 +43,6 @@ namespace WarhammerTracking.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "7d65dff4-b4b9-4952-82b2-66a489062951",
-                            ConcurrencyStamp = "212350a8-369e-4856-91d3-12a8a5034cfc",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "dee50dcf-e19f-48fb-88fd-50b716b7b76c",
-                            ConcurrencyStamp = "0a26e849-0103-4218-b1b6-79b7a2f374d7",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -169,7 +153,7 @@ namespace WarhammerTracking.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WarhammerTracking.Data.ApplicationUser", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -234,49 +218,62 @@ namespace WarhammerTracking.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("WarhammerTracking.Data.Army.Army", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Army", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("name")
+                    b.Property<string>("BattleScribeId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BattleScribeRevision")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Armies");
                 });
 
-            modelBuilder.Entity("WarhammerTracking.Data.Army.Faction", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Category", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("ArmyId")
-                        .HasColumnType("integer");
+                    b.Property<string>("BattleScribeId")
+                        .HasColumnType("text");
 
-                    b.Property<string>("name")
+                    b.Property<string>("BattleScribeRevision")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ArmyId");
-
-                    b.ToTable("Factions");
+                    b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("WarhammerTracking.Data.Game.Game", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Game", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("ArmyPlayer1Id")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ArmyPlayer2Id")
+                        .HasColumnType("integer");
 
                     b.Property<int>("CpPlayer1")
                         .HasColumnType("integer");
@@ -285,15 +282,7 @@ namespace WarhammerTracking.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp without time zone")
-                        .HasDefaultValueSql("NOW()");
-
-                    b.Property<int>("FactionPlayer1Id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FactionPlayer2Id")
-                        .HasColumnType("integer");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ListPlayer1")
                         .HasColumnType("text");
@@ -321,11 +310,11 @@ namespace WarhammerTracking.Migrations
                     b.Property<string>("TableNumber")
                         .HasColumnType("text");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("FactionPlayer1Id");
+                    b.HasIndex("ArmyPlayer1Id");
 
-                    b.HasIndex("FactionPlayer2Id");
+                    b.HasIndex("ArmyPlayer2Id");
 
                     b.HasIndex("Player1Id");
 
@@ -334,9 +323,9 @@ namespace WarhammerTracking.Migrations
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("WarhammerTracking.Data.Game.GameLine", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.GameLine", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
@@ -350,7 +339,7 @@ namespace WarhammerTracking.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("KP")
+                    b.Property<int>("Kp")
                         .HasColumnType("integer");
 
                     b.Property<int>("Maelstrom")
@@ -363,7 +352,7 @@ namespace WarhammerTracking.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("GameId");
 
@@ -372,9 +361,9 @@ namespace WarhammerTracking.Migrations
                     b.ToTable("GameLines");
                 });
 
-            modelBuilder.Entity("WarhammerTracking.GameRequest.GameRequest", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.GameRequest", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
@@ -389,11 +378,136 @@ namespace WarhammerTracking.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("PlayerId");
 
                     b.ToTable("GameRequests");
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Keyword", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("BattleScribeId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BattleScribeRevision")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Keyword");
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Objective", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Done")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PlayerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Objective");
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Unit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("ArmyId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BattleScribeId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BattleScribeRevision")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArmyId");
+
+                    b.ToTable("Units");
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.UnitCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UnitId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("UnitsCategories");
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.UnitKeyword", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("KeywordId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UnitId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KeywordId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("UnitKeyword");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -407,7 +521,7 @@ namespace WarhammerTracking.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("WarhammerTracking.Data.ApplicationUser", null)
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -416,7 +530,7 @@ namespace WarhammerTracking.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("WarhammerTracking.Data.ApplicationUser", null)
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -431,7 +545,7 @@ namespace WarhammerTracking.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WarhammerTracking.Data.ApplicationUser", null)
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -440,71 +554,98 @@ namespace WarhammerTracking.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("WarhammerTracking.Data.ApplicationUser", null)
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WarhammerTracking.Data.Army.Faction", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Game", b =>
                 {
-                    b.HasOne("WarhammerTracking.Data.Army.Army", "army")
+                    b.HasOne("WarhammerTracking.Data.Models.Army", "ArmyPlayer1")
                         .WithMany()
-                        .HasForeignKey("ArmyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                        .HasForeignKey("ArmyPlayer1Id");
 
-            modelBuilder.Entity("WarhammerTracking.Data.Game.Game", b =>
-                {
-                    b.HasOne("WarhammerTracking.Data.Army.Faction", "FactionPlayer1")
+                    b.HasOne("WarhammerTracking.Data.Models.Army", "ArmyPlayer2")
                         .WithMany()
-                        .HasForeignKey("FactionPlayer1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ArmyPlayer2Id");
 
-                    b.HasOne("WarhammerTracking.Data.Army.Faction", "FactionPlayer2")
-                        .WithMany()
-                        .HasForeignKey("FactionPlayer2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WarhammerTracking.Data.ApplicationUser", "Player1")
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", "Player1")
                         .WithMany("Player1Games")
                         .HasForeignKey("Player1Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WarhammerTracking.Data.ApplicationUser", "Player2")
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", "Player2")
                         .WithMany("Player2Games")
                         .HasForeignKey("Player2Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WarhammerTracking.Data.Game.GameLine", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.GameLine", b =>
                 {
-                    b.HasOne("WarhammerTracking.Data.Game.Game", "Game")
+                    b.HasOne("WarhammerTracking.Data.Models.Game", "Game")
                         .WithMany("GameLines")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WarhammerTracking.Data.ApplicationUser", "Player")
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", "Player")
                         .WithMany("GameLines")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WarhammerTracking.GameRequest.GameRequest", b =>
+            modelBuilder.Entity("WarhammerTracking.Data.Models.GameRequest", b =>
                 {
-                    b.HasOne("WarhammerTracking.Data.ApplicationUser", "Player")
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", "Player")
                         .WithMany("GameRequests")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Objective", b =>
+                {
+                    b.HasOne("WarhammerTracking.Data.Models.ApplicationUser", "Player")
+                        .WithMany("Objectives")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.Unit", b =>
+                {
+                    b.HasOne("WarhammerTracking.Data.Models.Army", "Army")
+                        .WithMany()
+                        .HasForeignKey("ArmyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.UnitCategory", b =>
+                {
+                    b.HasOne("WarhammerTracking.Data.Models.Category", "Category")
+                        .WithMany("Units")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("WarhammerTracking.Data.Models.Unit", "Unit")
+                        .WithMany("Categories")
+                        .HasForeignKey("UnitId");
+                });
+
+            modelBuilder.Entity("WarhammerTracking.Data.Models.UnitKeyword", b =>
+                {
+                    b.HasOne("WarhammerTracking.Data.Models.Keyword", "Keyword")
+                        .WithMany("Units")
+                        .HasForeignKey("KeywordId");
+
+                    b.HasOne("WarhammerTracking.Data.Models.Unit", "Unit")
+                        .WithMany("Keywords")
+                        .HasForeignKey("UnitId");
                 });
 #pragma warning restore 612, 618
         }

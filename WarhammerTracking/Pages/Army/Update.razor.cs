@@ -1,0 +1,30 @@
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+
+namespace WarhammerTracking.Pages.Army
+{
+	public class UpdateArmy : BasePage
+	{
+		protected Data.Models.Army Army;
+		[Parameter]
+		public int Id { get; set; }
+
+		protected override async Task OnInitializedAsync()
+		{
+			Army = await ArmyRepository.GetById(Id);
+		}
+
+		protected void Cancel()
+		{
+			NavigationManager.NavigateTo("army");
+		}
+
+		protected async void FormSubmit(EditContext editContext)
+		{
+			if (!editContext.Validate()) return;
+			await ArmyRepository.Update(Army);
+			NavigationManager.NavigateTo("army");
+		}
+	}
+}

@@ -7,9 +7,11 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.Modal" Version="2.3.0" />
+    <PackageReference Include="FluentDateTime" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.0-preview1.19506.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
   </ItemGroup>
@@ -24,6 +26,99 @@
     <EmbeddedResource Update="Resources\**\*.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Pages\Army\Create.razor.cs">
+      <DependentUpon>Create.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Army\Delete.razor.cs">
+      <DependentUpon>Delete.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Army\List.razor.cs">
+      <DependentUpon>List.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Army\Update.razor.cs">
+      <DependentUpon>Update.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Calendar\Calendar.razor.cs">
+      <DependentUpon>Calendar.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Game\Create.razor.cs">
+      <DependentUpon>Create.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Game\Delete.razor.cs">
+      <DependentUpon>Delete.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Game\Detail.razor.cs">
+      <DependentUpon>Detail.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Game\List.razor.cs">
+      <DependentUpon>List.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Game\Update.razor.cs">
+      <DependentUpon>Update.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameRequest\Update.razor.cs">
+      <DependentUpon>Update.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameRequest\List.razor.cs">
+      <DependentUpon>List.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameRequest\Detail.razor.cs">
+      <DependentUpon>Detail.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameRequest\Delete.razor.cs">
+      <DependentUpon>Delete.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameRequest\Create.razor.cs">
+      <DependentUpon>Create.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Objective\Create.razor.cs">
+      <DependentUpon>Create.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Objective\Delete.razor.cs">
+      <DependentUpon>Delete.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Objective\Detail.razor.cs">
+      <DependentUpon>Detail.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Objective\List.razor.cs">
+      <DependentUpon>List.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Objective\Update.razor.cs">
+      <DependentUpon>Update.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Unit\Create.razor.cs">
+      <DependentUpon>Create.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Unit\Delete.razor.cs">
+      <DependentUpon>Delete.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Unit\Detail.razor.cs">
+      <DependentUpon>Detail.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Unit\List.razor.cs">
+      <DependentUpon>List.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Unit\Update.razor.cs">
+      <DependentUpon>Update.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\User\Update.razor.cs">
+      <DependentUpon>Update.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\User\List.razor.cs">
+      <DependentUpon>List.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\User\Delete.razor.cs">
+      <DependentUpon>Delete.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\User\Create.razor.cs">
+      <DependentUpon>Create.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Components\DataGrid.razor.cs">
+      <DependentUpon>DataGrid.razor</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

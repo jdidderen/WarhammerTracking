@@ -1,70 +1,32 @@
 @page "/gamerequest/delete/{id:int}"
-@using Microsoft.AspNetCore.Components
-@using Microsoft.Extensions.Localization
-@using WarhammerTracking.Data
-@using WarhammerTracking.Data.Game
-@using WarhammerTracking.GameRequest
-@attribute [Authorize(Roles = "User,Admin")]
-@inject GameRequestDataAccessProvider GameRequestDataAccessProvider
-@inject UserDataAccessProvider UserDataAccessProvider
-@inject NavigationManager NavigationManager
-@inject IStringLocalizer<Delete> L
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits DeleteGameRequest
 
-<h1>@L["GameRequests"] - @L["Delete"]</h1>
+<h1>@L.GetLocalization("GameRequests") - @L.GetLocalization("Delete")</h1>
 <div class="alert alert-danger" role="alert">
-@L["DeleteMessage"] @L["GameRequest"] ?
+    @L.GetLocalization("DeleteMessage") @L.GetLocalization("GameRequest") ?
 </div>
 <div class="shadow-lg rounded form-box">
-<div class="row">
-    <div class="col-md-12">
-    <EditForm Model="GameRequest" OnSubmit=@FormSubmit>
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group form-inline">
-            <label for="Date">@L["Date"]</label>
-            <InputDate id="Date" @bind-Value="GameRequest.Date" disabled/>
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm Model="GameRequest" OnSubmit="@FormSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="form-group form-inline">
+                    <label for="Date">@L.GetLocalization("Date")</label>
+                    <InputDate id="Date" @bind-Value="GameRequest.Date" disabled/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="Player">@L.GetLocalization("Player")</label>
+                    <InputText id="Player" class="form-control" @bind-Value="GameRequest.Player.UserName" disabled/>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="Expired">@L.GetLocalization("Expired")</label>
+                    <InputCheckbox id="Expired" class="form-control" @bind-Value="GameRequest.Expired" disabled/>
+                </div>
+                <button class="btn btn-primary" type="submit">@L.GetLocalization("Submit")</button>
+                <input type="button" value="@L.GetLocalization("Cancel")" @onclick="Cancel" class="btn btn-secondary"/>
+            </EditForm>
         </div>
-        <div class="form-group form-inline">
-            <label for="Player">@L["Player"]</label>
-            <InputText id="Player" class="form-control" @bind-Value="GameRequest.Player.UserName" disabled/>
-        </div>        
-        <div class="form-group form-inline">
-            <label for="Expired">@L["Expired"]</label>
-            <InputCheckbox id="Expired" class="form-control" @bind-Value="GameRequest.Expired" disabled/>
-        </div>
-        <button class="btn btn-primary" type="submit">@L["Submit"]</button>
-        <input type="button" value="@L["Cancel"]" @onclick="Cancel" class="btn btn-secondary"/>
-    </EditForm>
     </div>
 </div>
-</div>
-
-@code {
-    [Parameter]
-    public int id { get; set; }
-    GameRequest GameRequest;
-
-    protected override async Task OnInitializedAsync()
-    {
-        GameRequest = await GameRequestDataAccessProvider.GetRequestGame(id);
-    }
-
-    private void Cancel()
-    {
-        NavigationManager.NavigateTo("gamerequest");
-    }    
-    
-    private async void FormSubmit(EditContext editContext)
-    {
-        if (editContext.Validate())
-        {
-            Console.WriteLine("Success");
-            await GameRequestDataAccessProvider.DeleteGameRequest(id);
-            NavigationManager.NavigateTo("gamerequest");
-        }
-        else
-        {
-            Console.WriteLine("Fail");
-        }
-    }
-}

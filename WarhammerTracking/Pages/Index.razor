@@ -1,13 +1,6 @@
 ﻿@page "/"
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<Index> L
+@inherits BasePage
 
-    @* <h1>@L["Hello"]</h1> *@
-    <AuthorizeView Roles="User,Admin">
-    
-    </AuthorizeView>
+<AuthorizeView Roles="User,Admin">
 
-@code {
-
-
-}
+</AuthorizeView>
