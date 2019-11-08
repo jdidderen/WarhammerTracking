@@ -7,7 +7,8 @@
     <div class="row col-md-12" style="margin-bottom: 20px;">
         <button @onclick="@(() => ShowDiceModal())" class="btn btn-primary">Roll The Dice</button>
     </div>
-    <EditForm Model="@Game" OnSubmit="@FormSubmit">
+
+    <EditForm Model="Game" OnSubmit="@FormSubmit">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
         <div class="col-md-12">
@@ -18,15 +19,29 @@
                 <span id="Player1Score">@Game.ScorePlayer1</span>
                 <label style="margin-left: 20px;" for="Player2Score">@L.GetLocalization("Player2Score")</label>
                 <span id="Player2Score">@Game.ScorePlayer2</span>
+                <label style="margin-left: 20px;" for="NoDetails">@L.GetLocalization("NoDetails")</label>
+                <InputCheckbox id="NoDetails" @bind-Value="@Game.NoDetails" />        
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group form-inline">
-                    <label for="TableNumber">@L.GetLocalization("TableNumber")</label>
-                    <InputText id="TableNumber" class="form-control" @bind-Value="@Game.TableNumber"/>
-                    <label style="margin-left: 30px;" for="ScenarioNumber">@L.GetLocalization("ScenarioNumber")</label>
-                    <InputText id="ScenarioNumber" class="form-control" @bind-Value="@Game.ScenarioNumber"/>
+                    <label for="GameTable">@L.GetLocalization("Game_Table")</label>
+                    <InputSelect id="GameTable" @bind-Value="GameTable">
+                        <option value=""></option>
+                        @foreach (var gameTable in GameTables)
+                        {
+                            <option value=@gameTable.Id>@gameTable.Name</option>
+                        }
+                    </InputSelect>               
+                    <label style="margin-left: 30px;" for="Scenario">@L.GetLocalization("GameScenario")</label>
+                    <InputSelect id="Scenario" @bind-Value="Scenario">
+                        <option value=""></option>
+                        @foreach (var scenario in Scenarios)
+                        {
+                            <option value=@scenario.Id>@scenario.Name</option>
+                        }
+                    </InputSelect> 
                     <label style="margin-left: 30px;" for="Location">@L.GetLocalization("Location")</label>
                     <InputText id="Location" class="form-control" @bind-Value="@Game.Location"/>
                 </div>
@@ -59,6 +74,19 @@
                     <label for="CpPlayer1">@L.GetLocalization("CP")</label>
                     <InputNumber id="CpPlayer1" class="form-control" @bind-Value="@Game.CpPlayer1"/>
                 </div>
+                @if (Game.NoDetails)
+                {
+                    <div class="form-group form-inline">
+                        <label for="ScorePlayer1WoDetails">@L.GetLocalization("Player1Score")</label>
+                        <InputNumber id="ScorePlayer1WoDetails" @bind-Value="@Game.ScorePlayer1WoDetails" />        
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="ScorePlayer1WoDetails">@L.GetLocalization("Player2Score")</label>
+                        <InputNumber id="ScorePlayer1WoDetails" @bind-Value="@Game.ScorePlayer2WoDetails" />        
+                    </div>
+                }
+                else
+                {
                 <div class="form-group">
                     <input type="button" value="@L.GetLocalization("AddLine")" @onclick="@(() => AddLine(User1Id))" class="btn btn-primary"/>
                     <table class="table">
@@ -111,6 +139,7 @@
                         </tbody>
                     </table>
                 </div>
+                }            
             </div>
             <div class="col-md-6">
                 <h2>@L.GetLocalization("Player2")</h2>
@@ -138,6 +167,8 @@
                     <label for="CpPlayer2">@L.GetLocalization("CP")</label>
                     <InputNumber id="CpPlayer2" class="form-control" @bind-Value="@Game.CpPlayer2"/>
                 </div>
+                @if (!Game.NoDetails)
+                {
                 <div class="form-group">
                     <input type="button" value="@L.GetLocalization("AddLine")" @onclick="@(() => AddLine(User2Id))" class="btn btn-primary"/>
                     <table class="table">
@@ -190,6 +221,7 @@
                         </tbody>
                     </table>
                 </div>
+                }
             </div>
         </div>
         <div class="row">

@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using WarhammerTracking.Components;
 using WarhammerTracking.Data.Models;
+using WarhammerTracking.Pages.GameTable;
+using WarhammerTracking.Pages.Scenario;
 
 namespace WarhammerTracking.Pages.Game
 {
@@ -17,25 +19,74 @@ namespace WarhammerTracking.Pages.Game
 
 		protected List<ApplicationUser> Users;
 		protected Data.Models.Army[] Armies;
+		protected Data.Models.GameTable[] GameTables;
+		protected Data.Models.Scenario[] Scenarios;
 		protected string User1Id;
 		protected string User2Id; 
 		protected string ArmyPlayer1Id;
 		protected string ArmyPlayer2Id;
-		protected Data.Models.Game Game;
+		protected string Scenario;
+		protected string GameTable;
+		protected Data.Models.Game Game = new Data.Models.Game();
 		protected bool ShowNote = true;
 		protected bool ShowList1;
 		protected bool ShowList2;
 
 		protected override async Task OnInitializedAsync()
 		{
-			Users = await UserManager.Users.ToListAsync();
+			Users = await  Task.FromResult(UserManager.Users.ToList());
 			Armies = await ArmyRepository.GetList();
 			Game = await GameRepository.GetById(Id);
-			Console.WriteLine(Game.Id);
-			User1Id = Game.Player1.Id;
-			User2Id = Game.Player2.Id;
-			ArmyPlayer1Id = Game.ArmyPlayer1.Id.ToString();
-			ArmyPlayer2Id = Game.ArmyPlayer2.Id.ToString();
+			GameTables = await GameTableRepository.GetList();
+			Scenarios = await ScenarioRepository.GetList();
+			if (Game.Player1 != null)
+			{
+				User1Id = Game.Player1.Id;
+			}
+			else
+			{
+				User1Id = string.Empty;;
+			}
+			if (Game.Player2 != null)
+			{
+				User2Id = Game.Player2.Id;
+			}
+			else
+			{
+				User2Id = string.Empty;;
+			}
+			if (Game.ArmyPlayer1 != null)
+			{
+				ArmyPlayer1Id = Game.ArmyPlayer1.Id.ToString();
+			}
+			else
+			{
+				ArmyPlayer1Id = string.Empty;;
+			}
+			if (Game.ArmyPlayer2 != null)
+			{
+				ArmyPlayer2Id = Game.ArmyPlayer2.Id.ToString();
+			}
+			else
+			{
+				ArmyPlayer2Id = string.Empty;;
+			}
+			if (Game.GameTable != null)
+			{
+				GameTable = Game.GameTable.Id.ToString();
+			}
+			else
+			{
+				GameTable = string.Empty;;
+			}
+			if (Game.Scenario != null)
+			{
+				Scenario = Game.Scenario.Id.ToString();
+			}
+			else
+			{
+				Scenario = string.Empty;;
+			}
 		}
 
 		protected void AddLine(string userId)
@@ -94,6 +145,20 @@ namespace WarhammerTracking.Pages.Game
 		{
 			var parameters = new ModalParameters();
 			Modal.Show<RollDice>("Roll the Dices", parameters);
+		}
+		
+		protected void ShowGameTable()
+		{
+			var parameters = new ModalParameters();
+			parameters.Add("GameTableId", GameTable);
+			Modal.Show<ModalGameTable>("Game Table", parameters);
+		}
+		
+		protected void ShowScenario()
+		{
+			var parameters = new ModalParameters();
+			parameters.Add("ScenarioId", Scenario);
+			Modal.Show<ModalScenario>("Scenario", parameters);
 		}
 	}
 }

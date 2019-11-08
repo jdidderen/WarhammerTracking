@@ -1,0 +1,12 @@
+@attribute [Authorize(Roles = "User,Admin")]
+@inherits ModalScenarioPage
+
+<div class="form-group form-inline">
+    <h1 style="color:black;">@Scenario.Name</h1>
+</div>
+<div class="form-group form-inline">
+    <label for="Description">@L.GetLocalization("Description")</label>
+    <textarea style="width: 100%;" id="Description" readonly="readonly">
+    @Scenario.Description
+    </textarea>
+</div>

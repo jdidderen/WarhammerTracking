@@ -19,10 +19,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group form-inline">
-                    <label for="TableNumber">@L.GetLocalization("TableNumber")</label>
-                    <InputText id="TableNumber" class="form-control" @bind-Value="@Game.TableNumber" disabled/>
-                    <label style="margin-left: 30px;" for="ScenarioNumber">@L.GetLocalization("ScenarioNumber")</label>
-                    <InputText id="ScenarioNumber" class="form-control" @bind-Value="@Game.ScenarioNumber" disabled/>
+                    <label for="TableNumber">@L.GetLocalization("Game_Table")</label>
+                    <InputText id="TableNumber" class="form-control" @bind-Value="@Game.GameTable.Name" disabled/>
+                    <label style="margin-left: 30px;" for="ScenarioNumber">@L.GetLocalization("GameScenario")</label>
+                    <InputText id="ScenarioNumber" class="form-control" @bind-Value="@Game.Scenario.Name" disabled/>
                     <label style="margin-left: 30px;" for="Location">@L.GetLocalization("Location")</label>
                     <InputText id="Location" class="form-control" @bind-Value="@Game.Location" disabled/>
                 </div>

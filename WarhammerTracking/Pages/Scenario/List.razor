@@ -1,0 +1,29 @@
+@page "/scenario"
+@attribute [Authorize(Roles = "User,Admin")]
+@inherits ListScenario
+
+<h1>@L.GetLocalization("Scenarios")</h1>
+<div class="shadow-lg rounded form-box">
+    <div class="col-md-12">
+        <div class="row" style="margin-bottom: 10px;">
+            <a href="/scenario/add" class="btn btn-primary">@L.GetLocalization("Add")</a>
+        </div>
+        <div class="row">
+            <DataGrid Items="Scenarios" TItem="Data.Models.Scenario" PageSize="5">
+                <Column>
+                    <DataGridColumn TItem="Data.Models.Scenario" ColumnName="Name" DisplayColumnName="@L.GetLocalization("Name")"></DataGridColumn>
+                    <th>@L.GetLocalization("Actions")</th>
+                </Column>
+                <GridRow >
+                    <td>@context.Name</td>
+                    <td>
+                        <a href="/scenario/detail/@context.Id" class="btn btn-primary">@L.GetLocalization("Detail")</a>
+                        <a href="/scenario/edit/@context.Id" class="btn btn-primary">@L.GetLocalization("Edit")</a>
+                        <a href="/scenario/delete/@context.Id" class="btn btn-danger">@L.GetLocalization("Delete")</a>
+                    </td>
+                </GridRow>
+            </DataGrid>
+        </div>
+    </div>
+</div>
+}

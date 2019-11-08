@@ -1,0 +1,26 @@
+@page "/gametable/delete/{id:int}"
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits DeleteGameTable
+
+<h1>@L.GetLocalization("GameTables") - @L.GetLocalization("Delete")</h1>
+<div class="alert alert-danger" role="alert">
+    @L.GetLocalization("DeleteMessage") @L.GetLocalization("GameTable") ?
+</div>
+<div class="shadow-lg rounded form-box">
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm Model="GameTable" OnSubmit="@FormSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="form-group form-inline">
+                    <label for="Name">@L.GetLocalization("Name")</label>
+                    <h1>
+                        <InputText id="Name" @bind-Value="@GameTable.Name" disabled/>
+                    </h1>
+                </div>
+                <button class="btn btn-primary" type="submit">@L.GetLocalization("Submit")</button>
+                <input type="button" value="@L.GetLocalization("Cancel")" @onclick="Cancel" class="btn btn-secondary"/>
+            </EditForm>
+        </div>
+    </div>
+</div>

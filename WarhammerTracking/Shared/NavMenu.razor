@@ -1,6 +1,4 @@
-﻿@using WarhammerTracking.Resources
-@using WarhammerTracking.Services
-@inject LocalizationService L
+﻿@inherits NavMenuPage
 
 <div class="top-row pl-4 navbar navbar-dark text-center">
     <a class="navbar-brand title-center" href="/">Warhammer Tracking</a>
@@ -44,28 +42,54 @@
                          </li>
                          <AuthorizeView Roles="User,Admin">
                              <li class="nav-item px-3">
-                                 <NavLink class="nav-link" href="army">
-                                     <span class="wh40k wh40k-adeptus-custodes" aria-hidden="true"></span>@L.GetLocalization("Armies")
-                                 </NavLink>
+                                <a class="nav-link py-1" @onclick="ToggleArmyMenu"><i style="font-size: 14px;" class="@ArmyMenuIcon" aria-hidden="false"></i> @L.GetLocalization("ArmiesManagement")</a>
+                                    @if(!CollapseArmyMenu)
+                                    {
+                                    <ul>
+                                         <li class="nav-item">
+                                             <NavLink class="nav-link" href="army">
+                                                 <span class="wh40k wh40k-adeptus-custodes" aria-hidden="true"></span>@L.GetLocalization("Armies")
+                                             </NavLink>
+                                         </li>
+                                         <li class="nav-item">
+                                             <NavLink class="nav-link" href="unit">
+                                                 <span class="wh40k wh40k-adeptus-astronomica" aria-hidden="true"></span>@L.GetLocalization("Units")
+                                             </NavLink>
+                                         </li>                                                         
+                                    </ul>
+                                    }
                              </li>
                              <li class="nav-item px-3">
-                                 <NavLink class="nav-link" href="unit">
-                                     <span class="wh40k wh40k-adeptus-astronomica" aria-hidden="true"></span>@L.GetLocalization("Units")
-                                 </NavLink>
+                                <a class="nav-link py-1" @onclick="ToggleGameMenu"><i style="font-size: 14px;" class="@GameMenuIcon" aria-hidden="false"></i> @L.GetLocalization("GamesManagement")</a>
+                                    @if(!CollapseGameMenu)
+                                    {
+                                    <ul>
+                                         <li class="nav-item">
+                                             <NavLink class="nav-link" href="game">
+                                                 <span class="wh40k wh40k-adeptus-mechanicus" aria-hidden="true"></span>@L.GetLocalization("Games")
+                                             </NavLink>
+                                         </li>
+                                         <li class="nav-item">
+                                             <NavLink class="nav-link" href="gamerequest">
+                                                 <span class="wh40k wh40k-adeptus-arbites" aria-hidden="true"></span>@L.GetLocalization("GameRequests")
+                                             </NavLink>
+                                         </li>   
+                                         <li class="nav-item">
+                                             <NavLink class="nav-link" href="gametable">
+                                                 <span class="wh40k wh40k-adeptus-arbites" aria-hidden="true"></span>@L.GetLocalization("GameTables")
+                                             </NavLink>
+                                         </li>        
+                                         <li class="nav-item">
+                                             <NavLink class="nav-link" href="scenario">
+                                                 <span class="wh40k wh40k-adeptus-arbites" aria-hidden="true"></span>@L.GetLocalization("Scenarios")
+                                             </NavLink>
+                                         </li>                                                         
+                                    </ul>
+                                    }
                              </li>
                              <li class="nav-item px-3">
                                  <NavLink class="nav-link" href="calendar">
                                      <span class="wh40k wh40k-librarius-02" aria-hidden="true"></span>@L.GetLocalization("Calendar")
-                                 </NavLink>
-                             </li>
-                             <li class="nav-item px-3">
-                                 <NavLink class="nav-link" href="game">
-                                     <span class="wh40k wh40k-adeptus-mechanicus" aria-hidden="true"></span>@L.GetLocalization("Games")
-                                 </NavLink>
-                             </li>
-                             <li class="nav-item px-3">
-                                 <NavLink class="nav-link" href="gamerequest">
-                                     <span class="wh40k wh40k-adeptus-arbites" aria-hidden="true"></span>@L.GetLocalization("GameRequests")
                                  </NavLink>
                              </li>
                              <li class="nav-item px-3">
@@ -76,27 +100,24 @@
                          </AuthorizeView>
                          <AuthorizeView Roles="Admin">
                              <li class="nav-item px-3">
-                                 <NavLink class="nav-link" href="user">
-                                     <span class="wh40k wh40k-angels-of-retributio" aria-hidden="true"></span> @L.GetLocalization("Users")
-                                 </NavLink>
-                             </li>
-                             <li class="nav-item px-3">
-                                 <NavLink class="nav-link" href="admin">
-                                     <span class="wh40k wh40k-angels-of-retributio" aria-hidden="true"></span> @L.GetLocalization("Admin")
-                                 </NavLink>
-                             </li>
+                                <a class="nav-link py-1" @onclick="ToggleAdminMenu"><i style="font-size: 14px;" class="@AdminMenuIcon" aria-hidden="false"></i> @L.GetLocalization("AdminManagement")</a>
+                                    @if(!CollapseAdminMenu)
+                                    {
+                                    <ul>
+                                         <li class="nav-item">
+                                             <NavLink class="nav-link" href="user">
+                                                 <span class="wh40k wh40k-angels-of-retributio" aria-hidden="true"></span> @L.GetLocalization("Users")
+                                             </NavLink>
+                                         </li>
+                                         <li class="nav-item">
+                                             <NavLink class="nav-link" href="admin">
+                                                 <span class="wh40k wh40k-angels-of-retributio" aria-hidden="true"></span> @L.GetLocalization("Admin")
+                                             </NavLink>
+                                         </li>                                                  
+                                    </ul>
+                                    }
+                             </li>                            
+
                          </AuthorizeView>
                      </ul>
                  </div>
-
-                 @code {
-                     bool collapseNavMenu = true;
-
-                     string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-                     void ToggleNavMenu()
-                     {
-                         collapseNavMenu = !collapseNavMenu;
-                     }
-
-                 }

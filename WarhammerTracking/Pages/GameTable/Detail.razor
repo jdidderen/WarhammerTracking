@@ -1,0 +1,29 @@
+@page "/gametable/detail/{id:int}"
+@attribute [Authorize(Roles = "User,Admin")]
+@inherits DetailGameTable
+
+<h1>@L.GetLocalization("GameTables") - @L.GetLocalization("Detail")</h1>
+<div class="shadow-lg rounded form-box">
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm Model="GameTable">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="form-group form-inline">
+                    <label for="Name">@L.GetLocalization("Name")</label>
+                    <h1>
+                        <InputText id="Name" @bind-Value="@GameTable.Name" disabled/>
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="@GameTable.ImageRelativePath" alt="Table Image"/>                                                                        
+                    </div>
+                    <div class="col-md-6">
+                        <img src="images/etc_legend.png" alt="Legend"/>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>                                                                                  

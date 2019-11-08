@@ -8,49 +8,46 @@ namespace WarhammerTracking.Data.Models
 {
 	public class Game : Entity
 	{
+		public Game()
+		{
+			GameLines = new HashSet<GameLine>();
+		}
+
 		[Required] [DataType(DataType.Date)] public DateTime Date { get; set; }
 
 		public string Note { get; set; }
 		public string ListPlayer1 { get; set; }
 		public string ListPlayer2 { get; set; }
-		public string TableNumber { get; set; }
-		public string ScenarioNumber { get; set; }
 		public string Location { get; set; }
 		public string Player1Id { get; set; }
-
+		public virtual GameTable GameTable { get; set; }
+		public virtual Scenario Scenario { get; set; }
 		[Required] [ForeignKey("Player1Id")] public virtual ApplicationUser Player1 { get; set; }
-
-		[NotMapped]
-		public string Player1Name => Player1 != null ? Player1.UserName : "";
-
+		[NotMapped] public string Player1Name => Player1 != null ? Player1.UserName : "";
 		public string Player2Id { get; set; }
-
 		[Required] [ForeignKey("Player2Id")] public virtual ApplicationUser Player2 { get; set; }
-
 		[NotMapped] public string Player2Name => Player2 != null ? Player2.UserName : "";
-
 		public virtual Army ArmyPlayer1 { get; set; }
-
 		[NotMapped] public string ArmyPlayer1Name => ArmyPlayer1 != null ? ArmyPlayer1.Name : "";
-
 		public virtual Army ArmyPlayer2 { get; set; }
-
-		[NotMapped]
-		public string ArmyPlayer2Name => ArmyPlayer2 != null ? ArmyPlayer2.Name : "";
-
+		[NotMapped] public string ArmyPlayer2Name => ArmyPlayer2 != null ? ArmyPlayer2.Name : "";
 		public virtual ICollection<GameLine> GameLines { get; set; }
 		public int CpPlayer1 { get; set; }
 		public int CpPlayer2 { get; set; }
-
+		public bool NoDetails { get; set; } = false;
+		public int ScorePlayer1WoDetails { get; set; }
+		public int ScorePlayer2WoDetails { get; set; }
 		[NotMapped]
 		public int CpLeftPlayer1
 		{
 			get
 			{
-				return Player1 != null
-					? GameLines.Where(line => line.Player == Player1)
-						.Aggregate(CpPlayer1, (current, line) => current - line.CpUsed)
-					: 0;
+				if (Player1 != null && GameLines != null)
+				{
+					return CpPlayer1 - GameLines.Where(line => line.Player == Player1).Sum(line => line.CpUsed);
+				}
+
+				return 0;
 			}
 		}
 
@@ -59,10 +56,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player2 != null
-					? GameLines.Where(line => line.Player == Player2)
-						.Aggregate(CpPlayer2, (current, line) => current - line.CpUsed)
-					: 0;
+				if (Player2 != null && GameLines != null)
+				{
+					return CpPlayer2 - GameLines.Where(line => line.Player == Player2).Sum(line => line.CpUsed);
+				}
+
+				return 0;
 			}
 		}
 
@@ -71,10 +70,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player1 != null
-					? GameLines.Where(line => line.Player == Player1)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Total)
-					: 0;
+				if (Player1 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player1).Sum(line => line.Total);
+				}
+
+				return 0;
 			}
 		}
 
@@ -83,10 +84,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player2 != null
-					? GameLines.Where(line => line.Player == Player2)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Total)
-					: 0;
+				if (Player2 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player2).Sum(line => line.Total);
+				}
+
+				return 0;
 			}
 		}
 
@@ -95,10 +98,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player1 != null
-					? GameLines.Where(line => line.Player == Player1)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Maelstrom)
-					: 0;
+				if (Player1 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player1).Sum(line => line.Maelstrom);
+				}
+
+				return 0;
 			}
 		}
 
@@ -107,10 +112,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player2 != null
-					? GameLines.Where(line => line.Player == Player2)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Maelstrom)
-					: 0;
+				if (Player2 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player2).Sum(line => line.Maelstrom);
+				}
+
+				return 0;
 			}
 		}
 
@@ -119,10 +126,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player1 != null
-					? GameLines.Where(line => line.Player == Player1)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Eternal)
-					: 0;
+				if (Player1 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player1).Sum(line => line.Eternal);
+				}
+
+				return 0;
 			}
 		}
 
@@ -131,10 +140,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player2 != null
-					? GameLines.Where(line => line.Player == Player2)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Eternal)
-					: 0;
+				if (Player2 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player2).Sum(line => line.Eternal);
+				}
+
+				return 0;
 			}
 		}
 
@@ -143,10 +154,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player1 != null
-					? GameLines.Where(line => line.Player == Player1)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Kp)
-					: 0;
+				if (Player1 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player1).Sum(line => line.Kp);
+				}
+
+				return 0;
 			}
 		}
 
@@ -155,10 +168,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player2 != null
-					? GameLines.Where(line => line.Player == Player2)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Kp)
-					: 0;
+				if (Player2 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player2).Sum(line => line.Kp);
+				}
+
+				return 0;
 			}
 		}
 
@@ -167,10 +182,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player1 != null
-					? GameLines.Where(line => line.Player == Player1)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Others)
-					: 0;
+				if (Player1 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player1).Sum(line => line.Others);
+				}
+
+				return 0;
 			}
 		}
 
@@ -179,10 +196,12 @@ namespace WarhammerTracking.Data.Models
 		{
 			get
 			{
-				return Player2 != null
-					? GameLines.Where(line => line.Player == Player2)
-						.Aggregate(CpPlayer1, (current, line) => current - line.Others)
-					: 0;
+				if (Player2 != null && GameLines != null)
+				{
+					return GameLines.Where(line => line.Player == Player2).Sum(line => line.Others);
+				}
+
+				return 0;
 			}
 		}
 
@@ -192,21 +211,27 @@ namespace WarhammerTracking.Data.Models
 			get
 			{
 				int score;
-				if (TotalPlayer1 >= TotalPlayer2)
+				if (NoDetails)
 				{
-					if (TotalPlayer1 - TotalPlayer2 < 20)
-						score = 20 - (TotalPlayer1 - TotalPlayer2);
-					else
-						score = 20;
+					score = ScorePlayer1WoDetails;
 				}
 				else
 				{
-					if (TotalPlayer2 - TotalPlayer1 < 20)
-						score = TotalPlayer2 - TotalPlayer1;
+					if (TotalPlayer1 >= TotalPlayer2)
+					{
+						if (TotalPlayer1 - TotalPlayer2 < 20)
+							score = 20 - (TotalPlayer1 - TotalPlayer2);
+						else
+							score = 20;
+					}
 					else
-						score = 0;
+					{
+						if (TotalPlayer2 - TotalPlayer1 < 20)
+							score = TotalPlayer2 - TotalPlayer1;
+						else
+							score = 0;
+					}					
 				}
-
 				return score;
 			}
 		}
@@ -217,19 +242,26 @@ namespace WarhammerTracking.Data.Models
 			get
 			{
 				int score;
-				if (TotalPlayer1 >= TotalPlayer2)
+				if (NoDetails)
 				{
-					if (TotalPlayer1 - TotalPlayer2 < 20)
-						score = TotalPlayer1 - TotalPlayer2;
-					else
-						score = 0;
+					score = ScorePlayer2WoDetails;
 				}
 				else
 				{
-					if (TotalPlayer2 - TotalPlayer1 < 20)
-						score = TotalPlayer2 - TotalPlayer1;
+					if (TotalPlayer1 >= TotalPlayer2)
+					{
+						if (TotalPlayer1 - TotalPlayer2 < 20)
+							score = TotalPlayer1 - TotalPlayer2;
+						else
+							score = 0;
+					}
 					else
-						score = 20;
+					{
+						if (TotalPlayer2 - TotalPlayer1 < 20)
+							score = TotalPlayer2 - TotalPlayer1;
+						else
+							score = 20;
+					}	
 				}
 
 				return score;

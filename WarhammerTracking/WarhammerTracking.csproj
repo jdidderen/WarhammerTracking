@@ -7,11 +7,13 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.Modal" Version="2.3.0" />
+    <PackageReference Include="BlazorInputFile" Version="0.1.0-preview-00002" />
     <PackageReference Include="FluentDateTime" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.0-preview1.19506.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
   </ItemGroup>
@@ -119,6 +121,46 @@
     <Compile Update="Components\DataGrid.razor.cs">
       <DependentUpon>DataGrid.razor</DependentUpon>
     </Compile>
+    <Compile Update="Shared\NavMenu.razor.cs">
+      <DependentUpon>NavMenu.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameTable\Create.razor.cs">
+      <DependentUpon>Create.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameTable\Delete.razor.cs">
+      <DependentUpon>Delete.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameTable\Detail.razor.cs">
+      <DependentUpon>Detail.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameTable\List.razor.cs">
+      <DependentUpon>List.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameTable\Update.razor.cs">
+      <DependentUpon>Update.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Scenario\Create.razor.cs">
+      <DependentUpon>Create.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Scenario\Delete.razor.cs">
+      <DependentUpon>Delete.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Scenario\Detail.razor.cs">
+      <DependentUpon>Detail.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Scenario\List.razor.cs">
+      <DependentUpon>List.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Scenario\Update.razor.cs">
+      <DependentUpon>Update.razor</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GameTable\ModalGameTable.razor.cs">
+      <DependentUpon>ModalGameTable.razor</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Storage\GameTable" />
   </ItemGroup>
 
 </Project>

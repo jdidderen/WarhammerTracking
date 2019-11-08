@@ -234,4 +234,58 @@
     <data name="SearchingFor" xml:space="preserve">
         <value>Qu'est-ce que vous chercher ?</value>
     </data>
+    <data name="NoDetails" xml:space="preserve">
+        <value>Pas de détails</value>
+    </data>
+    <data name="Monday" xml:space="preserve">
+        <value>Lundi</value>
+    </data>
+    <data name="Tuesday" xml:space="preserve">
+        <value>Mardi</value>
+    </data>
+    <data name="Wednesday" xml:space="preserve">
+        <value>Mercredi</value>
+    </data>
+    <data name="Thursday" xml:space="preserve">
+        <value>Jeudi</value>
+    </data>
+    <data name="Friday" xml:space="preserve">
+        <value>Vendredi</value>
+    </data>
+    <data name="Saturday" xml:space="preserve">
+        <value>Samedi</value>
+    </data>
+    <data name="Sunday" xml:space="preserve">
+        <value>Dimanche</value>
+    </data>
+    <data name="AdminManagement" xml:space="preserve">
+        <value>Gestion admin</value>
+    </data>
+    <data name="GamesManagement" xml:space="preserve">
+        <value>Gestion des parties</value>
+    </data>
+    <data name="ArmiesManagement" xml:space="preserve">
+        <value>Gestion des armées</value>
+    </data>
+    <data name="GameTable" xml:space="preserve">
+        <value>table</value>
+    </data>
+    <data name="GameTables" xml:space="preserve">
+        <value>Tables</value>
+    </data>
+    <data name="Game_Table" xml:space="preserve">
+        <value>Table</value>
+    </data>
+    <data name="Scenarios" xml:space="preserve">
+        <value>Scénarios</value>
+    </data>
+    <data name="Scenario" xml:space="preserve">
+        <value>scénario</value>
+    </data>
+    <data name="GameScenario" xml:space="preserve">
+        <value>Scénario</value>
+    </data>
+    <data name="file" xml:space="preserve">
+        <value>Fichier (JPEG,PNG)</value>
+    </data>
 </root>

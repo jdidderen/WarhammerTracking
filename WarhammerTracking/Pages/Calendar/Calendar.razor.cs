@@ -9,7 +9,19 @@ namespace WarhammerTracking.Pages.Calendar
 {
 	public class CalendarPage : BasePage
 	{
-		protected static IEnumerable<string> Days => CultureInfo.CurrentCulture.DateTimeFormat.DayNames;
+		protected static IEnumerable<DayOfWeek> Days
+		{
+			get
+			{
+				var days = new List<DayOfWeek>();
+				var firstDay = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+				for (var dayIndex = 0; dayIndex < 7; dayIndex++)
+				{
+					days.Add((DayOfWeek)(((int) firstDay + dayIndex) % 7));
+				}
+				return days;
+			}	
+		}
 		protected List<DateTime> Dates { get; set; }
 		protected DateTime CurrentDate { get; set; }
 		protected Data.Models.Game[] Games { get; set; }
@@ -22,7 +34,6 @@ namespace WarhammerTracking.Pages.Calendar
 			GameRequests = await GameRequestRepository.GetList();
 			Objectives = await ObjectiveRepository.GetList();
 			CurrentDate = DateTime.Today;
-
 			GetDates();
 		}
 

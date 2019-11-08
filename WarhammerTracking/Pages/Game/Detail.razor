@@ -20,12 +20,20 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group form-inline">
-                    <label for="TableNumber">@L.GetLocalization("TableNumber")</label>
-                    <InputText id="TableNumber" class="form-control" @bind-Value="@Game.TableNumber" disabled/>
-                    <label style="margin-left: 30px;" for="ScenarioNumber">@L.GetLocalization("ScenarioNumber")</label>
-                    <InputText id="ScenarioNumber" class="form-control" @bind-Value="@Game.ScenarioNumber" disabled/>
+                    @if (Game.GameTable != null)
+                    {
+                        <label for="GameTable">@L.GetLocalization("Game_Table")</label>
+                        <InputText id="GameTable" @bind-Value="@Game.GameTable.Name"/>
+                        <button style="margin-left: 15px;" @onclick="@(() => ShowGameTable())" class="btn btn-primary"><i class="oi oi-eye"></i></button>
+                    }
+                    @if (Game.Scenario != null)
+                    {
+                        <label style="margin-left: 30px;" for="Scenario">@L.GetLocalization("GameScenario")</label>
+                        <InputText id="Scenario" @bind-Value="@Game.Scenario.Name"/>
+                        <button style="margin-left: 15px;" @onclick="@(() => ShowScenario())" class="btn btn-primary"><i class="oi oi-eye"></i></button>
+                    }
                     <label style="margin-left: 30px;" for="Location">@L.GetLocalization("Location")</label>
-                    <InputText id="Location" class="form-control" @bind-Value="@Game.Location" disabled/>
+                    <InputText id="Location" class="form-control" @bind-Value="@Game.Location"/>
                 </div>
             </div>
         </div>
@@ -179,13 +187,17 @@
                 @if (ShowList1)
                 {
                 <div class="form-group">
-                    <InputTextArea id="List1" @bind-Value="@Game.ListPlayer1" class="form-control" disabled></InputTextArea>
+                    <textarea id="List1" class="form-control" readonly="readonly">
+                        @((MarkupString)Game.ListPlayer1)
+                    </textarea>
                 </div>
                 }
                 @if (ShowList2)
                 {
                 <div class="form-group">
-                    <InputTextArea id="List2" @bind-Value="@Game.ListPlayer2" class="form-control" disabled></InputTextArea>
+                    <textarea id="List2" class="form-control" readonly="readonly">
+                        @((MarkupString)Game.ListPlayer2)
+                    </textarea>
                 </div>
                 }
             </div>

@@ -61,6 +61,8 @@ namespace WarhammerTracking
 			services.AddScoped<IUnitCategoryRepository, UnitCategoryRepository>();
 			services.AddScoped<IKeywordRepository, KeywordRepository>();
 			services.AddScoped<IUnitKeywordRepository, UnitKeywordRepository>();
+			services.AddScoped<IScenarioRepository, ScenarioRepository>();
+			services.AddScoped<IGameTableRepository, GameTableRepository>();
 			services.AddBlazoredModal();
 		}
 

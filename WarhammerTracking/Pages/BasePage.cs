@@ -11,6 +11,8 @@ namespace WarhammerTracking.Pages
 	public class BasePage : ComponentBase
 	{
 		[Inject] protected IGameRepository GameRepository { get; set; }
+		[Inject] protected IScenarioRepository ScenarioRepository { get; set; }
+		[Inject] protected IGameTableRepository GameTableRepository { get; set; }
 		[Inject] protected IArmyRepository ArmyRepository { get; set; }
 		[Inject] protected IUnitRepository UnitRepository { get; set; }
 		[Inject] protected IKeywordRepository KeywordRepository { get; set; }

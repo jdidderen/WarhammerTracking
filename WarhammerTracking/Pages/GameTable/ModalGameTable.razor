@@ -1,0 +1,6 @@
+@attribute [Authorize(Roles = "User,Admin")]
+@inherits ModalGameTablePage
+
+<h1 style="color:black;">@GameTable.Name</h1>
+<img src="@GameTable.ImageRelativePath" alt="Table Image"/>                                                                        
+<img src="images/etc_legend.png" alt="Legend"/>

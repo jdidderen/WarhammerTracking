@@ -12,15 +12,29 @@
             <div class="form-group form-inline">
                 <label for="Date">@L.GetLocalization("Date")</label>
                 <InputDate id="Date" @bind-Value="@Game.Date"/>
+                <label style="margin-left: 20px;" for="NoDetails">@L.GetLocalization("NoDetails")</label>
+                <InputCheckbox id="NoDetails" @bind-Value="@Game.NoDetails" /> 
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group form-inline">
-                    <label for="TableNumber">@L.GetLocalization("TableNumber")</label>
-                    <InputText id="TableNumber" class="form-control" @bind-Value="@Game.TableNumber"/>
-                    <label style="margin-left: 30px;" for="ScenarioNumber">@L.GetLocalization("ScenarioNumber")</label>
-                    <InputText id="ScenarioNumber" class="form-control" @bind-Value="@Game.ScenarioNumber"/>
+                    <label for="GameTable">@L.GetLocalization("Game_Table")</label>
+                    <InputSelect id="GameTable" @bind-Value="GameTable">
+                        <option value=""></option>
+                        @foreach (var gameTable in GameTables)
+                        {
+                            <option value=@gameTable.Id>@gameTable.Name</option>
+                        }
+                    </InputSelect>               
+                    <label style="margin-left: 30px;" for="Scenario">@L.GetLocalization("GameScenario")</label>
+                    <InputSelect id="Scenario" @bind-Value="Scenario">
+                        <option value=""></option>
+                        @foreach (var scenario in Scenarios)
+                        {
+                            <option value=@scenario.Id>@scenario.Name</option>
+                        }
+                    </InputSelect>    
                     <label style="margin-left: 30px;" for="Location">@L.GetLocalization("Location")</label>
                     <InputText id="Location" class="form-control" @bind-Value="@Game.Location"/>
                 </div>
@@ -31,7 +45,7 @@
                 <h2>@L.GetLocalization("Player1")</h2>
                 <div class="form-group form-inline">
                     <label for="User1">@L.GetLocalization("Player1")</label>
-                    <InputSelect id="User1" @bind-Value="User1Id">
+                    <InputSelect id="User1" @bind-Value="User1Id" required>
                         <option value=""></option>
                         @foreach (var user in Users)
                         {
@@ -41,7 +55,7 @@
                 </div>
                 <div class="form-group form-inline">
                     <label for="ArmyPlayer1">@L.GetLocalization("Army")</label>
-                    <InputSelect for="ArmyPlayer1" id="ArmyPlayer1" @bind-Value="ArmyPlayer1">
+                    <InputSelect for="ArmyPlayer1" id="ArmyPlayer1" @bind-Value="ArmyPlayer1" required>
                         <option></option>
                         @foreach (var army in Armies)
                         {
@@ -58,7 +72,7 @@
                 <h2>@L.GetLocalization("Player2")</h2>
                 <div class="form-group form-inline">
                     <label for="User2">@L.GetLocalization("Player2")</label>
-                    <InputSelect id="User2" @bind-Value="User2Id">
+                    <InputSelect id="User2" @bind-Value="User2Id" required>
                         <option value=""></option>
                         @foreach (var user in Users)
                         {
@@ -68,7 +82,7 @@
                 </div>
                 <div class="form-group form-inline">
                     <label for="ArmyPlayer2">@L.GetLocalization("Army")</label>
-                    <InputSelect for="ArmyPlayer2" id="ArmyPlayer2" @bind-Value="ArmyPlayer2">
+                    <InputSelect for="ArmyPlayer2" id="ArmyPlayer2" @bind-Value="ArmyPlayer2" required>
                         <option value=""></option>
                         @foreach (var army in Armies)
                         {
@@ -82,6 +96,22 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                @if (Game.NoDetails)
+                {
+                    <div class="form-group form-inline">
+                        <label for="ScorePlayer1WoDetails">@L.GetLocalization("Player1Score")</label>
+                        <InputNumber id="ScorePlayer1WoDetails" @bind-Value="@Game.ScorePlayer1WoDetails" />        
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="ScorePlayer1WoDetails">@L.GetLocalization("Player2Score")</label>
+                        <InputNumber id="ScorePlayer1WoDetails" @bind-Value="@Game.ScorePlayer2WoDetails" />        
+                    </div>
+                }            
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group" style="margin-bottom: 10px;" role="group">

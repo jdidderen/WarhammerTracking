@@ -1,0 +1,29 @@
+@page "/gametable"
+@attribute [Authorize(Roles = "User,Admin")]
+@inherits ListGameTable
+
+<h1>@L.GetLocalization("GameTables")</h1>
+<div class="shadow-lg rounded form-box">
+    <div class="col-md-12">
+        <div class="row" style="margin-bottom: 10px;">
+            <a href="/gametable/add" class="btn btn-primary">@L.GetLocalization("Add")</a>
+        </div>
+        <div class="row">
+            <DataGrid Items="GameTables" TItem="Data.Models.GameTable" PageSize="5">
+                <Column>
+                    <DataGridColumn TItem="Data.Models.GameTable" ColumnName="Name" DisplayColumnName="@L.GetLocalization("Name")"></DataGridColumn>
+                    <th>@L.GetLocalization("Actions")</th>
+                </Column>
+                <GridRow >
+                    <td>@context.Name</td>
+                    <td>
+                        <a href="/gametable/detail/@context.Id" class="btn btn-primary">@L.GetLocalization("Detail")</a>
+                        <a href="/gametable/edit/@context.Id" class="btn btn-primary">@L.GetLocalization("Edit")</a>
+                        <a href="/gametable/delete/@context.Id" class="btn btn-danger">@L.GetLocalization("Delete")</a>
+                    </td>
+                </GridRow>
+            </DataGrid>
+        </div>
+    </div>
+</div>
+}

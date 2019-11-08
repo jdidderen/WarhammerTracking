@@ -1,0 +1,30 @@
+@page "/scenario/delete/{id:int}"
+@attribute    [Authorize(Roles = "User,Admin")]
+@inherits DeleteScenario
+
+<h1>@L.GetLocalization("Scenarios") - @L.GetLocalization("Delete")</h1>
+<div class="alert alert-danger" role="alert">
+    @L.GetLocalization("DeleteMessage") @L.GetLocalization("Scenario") ?
+</div>
+<div class="shadow-lg rounded form-box">
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm Model="Scenario" OnSubmit="@FormSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <div class="form-group form-inline">
+                    <label for="Name">@L.GetLocalization("Name")</label>
+                    <h1>
+                        <InputText id="Name" @bind-Value="@Scenario.Name" disabled/>
+                    </h1>
+                </div>
+                <div class="form-group form-inline">
+                    <label for="Description">@L.GetLocalization("Description")</label>
+                    <InputTextArea style="width: 100%;" id="Description" @bind-Value="@Scenario.Description" disabled/>
+                </div>
+                <button class="btn btn-primary" type="submit">@L.GetLocalization("Submit")</button>
+                <input type="button" value="@L.GetLocalization("Cancel")" @onclick="Cancel" class="btn btn-secondary"/>
+            </EditForm>
+        </div>
+    </div>
+</div>

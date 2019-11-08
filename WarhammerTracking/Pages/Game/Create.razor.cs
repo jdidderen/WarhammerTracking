@@ -20,10 +20,14 @@ namespace WarhammerTracking.Pages.Game
 
 		protected List<ApplicationUser> Users;
 		protected Data.Models.Army[] Armies;
+		protected Data.Models.GameTable[] GameTables;
+		protected Data.Models.Scenario[] Scenarios;
 		protected string User1Id;
 		protected string User2Id;
 		protected string ArmyPlayer1;
 		protected string ArmyPlayer2;
+		protected string Scenario;
+		protected string GameTable;
 		protected readonly Data.Models.Game Game = new Data.Models.Game();
 		protected bool ShowNote = true;
 		protected bool ShowList1;
@@ -34,6 +38,8 @@ namespace WarhammerTracking.Pages.Game
 			Console.WriteLine(CultureInfo.CurrentCulture);
 			Users = UserManager.Users.ToList();
 			Armies = await ArmyRepository.GetList();
+			GameTables = await GameTableRepository.GetList();
+			Scenarios = await ScenarioRepository.GetList();
 			if (!string.IsNullOrEmpty(Player1) && !string.IsNullOrEmpty(Player2) && !string.IsNullOrEmpty(Date))
 			{
 				User1Id = Player1;
@@ -67,7 +73,15 @@ namespace WarhammerTracking.Pages.Game
 
 			if (!editContext.Validate()) return;
 			await GameRepository.Create(Game);
-			NavigationManager.NavigateTo("game/edit/" + Game.Id);
+			if (Game.NoDetails)
+			{
+				NavigationManager.NavigateTo("game");
+			}
+			else
+			{
+				NavigationManager.NavigateTo("game/edit/" + Game.Id);
+			}
+			
 		}
 
 		protected void ChangeNoteView()

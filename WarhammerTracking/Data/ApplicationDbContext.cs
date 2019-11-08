@@ -19,6 +19,8 @@ namespace WarhammerTracking.Data
 		public virtual DbSet<Game> Games { get; set; }
 		public virtual DbSet<GameRequest> GameRequests { get; set; }
 		public virtual DbSet<GameLine> GameLines { get; set; }
+		public virtual DbSet<GameTable> GameTables { get; set; }
+		public virtual DbSet<Scenario> Scenarios { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
